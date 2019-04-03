@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view" >
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_Inicio"
+            android:icon="@drawable/ic_nav_inicio_24dp"
+            android:title="@string/Nav1"/>
+        <item
+            android:id="@+id/nav_Consulta"
+            android:icon="@drawable/ic_nav_consulta_24dp"
+            android:title="@string/Nav2" />
+        <item
+            android:id="@+id/nav_Tombamento"
+            android:icon="@drawable/ic_nav_tombamento_24dp"
+            android:title="@string/Nav3" />
+        <item
+            android:id="@+id/nav_Exportacao"
+            android:icon="@drawable/ic_nav_exportacao_24dp"
+            android:title="@string/Nav4" />
+        <item
+            android:id="@+id/nav_Sincronizar"
+            android:icon="@drawable/ic_nav_sicronizacao_24dp"
+            android:title="@string/Nav5" />
+
+
+
+        <item
+            android:id="@+id/nav_Organizacao"
+            android:icon="@drawable/ic_nav_organizacao_24dp"
+            android:title="@string/Nav6" />
+
+        <item
+            android:id="@+id/nav_Secretaria"
+            android:title="@string/Titulo4"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_CentroCusto"
+            android:title="@string/Titulo5"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_LocalTrabalho"
+            android:title="@string/Titulo6"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_Responsavel"
+            android:title="@string/Titulo7"
+            android:visible="false" />
+
+    </group>
+
+    <item android:title="@string/Nav7">
+        <menu>
+            <item
+                android:id="@+id/nav_Sobre"
+                android:icon="@drawable/ic_nav_sobre_24dp"
+                android:title="@string/Nav8"/>
+            <item
+                android:id="@+id/nav_Sair"
+                android:icon="@drawable/ic_nav_sair_24dp"
+                android:title="@string/Nav9"/>
+        </menu>
+    </item>
+
+
+
+
+
+
+
+
+</menu>

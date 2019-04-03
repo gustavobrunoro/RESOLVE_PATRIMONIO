@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "502388641564",
+    "firebase_url": "https://resolve-patrimonio-315e8.firebaseio.com",
+    "project_id": "resolve-patrimonio-315e8",
+    "storage_bucket": "resolve-patrimonio-315e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502388641564:android:d311bfd3c0352429",
+        "android_client_info": {
+          "package_name": "com.resolve.gustavobrunoromeira.resolve_patrimonio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502388641564-kdiq6ffi5rt2h3hdeiapkn7f2096cvre.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.resolve.gustavobrunoromeira.resolve_patrimonio",
+            "certificate_hash": "6348e07dc887cc870220715c54d91e522a8fbea5"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdmitDARkTSF4KUZbrI2Nf5F5ShYxuqzQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502388641564-0tp8j5v23rcfkjsb4askb9727fd3c8uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

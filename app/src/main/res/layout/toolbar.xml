@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@android:color/white"/>
+
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Titulo10">
+
+        <ImageView android:id="@+id/imgClearSearch"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="invisible"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="50dp" />
+
+        <ImageView
+            android:id="@+id/imgCamera"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_camera_24dp"
+            android:visibility="invisible"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="8dp"/>
+
+    </com.miguelcatalan.materialsearchview.MaterialSearchView>
+
+
+</FrameLayout>

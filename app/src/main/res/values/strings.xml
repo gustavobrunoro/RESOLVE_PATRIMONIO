@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">RESOLVE PATRIMÔNIO</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="Intro1">Cadastramento e Recadastramento</string>
+    <string name="Intro1Descricao">Cadastramento e Recadastramento mais eficiente e eficaz</string>
+    <string name="Intro2">Parâmetros Configurados pelo Usuário</string>
+    <string name="Intro2Descricao">o Sistema possui ainda alguns parâmentro quer podem ser configurado pelo usuario</string>
+    <string name="Intro3">Recadastramento com Rapidez</string>
+    <string name="Intro3Descricao"> </string>
+    <string name="Intro4">Monte seu cadastro</string>
+    <string name="Intro4Descricao">Faça seu cadstro e começe a cadastra</string>
+
+    <string name="Titulo1">Itens a Serem Tombados</string>
+    <string name="Titulo2">Itens Tombados</string>
+    <string name="Titulo3">Cadastro de Bem</string>
+    <string name="Titulo4">Secretarias</string>
+    <string name="Titulo5">Centro Custos/Departamentos</string>
+    <string name="Titulo6">Localizações</string>
+    <string name="Titulo7">Responsaveis</string>
+    <string name="Titulo8">Configurações</string>
+    <string name="Titulo9">Pesquisa</string>
+    <string name="Titulo10">Nº Plaqueta ou Descrição</string>
+    <string name="Titulo11">Gostaria Realmente de Excluir?</string>
+    <string name="Titulo12">Gostaria Continua Cadastrando?</string>
+    <string name="Titulo13">Gostaria de Fecha?</string>
+    <string name="Titulo14">Gostaria de continua cadastrando?</string>
+
+    <string name="Permissao1">Para Ultilizar este app e necessário aceitar todas as permissões !</string>
+
+    <string name="Nav1">Inicio</string>
+    <string name="Nav2">Consulta</string>
+    <string name="Nav3">Tombamento</string>
+    <string name="Nav4">Exportação Web</string>
+    <string name="Nav5">Sicronização Org</string>
+    <string name="Nav6">Organização</string>
+    <string name="Nav7">Comunicação</string>
+    <string name="Nav8">Sobre</string>
+    <string name="Nav9">Sair</string>
+    <string name="title_activity_teste">teste</string>
+
+</resources>

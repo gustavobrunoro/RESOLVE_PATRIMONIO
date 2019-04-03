@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/cardview_centrocusto_expansivelID">
+
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:id="@+id/cardview_expan_centrocusto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Descricao Centro Custo"
+        app:inner_view="@layout/cardview_centrocusto"
+        app:expandOnClick="true"
+        app:animationDuration="100"
+        app:startExpanded="false"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"
+        android:elevation="30dp"/>
+
+</LinearLayout>
