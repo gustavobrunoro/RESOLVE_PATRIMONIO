@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Introducao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.introducao;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

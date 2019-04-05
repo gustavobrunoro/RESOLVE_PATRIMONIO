@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -122,7 +122,7 @@ public class ConsultaBem extends AppCompatActivity {
         for (Secretaria s : Secretarias) {
 
             if (secretariasTemp.isEmpty()) {
-                secretariasTemp.add("Secretaria");
+                secretariasTemp.add( "Secretarias" );
             }
 
             secretariasTemp.add(String.valueOf(s.getSecretariaID()) + " - " + String.valueOf(s.getDescricao()).toUpperCase());
@@ -194,7 +194,7 @@ public class ConsultaBem extends AppCompatActivity {
         CentroCustos = centroCustoDAO.Lista(bem);
 
         if (centroCustoTemp.isEmpty()) {
-            centroCustoTemp.add("Centro de Custo/Departamento");
+            centroCustoTemp.add( "Centro Custos/Departamentos" );
         }
 
         for (CentroCusto cc : CentroCustos) {
@@ -263,7 +263,7 @@ public class ConsultaBem extends AppCompatActivity {
         Localizacoes = localizacaoDAO.Lista(bem);
 
         if (localizacaoTemp.isEmpty()) {
-            localizacaoTemp.add("Localizacao");
+            localizacaoTemp.add( "Localização" );
         }
 
         for (Localizacao lt : Localizacoes) {
@@ -333,7 +333,7 @@ public class ConsultaBem extends AppCompatActivity {
         Responsaveis = responsavelDAO.Lista(bem);
 
         if (responsavelTemp.isEmpty()) {
-            responsavelTemp.add("Responsavel");
+            responsavelTemp.add( "Responsavel" );
         }
 
         for (Responsavel r : Responsaveis) {
@@ -403,7 +403,7 @@ public class ConsultaBem extends AppCompatActivity {
         Itens = itemDAO.Lista(bem);
 
         if (itemTemp.isEmpty()) {
-            itemTemp.add("Item");
+            itemTemp.add( "Item" );
         }
 
         for (Item r : Itens) {
@@ -473,7 +473,7 @@ public class ConsultaBem extends AppCompatActivity {
         Fabricantes = fabricanteDAO.Lista(bem);
 
         if (fabricanteTemp.isEmpty()) {
-            fabricanteTemp.add("Fabricante");
+            fabricanteTemp.add( "Fabricante" );
         }
 
         for (Fabricante r : Fabricantes) {
@@ -543,7 +543,7 @@ public class ConsultaBem extends AppCompatActivity {
         TipoTombos = tipoTomboDAO.Lista();
 
         if (tipotomboTemp.isEmpty()) {
-            tipotomboTemp.add("Tipo Tombo");
+            tipotomboTemp.add( "Tipo Tombo" );
         }
 
         for (TipoTombo tb : TipoTombos) {
@@ -613,7 +613,7 @@ public class ConsultaBem extends AppCompatActivity {
         EstadoConversacoes = estadoConsevacaoDAO.Lista();
 
         if (estadoConservacaoTemp.isEmpty()) {
-            estadoConservacaoTemp.add("Estado Conservacao");
+            estadoConservacaoTemp.add( "Estado de Conservação" );
         }
 
         for (EstadoConservacao ec : EstadoConversacoes) {

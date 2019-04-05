@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -278,8 +278,9 @@ public class CadastroBem extends AppCompatActivity {
     public void alertaPermissao() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões");
-        builder.setMessage(R.string.Permissao1);
+        builder.setTitle(R.string.Alerta1);
+                builder.setMessage(R.string.Permissao1);
+
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -334,8 +335,6 @@ public class CadastroBem extends AppCompatActivity {
                     .error(R.drawable.ic_camera_24dp)
                     .fit()
                     .into( Foto2ID );
-
-
         }
 
         // Traz a Foto Local
@@ -370,7 +369,6 @@ public class CadastroBem extends AppCompatActivity {
         final SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
         final List<String> secretariasTemp = new ArrayList<>();
 
-
         Secretarias.clear();
 
         Secretarias = secretariaDAO.Lista();
@@ -378,7 +376,7 @@ public class CadastroBem extends AppCompatActivity {
         for (Secretaria s : Secretarias) {
 
             if (secretariasTemp.isEmpty()) {
-                secretariasTemp.add("Secretaria");
+                secretariasTemp.add( "Secretarias" );
             }
 
             secretariasTemp.add(String.valueOf(s.getSecretariaID()) + " - " + String.valueOf(s.getDescricao()).toUpperCase());
@@ -469,7 +467,7 @@ public class CadastroBem extends AppCompatActivity {
         CentroCustos = centroCustoDAO.Lista(bem);
 
         if (centroCustoTemp.isEmpty()) {
-            centroCustoTemp.add("Centro de Custo/Departamento");
+            centroCustoTemp.add( "Centro Custos/Departamentos" );
         }
 
         for (CentroCusto cc : CentroCustos) {
@@ -556,7 +554,7 @@ public class CadastroBem extends AppCompatActivity {
         Localizacoes = localizacaoDAO.Lista(bem);
 
         if (localizacaoTemp.isEmpty()) {
-            localizacaoTemp.add("Localizacao");
+            localizacaoTemp.add( "Localização" );
         }
 
         for (Localizacao lt : Localizacoes) {
@@ -650,7 +648,7 @@ public class CadastroBem extends AppCompatActivity {
         Responsaveis = responsavelDAO.Lista(bem);
 
         if (responsavelTemp.isEmpty()) {
-            responsavelTemp.add("Responsavel");
+            responsavelTemp.add( "Responsavel" );
         }
 
         for (Responsavel r : Responsaveis) {
@@ -731,7 +729,7 @@ public class CadastroBem extends AppCompatActivity {
         Itens = itemDAO.Lista(bem);
 
         if (itemTemp.isEmpty()) {
-            itemTemp.add("Item");
+            itemTemp.add( "Item" );
         }
 
         for (Item r : Itens) {
@@ -812,7 +810,7 @@ public class CadastroBem extends AppCompatActivity {
         Fabricantes = fabricanteDAO.Lista(bem);
 
         if (fabricanteTemp.isEmpty()) {
-            fabricanteTemp.add("Fabricante");
+            fabricanteTemp.add( "Fabricante" );
         }
 
         for (Fabricante r : Fabricantes) {
@@ -893,7 +891,7 @@ public class CadastroBem extends AppCompatActivity {
         TipoTombos = tipoTomboDAO.Lista();
 
         if (tipotomboTemp.isEmpty()) {
-            tipotomboTemp.add("Tipo Tombo");
+            tipotomboTemp.add( "Tipo Tombo" );
         }
 
         for (TipoTombo tb : TipoTombos) {
@@ -974,7 +972,7 @@ public class CadastroBem extends AppCompatActivity {
         EstadoConversacoes = estadoConsevacaoDAO.Lista();
 
         if (estadoConservacaoTemp.isEmpty()) {
-            estadoConservacaoTemp.add("Estado Conservacao");
+            estadoConservacaoTemp.add( "Estado de Conservação" );
         }
 
         for (EstadoConservacao ec : EstadoConversacoes) {
@@ -1069,8 +1067,8 @@ public class CadastroBem extends AppCompatActivity {
                 salvaFoto();
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle("Cadastro Bem");
-                alertDialog.setMessage(R.string.Titulo14);
+                alertDialog.setTitle(R.string.Titulo3);
+                alertDialog.setMessage( R.string.Mensagem3 );
                 alertDialog.setCancelable(false);
                 alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
@@ -1078,35 +1076,38 @@ public class CadastroBem extends AppCompatActivity {
 
                         Plaqueta.setText("");
 
-                        listaSecretaria();
                         bem.setSecretariaIDFK(null);
+                        listaSecretaria();
 
-                        listaCentroCusto();
                         bem.setCentroCustoIDFK(null);
+                        listaCentroCusto();
 
-                        listaLocalizacao();
                         bem.setLocalizacaoIDFK(null);
+                        listaLocalizacao();
 
-                        listaResponsavel();
                         bem.setResponsavelIDFK(null);
+                        listaResponsavel();
 
-                        listaItem();
                         bem.setItemIDFK(null);
+                        listaItem();
 
                         Especificacao.setText("");
 
-                        listaFabricante();
                         bem.setFabricanteIDFK(null);
+                        listaFabricante();
 
                         Valor.setText("");
 
-                        listaTipoTombo();
                         bem.setTipoTomboIDFK(null);
+                        listaTipoTombo();
 
-                        listaEstadoConservacao();
                         bem.setEstadoConservacaoIDFK(null);
+                        listaEstadoConservacao();
 
                         Observacao.setText("");
+
+                        Imagem1 = null;
+                        Imagem2 = null;
 
                         Foto1ID.setImageResource(R.drawable.ic_camera_24dp);
                         Foto2ID.setImageResource(R.drawable.ic_camera_24dp);
@@ -1131,15 +1132,15 @@ public class CadastroBem extends AppCompatActivity {
 
             if(Imagem1 == null || Imagem2 == null) {
                 if (Imagem1 == null && Imagem2 == null) {
-                    Snackbar.make(findViewById(R.id.fabSalvar), "Necessario Tira a Foto 1 e Foto 2", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 1 e Foto 2" , Snackbar.LENGTH_LONG).show();
                 }else {
                     if (Imagem1 == null) {
-                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessario Tira a Foto 1", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 1" , Snackbar.LENGTH_LONG).show();
                     }else
-                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessario Tira a Foto 2", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 2" , Snackbar.LENGTH_LONG).show();
                 }
             }else {
-                Snackbar.make(findViewById(R.id.fabSalvar), "Preencha todos os campos!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.fabSalvar), "Preencha Todos os Campos!" , Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -1154,9 +1155,9 @@ public class CadastroBem extends AppCompatActivity {
         if ((validaPlaqueta(Plaqueta.getText().toString())) || (Plaqueta.getText().toString().isEmpty())) {
 
             if (validaPlaqueta(Plaqueta.getText().toString())) {
-                Plaqueta.setError("Plaqueta já Existe!");
+                Plaqueta.setError( "Preencha todos os campos!" );
             } else {
-                Plaqueta.setError("Informe nº da Plaqueta");
+                Plaqueta.setError( "Informe nº da Plaqueta" );
             }
             controle = 1;
         }
@@ -1192,7 +1193,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Especificacao.getText().toString().isEmpty()) {
-            Especificacao.setError("Informe Espedificação");
+            Especificacao.setError("Informe uma Especificação");
             controle = 1;
         }
 
@@ -1202,7 +1203,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Valor.getText().toString().isEmpty() || String.valueOf(Valor.getRawValue()).equals("0") ) {
-            Valor.setError("Informe um Valor");
+            Valor.setError( "Informe um Valor" );
             controle = 1;
         }
 
@@ -1217,7 +1218,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Observacao.getText().toString().isEmpty()) {
-            Observacao.setError("Informe uma Observação");
+            Observacao.setError( "Informe uma Observação" );
             controle = 1;
         }
 
@@ -1300,8 +1301,6 @@ public class CadastroBem extends AppCompatActivity {
 
                 byte[] bytes;
                 FileOutputStream fos;
-
-                Log.i("ControleLogte",caminhoFotoPrincipal + Plaqueta.getText().toString() + "/" + Plaqueta.getText().toString() + "_1.png");
 
                 ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
                 Imagem1.compress(Bitmap.CompressFormat.PNG, 70, baos1);

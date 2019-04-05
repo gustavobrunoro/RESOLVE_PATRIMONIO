@@ -13,24 +13,17 @@
     <string name="Intro3">Recadastramento com Rapidez</string>
     <string name="Intro3Descricao"> </string>
     <string name="Intro4">Monte seu cadastro</string>
-    <string name="Intro4Descricao">Faça seu cadstro e começe a cadastra</string>
+    <string name="Intro4Descricao">Faça seu cadstro e começe a cadastra agora </string>
 
-    <string name="Titulo1">Itens a Serem Tombados</string>
-    <string name="Titulo2">Itens Tombados</string>
-    <string name="Titulo3">Cadastro de Bem</string>
-    <string name="Titulo4">Secretarias</string>
-    <string name="Titulo5">Centro Custos/Departamentos</string>
-    <string name="Titulo6">Localizações</string>
-    <string name="Titulo7">Responsaveis</string>
-    <string name="Titulo8">Configurações</string>
-    <string name="Titulo9">Pesquisa</string>
-    <string name="Titulo10">Nº Plaqueta ou Descrição</string>
-    <string name="Titulo11">Gostaria Realmente de Excluir?</string>
-    <string name="Titulo12">Gostaria Continua Cadastrando?</string>
-    <string name="Titulo13">Gostaria de Fecha?</string>
-    <string name="Titulo14">Gostaria de continua cadastrando?</string>
-
-    <string name="Permissao1">Para Ultilizar este app e necessário aceitar todas as permissões !</string>
+    <string name="Aviso_1">Não é possível carregar Secretaria: </string>
+    <string name="Aviso_2">Não é possível carregar Centro Custo: </string>
+    <string name="Aviso_3">Não e possivel carregar Ceentro Custo Local Reponsavel: </string>
+    <string name="Aviso_4">Não é possível carregar Localização: </string>
+    <string name="Aviso_5">Não é possível carregar Responsavel: </string>
+    <string name="Aviso_6">Não é possível carregar Item: </string>
+    <string name="Aviso_7">Não é possível carregar Fabricante: </string>
+    <string name="Aviso_8">Não é possível carregar Tipo do Tombo: </string>
+    <string name="Aviso_9">Não é possível carregar Estado Conservação: </string>
 
     <string name="Nav1">Inicio</string>
     <string name="Nav2">Consulta</string>
@@ -41,6 +34,33 @@
     <string name="Nav7">Comunicação</string>
     <string name="Nav8">Sobre</string>
     <string name="Nav9">Sair</string>
-    <string name="title_activity_teste">teste</string>
+
+    <string name="Titulo1">Itens a Serem Tombados</string>
+    <string name="Titulo2">Itens Tombados</string>
+    <string name="Titulo3">Cadastro de Bem</string>
+    <string name="Titulo4">Secretarias</string>
+    <string name="Titulo5">Centro Custos/Departamentos</string>
+    <string name="Titulo6">Localizações</string>
+    <string name="Titulo7">Responsaveis</string>
+    <string name="Titulo8">Configurações</string>
+    <string name="Titulo9">Pesquisa</string>
+    <string name="Titulo10">Item</string>
+    <string name="Titulo11">Fabricante</string>
+    <string name="Titulo12">Tipo Tombo</string>
+    <string name="Titulo13">Estado de Conservação</string>
+
+    <string name="Permissao1">Para Ultilizar este app e necessário aceitar todas as permissões !</string>
+
+    <string name="Mensagem1">Nº Plaqueta ou Descrição</string>
+    <string name="Mensagem2">Gostaria Realmente de Excluir?</string>
+    <string name="Mensagem3">Gostaria Continua Cadastrando?</string>
+    <string name="Mensagem4">Gostaria de Fecha?</string>
+    <string name="Mensagem5">Gostaria de continua cadastrando?</string>
+    <string name="Mensagem6">Plaqueta não encontrada</string>
+
+    <string name="Alerta1">Permissões Necessárias</string>
+    <string name="Alerta2">Excluir</string>
+    <string name="Alerta3">Carregando</string>
+    <string name="Alerta4">Carregando Bens....</string>
 
 </resources>

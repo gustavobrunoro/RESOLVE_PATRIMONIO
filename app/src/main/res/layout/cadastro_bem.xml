@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="  Centro Custo" />
+            android:text="  Centro Custos/Departamentos" />
         <Spinner
             android:id="@+id/sp_CentroCustoID"
             android:layout_width="fill_parent"
@@ -198,7 +198,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="  Estado Conservacao" />
+            android:text="  Estado Conservação" />
         <Spinner
             android:id="@+id/sp_ConservacaoID"
             android:layout_width="fill_parent"

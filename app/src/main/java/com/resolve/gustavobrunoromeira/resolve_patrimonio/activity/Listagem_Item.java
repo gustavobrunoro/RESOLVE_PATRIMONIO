@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -192,7 +192,7 @@ public class Listagem_Item extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), CadastroBem.class).putExtra("Bem", bem));
 
                 }else{
-                    Toast.makeText(getApplicationContext(),"Plaqueta não encontrada",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.Mensagem5 ,Toast.LENGTH_LONG).show();
                 }
 
             } else {
@@ -240,9 +240,9 @@ public class Listagem_Item extends AppCompatActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final BemDAO bemDAO = new BemDAO(getApplicationContext());
 
-        alertDialog.setTitle("Excluir");
-        alertDialog.setIcon(R.drawable.ic_deleta_24dp);
-        alertDialog.setMessage(R.string.Titulo11);
+        alertDialog.setTitle( R.string.Alerta2 );
+        alertDialog.setIcon( R.drawable.ic_deleta_24dp );
+        alertDialog.setMessage( R.string.Mensagem2 );
         alertDialog.setCancelable(false);
 
         alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
@@ -324,7 +324,7 @@ public class Listagem_Item extends AppCompatActivity {
 
         IntentIntegrator leitor = new IntentIntegrator(this);
         leitor.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        leitor.setPrompt("Escanei uma plaqueta");
+        leitor.setPrompt( "Escanei uma plaqueta" );
         leitor.setCameraId(0);
         leitor.initiateScan();
 

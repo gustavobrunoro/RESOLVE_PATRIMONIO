@@ -1,10 +1,10 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Introducao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.introducao;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.MainActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.MainActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;

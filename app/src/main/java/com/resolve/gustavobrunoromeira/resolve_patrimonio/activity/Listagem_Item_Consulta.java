@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -83,15 +83,12 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
         iniciaViews();
-
     }
 
     /**Metodo Responsavel por inicia o Recycle Views
@@ -117,8 +114,8 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
 
         final ProgressDialog progressDialog = new ProgressDialog(Listagem_Item_Consulta.this);
         progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando ");
-        progressDialog.setMessage("Carregando Bens....");
+        progressDialog.setTitle( R.string.Alerta3 );
+        progressDialog.setMessage( String.valueOf( R.string.Alerta4 ));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         progressDialog.show();

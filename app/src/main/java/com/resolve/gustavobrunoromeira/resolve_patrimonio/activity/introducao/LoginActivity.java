@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Introducao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.introducao;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.MainActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.MainActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoLocalReponsavelDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.EstadoConsevacaoDAO;
@@ -187,12 +187,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }catch (Exception e ){
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria1: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria2: ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: ", Toast.LENGTH_LONG).show();
                             }
 
                     }

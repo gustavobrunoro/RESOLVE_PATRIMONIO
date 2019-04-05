@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

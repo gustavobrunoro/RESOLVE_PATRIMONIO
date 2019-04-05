@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterBem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterExportacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
@@ -32,12 +33,15 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -79,7 +83,7 @@ public class ExportacaoBem extends AppCompatActivity {
         searchView   = findViewById(R.id.search_view);
         retrofit     = RetrofitConfig.getRetrofit();
 
-        toolbar.setTitle("Exportacao");
+        toolbar.setTitle(R.string.Nav4);
         setSupportActionBar(toolbar);
 
         consultaLocal();
@@ -177,7 +181,7 @@ public class ExportacaoBem extends AppCompatActivity {
 
        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setIcon(R.drawable.ic_nav_exportacao_24dp);
-        alertDialog.setTitle("Exportacao");
+        alertDialog.setTitle(R.string.Nav4);
         alertDialog.setCancelable(false);
 
         if (bensSelecionados.isEmpty()) {
@@ -282,15 +286,15 @@ public class ExportacaoBem extends AppCompatActivity {
     /**Metodo que Exporta os Bens para a WEB atraves da API*/
     public void exportarBem(){
 
-        alertDialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Preparando exportação")
-                .setCancelable(false)
-                .build();
+//        alertDialog = new SpotsDialog.Builder()
+//                .setContext(this)
+//                .setMessage("Preparando Exportação")
+//                .setCancelable(false)
+//                .build();
+//
+//        alertDialog.show();
 
-        alertDialog.show();
-
-        for (final Bem listaBem : bensSelecionados) {
+        for (final Bem bem : bensSelecionados) {
 
             // Seleciona o Caminho da Foto 1 e 2
             caminhoFoto1 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_1.png");
@@ -304,7 +308,7 @@ public class ExportacaoBem extends AppCompatActivity {
                 byteArray1 = baos1.toByteArray();
                 Imagem1.recycle();
 
-                listaBem.setFoto1( Base64.encodeToString( byteArray1, Base64.DEFAULT ) );
+                bem.setFoto1( Base64.encodeToString( byteArray1, Base64.DEFAULT ) );
             }
 
             // Verificar se a Foto 2 Existe
@@ -315,56 +319,72 @@ public class ExportacaoBem extends AppCompatActivity {
                 byteArray2 = baos2.toByteArray();
                 Imagem2.recycle();
 
-                listaBem.setFoto2( Base64.encodeToString( byteArray2, Base64.DEFAULT ) );
+                bem.setFoto2( Base64.encodeToString( byteArray2, Base64.DEFAULT ) );
             }
 
-            resolvePatrimonio.enviarBens( listaBem ).enqueue(new Callback<Bem>() {
+            resolvePatrimonio.enviarBens( bem ).enqueue(new Callback<Bem>() {
                 @Override
                 public void onResponse(Call<Bem> call, Response<Bem> response) {
 
                       if(response.isSuccessful()){
 
-                          alertDialog.setMessage("Enviando Itens: " + ( bensExportados.size() + 1) + " de " +  bensSelecionados.size() );
+                        bensExportados.add( bem );
+
+                        //alertDialog.setMessage("Enviando Itens: " + ( bensExportados.size() + 1) + " de " +  bensSelecionados.size() );
 
                         // Chama o Metodo responsavel por efetuar a Exclusão da Plaqueta e das Fotos
-                        //excluiPlaqueta(listaBem);
+                        excluiPlaqueta( bem );
 
-                        Log.i("ControleLogte","Sucesso: " + response.body().getPlaqueta() );
-
-                     }else{
-                        Toast.makeText(ExportacaoBem.this, response.message(), Toast.LENGTH_SHORT).show();
-
-                          call.cancel();
-
-                          exportados();
-
-                        Log.i("ControleLogte","Erro 1 Plaqueta:  " + response.body().getPlaqueta() + " Error: " + response.message() );
-                    }
-
-                    bensExportados.add(listaBem);
-
-                    if (bensSelecionados.size() == bensExportados.size()) {
-                        exportados();
-                    }
+                     }
                 }
 
                 @Override
                 public void onFailure(Call<Bem> call, Throwable t) {
 
-                    resolvePatrimonio.enviarBens( listaBem ).cancel();
-                    alertDialog.dismiss();
-                    exportados();
+                    //alertDialog.dismiss();
 
                     Log.i("ControleLogte","Erro 2: " + t.getMessage() );
                 }
             });
 
         }
+    }
+
+    /**Metodo que Excluir a Plaqueta exportada da base de Dados*/
+    public void excluiPlaqueta(Bem bem){
+
+        final BemDAO bemDAO = new BemDAO(getApplicationContext());
+
+        // Deleta o Bem da Lista de Item a Serem Exportados
+        for(Bem b: bens) {
+
+            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
+
+                Log.i("ControleLogte", "Remove: " + b.getPlaqueta());
+
+                bens.remove(b);
+            }
+        }
+
+        // Deleta o Bem da Lista de Pré Selecionados para Exportação
+        for(Bem b: bensSelecionados) {
+
+            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
+                bensSelecionados.remove(b);
+            }
+        }
+
+        // Deleta o Bem do Banco de Dados
+//        bemDAO.Deletar(bem);
+//
+//        // Deleta as Fotos
+//        caminhoFoto1.delete();
+//        caminhoFoto2.delete();
 
     }
 
     /**Metodo para Informa a quantidade de Bens Exportados para o Usuario*/
-    public void exportados(){
+    public void exportados() {
 
         alertDialog.dismiss();
 
@@ -389,57 +409,26 @@ public class ExportacaoBem extends AppCompatActivity {
         alert.show();
     }
 
-    /**Metodo que Excluir a Plaqueta exportada da base de Dados*/
-    public void excluiPlaqueta(Bem bem){
-
-        final BemDAO bemDAO = new BemDAO(getApplicationContext());
-
-        // Deleta o Bem da Lista de Pré Selecionados para Exportação
-        for(Bem b: bensSelecionados) {
-
-            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
-                bensSelecionados.remove(b);
-            }
-        }
-
-        // Deleta o Bem da Lista de Item a serem Exportados
-        for(Bem b: bens) {
-
-            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
-                bens.remove(b);
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        // Deleta o Bem do Banco de Dados
-        bemDAO.Deletar(bem);
-
-        // Deleta as Fotos
-        caminhoFoto1.delete();
-        caminhoFoto2.delete();
-
-    }
-
     public void teste(Bem b) {
 
         resolvePatrimonio.enviarBensteste(b)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Bem>() {
-
                     @Override
                     public void onCompleted() {
-                        //Log.i("TesteObservador", "onCompleted");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("TesteObservador", e.toString());
+
                     }
 
                     @Override
-                    public void onNext(Bem b) {
-                        Log.i("TesteObservador", "plaqueta: " + b.getPlaqueta());
+                    public void onNext(Bem bem) {
+
+
                     }
                 });
 

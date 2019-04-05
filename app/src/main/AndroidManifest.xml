@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Activity.Introducao.introducaoactivity"
+        <activity android:name=".activity.introducao.introducaoactivity"
             android:theme="@style/Theme.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,56 +31,57 @@
         </activity>
 
         <activity
-            android:name=".Activity.Introducao.CadastroUsuarioActivity"
+            android:name=".activity.introducao.CadastroUsuarioActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Introducao.LoginActivity" />
+            android:name=".activity.introducao.LoginActivity" />
         <activity
-            android:name=".Activity.Listagem_Item"
+            android:name=".activity.Listagem_Item"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.CadastroBem"
+            android:name=".activity.CadastroBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.SobreActivity"
+            android:name=".activity.SobreActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Organizacao.SecretariaActivity"
+            android:name=".activity.Organizacao.SecretariaActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Organizacao.CentroCustoActivity"
+            android:name=".activity.Organizacao.CentroCustoActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Organizacao.LocalizacaoActivity"
+            android:name=".activity.Organizacao.LocalizacaoActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Organizacao.ResponsavelActivity"
+            android:name=".activity.Organizacao.ResponsavelActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Listagem_Item_Exportados"
+            android:name=".activity.Listagem_Item_Exportados"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.ConsultaBem"
+            android:name=".activity.ConsultaBem"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.Listagem_Item_Consulta"
+            android:name=".activity.Listagem_Item_Consulta"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.ExportacaoBem"
+            android:name=".activity.ExportacaoBem"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.resolve.android.fileprovider"

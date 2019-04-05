@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -33,10 +33,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.CentroCustoActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.LocalizacaoActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.ResponsavelActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.SecretariaActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.CentroCustoActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.LocalizacaoActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.ResponsavelActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.SecretariaActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterPrincipal;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
@@ -519,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**Metodo Responsavel por Fecha o sistema quando solicitado*/
     public void sair(){
 
-        Snackbar.make(findViewById(R.id.CoordinatorLayoutID), R.string.Titulo13, Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(R.id.CoordinatorLayoutID), R.string.Mensagem4, Snackbar.LENGTH_SHORT)
                 .setActionTextColor(Color.RED)
                 .setAction("Sim", new View.OnClickListener() {
                     @Override
