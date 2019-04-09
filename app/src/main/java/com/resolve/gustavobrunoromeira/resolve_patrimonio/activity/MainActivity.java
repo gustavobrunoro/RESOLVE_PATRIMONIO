@@ -146,9 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(position == 0 ){
 
                     if ( adapter.totalBemCadastrados() == 0 ){
-
                         Toast.makeText(getApplicationContext(),"Não Possui Bens Cadastrados",Toast.LENGTH_LONG).show();
-
                     }else {
                         startActivity(new Intent(getApplicationContext(), Listagem_Item.class));
                     }
@@ -271,13 +269,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu = navigationView.getMenu();
 
         if (id == R.id.nav_Inicio) {
-            Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Inicio", Snackbar.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
         } else if (id == R.id.nav_Consulta) {
             startActivity(new Intent(getApplicationContext(),ConsultaBem.class));
         } else if (id == R.id.nav_Tombamento) {
             startActivity(new Intent(getApplicationContext(),CadastroBem.class));
         } else if (id == R.id.nav_Exportacao) {
-            startActivity(new Intent(getApplicationContext(),ExportacaoBem.class));
+
+            if ( adapter.totalBemCadastrados() == 0 ){
+                Toast.makeText(getApplicationContext(),"Não Possui Bens Cadastrados",Toast.LENGTH_LONG).show();
+            }else {
+                startActivity(new Intent(getApplicationContext(),ExportacaoBem.class));
+            }
+
         } else if (id == R.id.nav_Sincronizar) {
             Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Sicronizações", Snackbar.LENGTH_SHORT).show();
         } else if (id == R.id.nav_Organizacao) {

@@ -72,6 +72,7 @@ public class ExportacaoBem extends AppCompatActivity {
     private byte[] byteArray2;
     private Retrofit retrofit;
     private ResolvePatrimonio resolvePatrimonio;
+    private int i = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class ExportacaoBem extends AppCompatActivity {
         //       Log.i("ControleLogte", "Recuperou: "  + bensSelecionados.size() );
         //
         //}
+
 
     }
 
@@ -191,8 +193,6 @@ public class ExportacaoBem extends AppCompatActivity {
             bensSelecionados.addAll(adapter.ListaSelecionados());
         }
 
-        Log.i("ControleLogte", "confirmaExportacao: " + adapter.ListaSelecionados().size() );
-
         resolvePatrimonio.recuperaPermissao( ClienteIDFK ).enqueue(new Callback<List<PermissaoExportar>>() {
             @Override
             public void onResponse(Call<List<PermissaoExportar>> call, Response<List<PermissaoExportar>> response) {
@@ -216,7 +216,9 @@ public class ExportacaoBem extends AppCompatActivity {
                             alertDialog.setMessage("Confirma a Exportação de " + bensSelecionados.size() + " Item(s) ?");
                             alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) { exportarBem(); }
+                                public void onClick(DialogInterface dialog, int which) {
+                                    preparaExportacao();
+                                }
                             });
                             alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 @Override
@@ -283,18 +285,18 @@ public class ExportacaoBem extends AppCompatActivity {
 
     }
 
-    /**Metodo que Exporta os Bens para a WEB atraves da API*/
-    public void exportarBem(){
+    /**Metodo Responsavel por Prepara a Exportação */
+    public void preparaExportacao(){
 
-//        alertDialog = new SpotsDialog.Builder()
-//                .setContext(this)
-//                .setMessage("Preparando Exportação")
-//                .setCancelable(false)
-//                .build();
-//
-//        alertDialog.show();
+        alertDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Preparando Exportação")
+                //.setCancelable(false)
+                .build();
 
-        for (final Bem bem : bensSelecionados) {
+        alertDialog.show();
+
+        for (Bem bem : bensSelecionados) {
 
             // Seleciona o Caminho da Foto 1 e 2
             caminhoFoto1 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_1.png");
@@ -321,33 +323,57 @@ public class ExportacaoBem extends AppCompatActivity {
 
                 bem.setFoto2( Base64.encodeToString( byteArray2, Base64.DEFAULT ) );
             }
-
-            resolvePatrimonio.enviarBens( bem ).enqueue(new Callback<Bem>() {
-                @Override
-                public void onResponse(Call<Bem> call, Response<Bem> response) {
-
-                      if(response.isSuccessful()){
-
-                        bensExportados.add( bem );
-
-                        //alertDialog.setMessage("Enviando Itens: " + ( bensExportados.size() + 1) + " de " +  bensSelecionados.size() );
-
-                        // Chama o Metodo responsavel por efetuar a Exclusão da Plaqueta e das Fotos
-                        excluiPlaqueta( bem );
-
-                     }
-                }
-
-                @Override
-                public void onFailure(Call<Bem> call, Throwable t) {
-
-                    //alertDialog.dismiss();
-
-                    Log.i("ControleLogte","Erro 2: " + t.getMessage() );
-                }
-            });
-
         }
+
+        i = 1;
+        bensExportados.clear();
+        exportaBem();
+
+    }
+
+    /**Metodo Reponsavel por Efetuar Exportação os Bens para a WEB atraves da API*/
+    public void exportaBem(){
+
+        // verificar se o contador esta maior que o tamanho do Array, Caso esteja sinal q não tem mais obejtos a serem enviados
+       if( i > bensSelecionados.size() ){
+
+            alertDialog.dismiss();
+            exportados();
+            return ;
+
+        }else {
+
+           // Efetua o envio envio do objeto atraves da API
+           resolvePatrimonio.enviarBens(bensSelecionados.get( i - 1 )).enqueue(new Callback<Bem>() {
+               @Override
+               public void onResponse(Call<Bem> call, Response<Bem> response) {
+
+                   if (response.isSuccessful()) {
+
+                       // Adiciona no Array List de Bem Exportados
+                       bensExportados.add( bensSelecionados.get( i - 1 ) );
+
+                       // Atualiza o Contador do Alert Dialog
+                       alertDialog.setMessage("Enviando Itens: " + ( bensExportados.size()) + " de " +  bensSelecionados.size() );
+
+                       // Chama o Metodo responsavel por efetuar a Exclusão da Plaqueta e das Fotos
+                       excluiPlaqueta( bensSelecionados.get( i - 1 ) );
+
+                       i++;
+                       exportaBem();
+                   }
+               }
+
+               @Override
+               public void onFailure(Call<Bem> call, Throwable t) {
+
+                   i++;
+                   exportaBem();
+               }
+
+           });
+
+       }
     }
 
     /**Metodo que Excluir a Plaqueta exportada da base de Dados*/
@@ -355,42 +381,35 @@ public class ExportacaoBem extends AppCompatActivity {
 
         final BemDAO bemDAO = new BemDAO(getApplicationContext());
 
-        // Deleta o Bem da Lista de Item a Serem Exportados
-        for(Bem b: bens) {
-
-            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
-
-                Log.i("ControleLogte", "Remove: " + b.getPlaqueta());
-
-                bens.remove(b);
-            }
-        }
-
-        // Deleta o Bem da Lista de Pré Selecionados para Exportação
-        for(Bem b: bensSelecionados) {
-
-            if( b.getClienteIDFK().equals(bem.getClienteIDFK()) && b.getPlaqueta().equals(bem.getPlaqueta())) {
-                bensSelecionados.remove(b);
-            }
-        }
-
         // Deleta o Bem do Banco de Dados
-//        bemDAO.Deletar(bem);
-//
-//        // Deleta as Fotos
-//        caminhoFoto1.delete();
-//        caminhoFoto2.delete();
+        bemDAO.Deletar(bem);
+
+        // Deleta as Fotos e a Pasta
+        caminhoFoto1 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_1.png");
+        caminhoFoto2 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_2.png");
+
+        // Verificar se a Foto 1 Existe
+        if (caminhoFoto1.exists()) {
+            caminhoFoto1.delete();
+        }
+
+        // Verificar se a Foto 2 Existe
+        if (caminhoFoto2.exists()) {
+            caminhoFoto2.delete();
+        }
+
+        new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta()).delete();
 
     }
 
     /**Metodo para Informa a quantidade de Bens Exportados para o Usuario*/
     public void exportados() {
 
-        alertDialog.dismiss();
-
-        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setIcon(R.drawable.ic_nav_exportacao_24dp);
         alertDialog.setTitle("Exportação de Bens");
+
+        Log.i("ControleLogte", "Total: " + bensSelecionados.size() + " - " + bensExportados.size() );
 
         if( bensSelecionados.size() == bensExportados.size() ) {
             alertDialog.setMessage("Total de Itens Exportados " + String.valueOf(bensExportados.size()) + " !");
@@ -405,65 +424,8 @@ public class ExportacaoBem extends AppCompatActivity {
             }
         });
 
-        android.support.v7.app.AlertDialog alert = alertDialog.create();
+        AlertDialog alert = alertDialog.create();
         alert.show();
-    }
-
-    public void teste(Bem b) {
-
-        resolvePatrimonio.enviarBensteste(b)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Bem>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Bem bem) {
-
-
-                    }
-                });
-
-//        resolvePatrimonio.enviarBensTeste("99")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<Bem>>() {
-//
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.i("TesteObservador","onCompleted");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.i("TesteObservador",e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Bem> bens ) {
-//
-//                        List<Bem> lb = new ArrayList<>();
-//
-//                        lb = bens;
-//
-//                        for(Bem b:lb){
-//
-//                            Log.i("TesteObservador","plaqueta: " + b.getPlaqueta());
-//
-//                        }
-//
-//                        Log.i("TesteObservador","onNext");
-//
-//                    }
-//                });
 
     }
 
