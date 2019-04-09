@@ -25,6 +25,8 @@
     <string name="Aviso_8">Não é possível carregar Tipo do Tombo: </string>
     <string name="Aviso_9">Não é possível carregar Estado Conservação: </string>
 
+    <string name="Aviso_Retrofit1">Não e Possivel Conectar ao Servidor!</string>
+
     <string name="Nav1">Inicio</string>
     <string name="Nav2">Consulta</string>
     <string name="Nav3">Tombamento</string>
@@ -58,9 +60,30 @@
     <string name="Mensagem5">Gostaria de continua cadastrando?</string>
     <string name="Mensagem6">Plaqueta não encontrada</string>
 
+    <string name="Mensagem8">Exportação de Bens</string>
+    <string name="Mensagem9">Total de Itens Exportados </string>
+    <string name="Mensagem10">Falha ao Enviar todos os Itens !</string>
+    <string name="Mensagem11">Preparando Exportação</string>
+    <string name="Mensagem12">Escanei uma plaqueta</string>
+    <string name="Mensagem13">Não Possui Bens Cadastrados</string>
+
     <string name="Alerta1">Permissões Necessárias</string>
     <string name="Alerta2">Excluir</string>
     <string name="Alerta3">Carregando</string>
     <string name="Alerta4">Carregando Bens....</string>
+    <string name="Alerta5">Carregando Bens....</string>
+
+    <string name="Erro_Cadastro1">Preencha todos os campos!</string>
+    <string name="Erro_Cadastro2">Informe nº da Plaqueta</string>
+    <string name="Erro_Cadastro3">Informe uma Especificação</string>
+    <string name="Erro_Cadastro4">Informe um Valor</string>
+    <string name="Erro_Cadastro5">Informe uma Observação</string>
+    <string name="Erro_Cadastro6">Necessário Tira a Foto 1 e Foto 2</string>
+    <string name="Erro_Cadastro7">Necessário Tira a Foto 1</string>
+    <string name="Erro_Cadastro8">Necessário Tira a Foto 2</string>
+    <string name="Erro_Cadastro9">Preencha Todos os Campos!</string>
+
+    <string name="Erro_Dialog_Exporta1">Nenhum Item Selecionado !</string>
+    <string name="Erro_Dialog_Exporta2">Necessario Permissão para Exportar!</string>
 
 </resources>

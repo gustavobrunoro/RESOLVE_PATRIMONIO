@@ -279,7 +279,7 @@ public class CadastroBem extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.Alerta1);
-                builder.setMessage(R.string.Permissao1);
+                builder.setMessage( getString( R.string.Permissao1 ) );
 
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -376,7 +376,7 @@ public class CadastroBem extends AppCompatActivity {
         for (Secretaria s : Secretarias) {
 
             if (secretariasTemp.isEmpty()) {
-                secretariasTemp.add( "Secretarias" );
+                secretariasTemp.add( getString( R.string.Titulo4 ) );
             }
 
             secretariasTemp.add(String.valueOf(s.getSecretariaID()) + " - " + String.valueOf(s.getDescricao()).toUpperCase());
@@ -467,7 +467,7 @@ public class CadastroBem extends AppCompatActivity {
         CentroCustos = centroCustoDAO.Lista(bem);
 
         if (centroCustoTemp.isEmpty()) {
-            centroCustoTemp.add( "Centro Custos/Departamentos" );
+            centroCustoTemp.add( getString( R.string.Titulo5 ) );
         }
 
         for (CentroCusto cc : CentroCustos) {
@@ -554,7 +554,7 @@ public class CadastroBem extends AppCompatActivity {
         Localizacoes = localizacaoDAO.Lista(bem);
 
         if (localizacaoTemp.isEmpty()) {
-            localizacaoTemp.add( "Localização" );
+            localizacaoTemp.add( getString( R.string.Titulo6 ) );
         }
 
         for (Localizacao lt : Localizacoes) {
@@ -648,7 +648,7 @@ public class CadastroBem extends AppCompatActivity {
         Responsaveis = responsavelDAO.Lista(bem);
 
         if (responsavelTemp.isEmpty()) {
-            responsavelTemp.add( "Responsavel" );
+            responsavelTemp.add( getString( R.string.Titulo7 ) );
         }
 
         for (Responsavel r : Responsaveis) {
@@ -729,7 +729,7 @@ public class CadastroBem extends AppCompatActivity {
         Itens = itemDAO.Lista(bem);
 
         if (itemTemp.isEmpty()) {
-            itemTemp.add( "Item" );
+            itemTemp.add( getString( R.string.Titulo10 ) );
         }
 
         for (Item r : Itens) {
@@ -810,7 +810,7 @@ public class CadastroBem extends AppCompatActivity {
         Fabricantes = fabricanteDAO.Lista(bem);
 
         if (fabricanteTemp.isEmpty()) {
-            fabricanteTemp.add( "Fabricante" );
+            fabricanteTemp.add( getString( R.string.Titulo11 ) );
         }
 
         for (Fabricante r : Fabricantes) {
@@ -891,7 +891,7 @@ public class CadastroBem extends AppCompatActivity {
         TipoTombos = tipoTomboDAO.Lista();
 
         if (tipotomboTemp.isEmpty()) {
-            tipotomboTemp.add( "Tipo Tombo" );
+            tipotomboTemp.add( getString( R.string.Titulo12 ) );
         }
 
         for (TipoTombo tb : TipoTombos) {
@@ -972,7 +972,7 @@ public class CadastroBem extends AppCompatActivity {
         EstadoConversacoes = estadoConsevacaoDAO.Lista();
 
         if (estadoConservacaoTemp.isEmpty()) {
-            estadoConservacaoTemp.add( "Estado de Conservação" );
+            estadoConservacaoTemp.add( getString( R.string.Titulo13 ) );
         }
 
         for (EstadoConservacao ec : EstadoConversacoes) {
@@ -1068,7 +1068,7 @@ public class CadastroBem extends AppCompatActivity {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 alertDialog.setTitle(R.string.Titulo3);
-                alertDialog.setMessage( R.string.Mensagem3 );
+                alertDialog.setMessage( getString( R.string.Mensagem3 ) );
                 alertDialog.setCancelable(false);
                 alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
@@ -1132,15 +1132,15 @@ public class CadastroBem extends AppCompatActivity {
 
             if(Imagem1 == null || Imagem2 == null) {
                 if (Imagem1 == null && Imagem2 == null) {
-                    Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 1 e Foto 2" , Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.fabSalvar), getString( R.string.Erro_Cadastro6 ), Snackbar.LENGTH_LONG).show();
                 }else {
                     if (Imagem1 == null) {
-                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 1" , Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.fabSalvar), getString( R.string.Erro_Cadastro7 ) , Snackbar.LENGTH_LONG).show();
                     }else
-                        Snackbar.make(findViewById(R.id.fabSalvar), "Necessário Tira a Foto 2" , Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(findViewById(R.id.fabSalvar), getString( R.string.Erro_Cadastro8 ) , Snackbar.LENGTH_LONG).show();
                 }
             }else {
-                Snackbar.make(findViewById(R.id.fabSalvar), "Preencha Todos os Campos!" , Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.fabSalvar), getString( R.string.Erro_Cadastro9 ) , Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -1155,9 +1155,9 @@ public class CadastroBem extends AppCompatActivity {
         if ((validaPlaqueta(Plaqueta.getText().toString())) || (Plaqueta.getText().toString().isEmpty())) {
 
             if (validaPlaqueta(Plaqueta.getText().toString())) {
-                Plaqueta.setError( "Preencha todos os campos!" );
+                Plaqueta.setError( getString( R.string.Erro_Cadastro1 ) );
             } else {
-                Plaqueta.setError( "Informe nº da Plaqueta" );
+                Plaqueta.setError( getString( R.string.Erro_Cadastro2 ) );
             }
             controle = 1;
         }
@@ -1193,7 +1193,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Especificacao.getText().toString().isEmpty()) {
-            Especificacao.setError("Informe uma Especificação");
+            Especificacao.setError( getString( R.string.Erro_Cadastro3 ) );
             controle = 1;
         }
 
@@ -1203,7 +1203,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Valor.getText().toString().isEmpty() || String.valueOf(Valor.getRawValue()).equals("0") ) {
-            Valor.setError( "Informe um Valor" );
+            Valor.setError( getString( R.string.Erro_Cadastro4 ) );
             controle = 1;
         }
 
@@ -1218,7 +1218,7 @@ public class CadastroBem extends AppCompatActivity {
         }
 
         if (Observacao.getText().toString().isEmpty()) {
-            Observacao.setError( "Informe uma Observação" );
+            Observacao.setError( getString( R.string.Erro_Cadastro5 ) );
             controle = 1;
         }
 

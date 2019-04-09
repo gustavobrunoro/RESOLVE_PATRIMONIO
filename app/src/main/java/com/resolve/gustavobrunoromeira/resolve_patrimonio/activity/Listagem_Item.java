@@ -324,7 +324,7 @@ public class Listagem_Item extends AppCompatActivity {
 
         IntentIntegrator leitor = new IntentIntegrator(this);
         leitor.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        leitor.setPrompt( "Escanei uma plaqueta" );
+        leitor.setPrompt( getString( R.string.Mensagem12 ) );
         leitor.setCameraId(0);
         leitor.initiateScan();
 

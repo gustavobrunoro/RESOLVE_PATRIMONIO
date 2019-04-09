@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_Exportacao) {
 
             if ( adapter.totalBemCadastrados() == 0 ){
-                Toast.makeText(getApplicationContext(),"Não Possui Bens Cadastrados",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),R.string.Mensagem13,Toast.LENGTH_LONG).show();
             }else {
                 startActivity(new Intent(getApplicationContext(),ExportacaoBem.class));
             }
@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void alertaPermissao(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões");
+        builder.setTitle(R.string.Alerta5);
         builder.setMessage(R.string.Permissao1);
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -528,9 +528,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setAction("Sim", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         finishAffinity();
-
                     }
                 }).show();
     }

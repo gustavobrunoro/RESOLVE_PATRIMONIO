@@ -92,6 +92,7 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
                 return false;
             }
         });
+
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
@@ -100,7 +101,6 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
 
             @Override
             public void onSearchViewClosed() {
-
                 onRestart();
             }
         });
@@ -147,8 +147,8 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
 
         final ProgressDialog progressDialog = new ProgressDialog(Listagem_Item_Exportados.this);
         progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando ");
-        progressDialog.setMessage("Carregando Bens....");
+        progressDialog.setTitle( getString( R.string.Alerta3 ) );
+        progressDialog.setMessage( getString( R.string.Alerta4 ) );
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         progressDialog.show();
@@ -204,7 +204,7 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
                                     , ""
                                     , ""
                                     ,  plaqueta )
-                    .enqueue(new Callback<List<Bem>>() {
+                        .enqueue(new Callback<List<Bem>>() {
                         @Override
                         public void onResponse(Call<List<Bem>> call, Response<List<Bem>> response) {
 

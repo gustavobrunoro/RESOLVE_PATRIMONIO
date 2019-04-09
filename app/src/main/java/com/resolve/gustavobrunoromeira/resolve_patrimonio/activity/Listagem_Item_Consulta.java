@@ -55,11 +55,9 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
         toolbar.setTitle(R.string.Nav2);
         setSupportActionBar( toolbar );
 
-
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
         bem = (Bem) getIntent().getSerializableExtra("Bem");
-
         iniciaViews();
 
         recyclerView.addOnItemTouchListener( new RecyclerItemClickListener( getApplicationContext(),  recyclerView,  new RecyclerItemClickListener.OnItemClickListener() {
@@ -115,7 +113,7 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(Listagem_Item_Consulta.this);
         progressDialog.setMax(100);
         progressDialog.setTitle( R.string.Alerta3 );
-        progressDialog.setMessage( String.valueOf( R.string.Alerta4 ));
+        progressDialog.setMessage( getString( R.string.Alerta4 ) );
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         progressDialog.show();

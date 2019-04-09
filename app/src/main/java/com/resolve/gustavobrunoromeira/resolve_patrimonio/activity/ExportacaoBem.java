@@ -231,7 +231,7 @@ public class ExportacaoBem extends AppCompatActivity {
 
                         } else {
 
-                            alertDialog.setMessage("Nenhum Item Selecionado !");
+                            alertDialog.setMessage( getString( R.string.Erro_Dialog_Exporta1 ) );
                             alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -244,7 +244,7 @@ public class ExportacaoBem extends AppCompatActivity {
 
                     }else {
 
-                        alertDialog.setMessage("Necessario Permissão para Exportar!");
+                        alertDialog.setMessage( getString( R.string.Erro_Dialog_Exporta2 ) );
                         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -256,7 +256,7 @@ public class ExportacaoBem extends AppCompatActivity {
                     }
                 }else{
 
-                    alertDialog.setMessage("Não e Possivel Conectar ao Servidor!");
+                    alertDialog.setMessage( getString( R.string.Aviso_Retrofit1 ) );
                     alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -271,7 +271,7 @@ public class ExportacaoBem extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<PermissaoExportar>> call, Throwable t) {
 
-                alertDialog.setMessage("Não e Possivel Conectar ao Servidor!");
+                alertDialog.setMessage( getString( R.string.Aviso_Retrofit1 ) );
                 alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -290,8 +290,8 @@ public class ExportacaoBem extends AppCompatActivity {
 
         alertDialog = new SpotsDialog.Builder()
                 .setContext(this)
-                .setMessage("Preparando Exportação")
-                //.setCancelable(false)
+                .setMessage( getString( R.string.Mensagem11 ) )
+                .setCancelable(false)
                 .build();
 
         alertDialog.show();
@@ -407,14 +407,12 @@ public class ExportacaoBem extends AppCompatActivity {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setIcon(R.drawable.ic_nav_exportacao_24dp);
-        alertDialog.setTitle("Exportação de Bens");
-
-        Log.i("ControleLogte", "Total: " + bensSelecionados.size() + " - " + bensExportados.size() );
+        alertDialog.setTitle( getString( R.string.Mensagem8 ) );
 
         if( bensSelecionados.size() == bensExportados.size() ) {
-            alertDialog.setMessage("Total de Itens Exportados " + String.valueOf(bensExportados.size()) + " !");
+            alertDialog.setMessage( getString( R.string.Mensagem9 ) + String.valueOf(bensExportados.size()) + " !");
         }else  {
-            alertDialog.setMessage("Falha ao Enviar todos os Itens !");
+            alertDialog.setMessage( getString( R.string.Mensagem10 ) );
         }
 
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
