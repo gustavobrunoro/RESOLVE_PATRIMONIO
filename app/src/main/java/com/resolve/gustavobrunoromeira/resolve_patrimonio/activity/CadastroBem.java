@@ -35,6 +35,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.Localizaca
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.ResponsavelDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.SecretariaDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.TipoTomboDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.Permissao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCusto;
@@ -45,6 +46,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Localizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Responsavel;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.TipoTombo;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -64,6 +66,8 @@ public class CadastroBem extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+
+    private ConfiguracaoSharedPreferences preferences ;
 
     private int clienteIDFK = 99;
     private Bem bem;
@@ -108,6 +112,8 @@ public class CadastroBem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cadastro_bem);
+
+        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
 
         // Vslida Permissão
         Permissao.ValidaPermissao(permissoes, this, 1);

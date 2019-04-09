@@ -98,6 +98,9 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                             String idUsuario = Base64Custom.CodificarBase64(usuario.getEmail());
                             usuario.setIdUsuario(idUsuario);
 
+                            // Seta o Codigo do Usuario
+                            usuario.setClienteIDFK( 99 );
+
                             //Salva Usuario na Web
                             usuario.SalvarUsuarioWeb(idUsuario);
 

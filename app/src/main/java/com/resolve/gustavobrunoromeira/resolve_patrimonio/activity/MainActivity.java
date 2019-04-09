@@ -394,9 +394,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void recuperaDadosPessoais(){
 
         usuario =  preferences.recupraDadosPessoais();
-        NomeUsuario.setText(usuario.getNome());
+        //NomeUsuario.setText(usuario.getNome());
+        NomeUsuario.setText("Gustavo Brunoro");
 
-        caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
+        caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + "GUSTAVO" + ".png");
 
         // Verificar se a Foto 1 Existe
         if (caminhoFoto.exists()) {
@@ -486,8 +487,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
-            File endereco = Environment.getExternalStorageDirectory().getAbsoluteFile();
-            File dir = new File(endereco, "Resolve Patrimonio" + File.separator + "Fotos");
+            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/");
 
             if (!dir.exists())
                 dir.mkdirs();
@@ -502,7 +502,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Imagem.compress(Bitmap.CompressFormat.PNG, 100, baos1);
 
             bytes = baos1.toByteArray();
-            caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
+            //caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
+            caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + "GUSTAVO" + ".png");
 
             if (caminhoFoto.exists()){
                 caminhoFoto.delete();

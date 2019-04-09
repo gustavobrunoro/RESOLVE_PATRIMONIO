@@ -10,10 +10,10 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.Confi
 
 public class Usuario {
 
-    private String IdUsuario, Nome, Email, Senha, ClienteIDFK;
+    private String IdUsuario, Nome, Email, Senha ;
+    private int ClienteIDFK;
 
     public Usuario() {
-
     }
 
     public String getIdUsuario() {
@@ -50,11 +50,11 @@ public class Usuario {
     }
 
     @Exclude
-    public String getClienteIDFK() {
+    public int getClienteIDFK() {
         return ClienteIDFK;
     }
 
-    public void setClienteIDFK(String clienteIDFK) {
+    public void setClienteIDFK(int clienteIDFK) {
         ClienteIDFK = clienteIDFK;
     }
 
@@ -71,15 +71,11 @@ public class Usuario {
         UsuarioDAO usuarioDAO = new UsuarioDAO(context);
 
         if (usuarioDAO.Salvar(this)){
-
             Log.i("Info_Cadastro","Cadastro Atualizado Nome " + getNome() + " Email:" + getEmail());
-
         }else  {
-
             usuarioDAO.Atualizar(this);
             Log.i("Info_Cadastro","Cadastro Salvo Nome " + getNome() + " Email:" + getEmail());
         }
-
     }
 
 }

@@ -56,7 +56,7 @@ public class UsuarioDAO implements IUsuario {
 
         try{
 
-            String[] args = { String.valueOf( clienteIDFK ), String.valueOf(usuario.getEmail())};
+            String[] args = { String.valueOf( clienteIDFK ), String.valueOf( usuario.getEmail() )};
 
             Escreve.update(ConfiguracaoSQLite.TABELA_USUARIO, Valor ,"ClienteIDFK = ? AND Email=?" , args);
 
@@ -91,7 +91,7 @@ public class UsuarioDAO implements IUsuario {
 
         String[] args = { String.valueOf( clienteIDFK )};
 
-        String sql = "SELECT * FROM " + ConfiguracaoSQLite.TABELA_USUARIO + " ;";
+        String sql = "SELECT * FROM " + ConfiguracaoSQLite.TABELA_USUARIO;
         Cursor cursor = Ler.rawQuery(sql,null);
 
         while (cursor.moveToNext()){
