@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,42 +11,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterSecretaria;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.SecretariaDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterCentroCusto;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RecyclerItemClickListener;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCusto;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecretariaActivity extends AppCompatActivity {
+public class CentroCustoActivity extends AppCompatActivity {
 
-    private List<Secretaria> secretarias = new ArrayList<>();
-    private Secretaria secretaria = new Secretaria();
+    private List<CentroCusto> centroCustos = new ArrayList<>();
+    private CentroCusto centroCusto = new CentroCusto();
 
     Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
-    private AdapterSecretaria adapter;
+    private AdapterCentroCusto adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_secretaria);
+        setContentView(R.layout.activity_centro_custo);
 
-        recyclerView = findViewById(R.id.recycle_SecretariaID);
+        recyclerView = findViewById(R.id.recycle_CentroCustoID);
         toolbar      = findViewById(R.id.toolbar);
         searchView   = findViewById(R.id.search_view);
 
-        toolbar.setTitle(R.string.Titulo4);
+        toolbar.setTitle(R.string.Titulo5);
         setSupportActionBar(toolbar);
 
-        recuperaSecretarias();
+        recuperaCentroCustos();
 
         //Configuração do Adpter
-        adapter = new AdapterSecretaria(secretarias,this);
+        adapter = new AdapterCentroCusto(centroCustos, this);
 
         //Configurando o Recycle View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -54,7 +55,7 @@ public class SecretariaActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        recyclerView.addOnItemTouchListener( new RecyclerItemClickListener( getApplicationContext(),  recyclerView,  new RecyclerItemClickListener.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener( new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
 
@@ -70,7 +71,7 @@ public class SecretariaActivity extends AppCompatActivity {
 
             }
 
-        } ));
+        }));
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -81,7 +82,7 @@ public class SecretariaActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                pesquisaSecretaria(newText);
+                pesquisaCentroCusto(newText);
                 return true;
             }
         });
@@ -94,7 +95,7 @@ public class SecretariaActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
 
-                recuperaSecretarias();
+                recuperaCentroCustos();
                 onRestart();
             }
         });
@@ -105,9 +106,9 @@ public class SecretariaActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        recuperaSecretarias();
+        recuperaCentroCustos();
 
-        adapter = new AdapterSecretaria(secretarias,this);
+        adapter = new AdapterCentroCusto(centroCustos,this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
@@ -117,41 +118,45 @@ public class SecretariaActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
 
         MenuItem menuItem = menu.findItem(R.id.menu_search);
 
         searchView.setMenuItem(menuItem);
 
-        return  true;
+        return true;
 
     }
 
-    /**Metodo Reponsavel por Recupera Secretarias */
-    private void recuperaSecretarias(){
+    /**Metodo Reponsavel por Recupera Centro de Custo */
+    private void recuperaCentroCustos() {
 
-        SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
+        Bem bem = new Bem();
 
-        if (secretarias.isEmpty()){
-            secretarias = secretariaDAO.Lista();
-        }else  {
-            secretarias.clear();
-            secretarias = secretariaDAO.Lista();
+        CentroCustoDAO centroCustoDAO = new CentroCustoDAO(getApplicationContext());
+
+        if (centroCustos.isEmpty()) {
+            centroCustos = centroCustoDAO.Lista(bem);
+        } else {
+            centroCustos.clear();
+            centroCustos = centroCustoDAO.Lista(bem);
             adapter.notifyDataSetChanged();
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Secretaria */
-    public void pesquisaSecretaria(String Secretaria){
+    /**Metodo Reponsavel por Pesquisa Centro de Custo */
+    public void pesquisaCentroCusto(String cc){
 
-        SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
+        Bem bem = new Bem();
 
-        if (secretarias.isEmpty()){
-            secretarias = secretariaDAO.Lista();
+        CentroCustoDAO centroCustoDAO = new CentroCustoDAO(getApplicationContext());
+
+        if (centroCustos.isEmpty()){
+            centroCustos = centroCustoDAO.Lista(bem);
         }else  {
-            secretarias.clear();
-            secretarias = secretariaDAO.Pesquisa(Secretaria);
-            adapter = new AdapterSecretaria(secretarias,this);
+            centroCustos.clear();
+            centroCustos = centroCustoDAO.Pesquisa(cc);
+            adapter = new AdapterCentroCusto(centroCustos,this);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
         }

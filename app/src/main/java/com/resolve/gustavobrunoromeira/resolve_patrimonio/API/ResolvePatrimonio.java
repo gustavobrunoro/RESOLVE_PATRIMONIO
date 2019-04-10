@@ -36,7 +36,7 @@ public interface ResolvePatrimonio {
                                 @Query("Plaqueta") String Plaqueta);
 
     @GET("Bem/TotalBem")
-    Call<String> totalBem(@Query("ClienteIDFK") String ClienteIDFK);
+    Call<Integer> totalBem(@Query("ClienteIDFK") int ClienteIDFK);
 
     @GET("Secretaria")
     Call<List<Secretaria>> recuperaSecretaria(@Query("ClienteIDFK") String ClienteIDFK,

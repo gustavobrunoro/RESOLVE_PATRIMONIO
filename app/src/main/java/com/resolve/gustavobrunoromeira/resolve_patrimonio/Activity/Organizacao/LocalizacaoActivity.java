@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,43 +11,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterResponsavel;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.ResponsavelDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterLocalizacao;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.LocalizacaoDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RecyclerItemClickListener;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Responsavel;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Localizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponsavelActivity extends AppCompatActivity {
+public class LocalizacaoActivity extends AppCompatActivity {
 
-    private List<Responsavel> responsaveis = new ArrayList<>();
-    private Responsavel responsavel = new Responsavel();
+    private List<Localizacao> localizacoes = new ArrayList<>();
+    private Localizacao localizacao = new Localizacao();
 
     Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
-    private AdapterResponsavel adapter;
+    private AdapterLocalizacao adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_responsavel);
+        setContentView(R.layout.activity_localizacao);
 
-        recyclerView = findViewById(R.id.recycle_ResponsavelID);
+        recyclerView = findViewById(R.id.recycle_LocalizacaoID);
         toolbar      = findViewById(R.id.toolbar);
         searchView   = findViewById(R.id.search_view);
 
-        toolbar.setTitle(R.string.Titulo7);
+        toolbar.setTitle(R.string.Titulo6);
         setSupportActionBar(toolbar);
 
-        recuperaResponsavel();
+        recuperaLocalizacoes();
 
         //Configuração do Adpter
-        adapter = new AdapterResponsavel(responsaveis, this);
+        adapter = new AdapterLocalizacao(localizacoes, this);
 
         //Configurando o Recycle View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -58,7 +58,6 @@ public class ResponsavelActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
             }
 
             @Override
@@ -68,7 +67,6 @@ public class ResponsavelActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
             }
 
         }));
@@ -82,7 +80,7 @@ public class ResponsavelActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                pesquisaResponsavel(newText);
+                pesquisaLocalizacao(newText);
                 return true;
             }
         });
@@ -95,7 +93,7 @@ public class ResponsavelActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
 
-                recuperaResponsavel();
+                recuperaLocalizacoes();
                 onRestart();
             }
         });
@@ -106,9 +104,9 @@ public class ResponsavelActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        recuperaResponsavel();
+        recuperaLocalizacoes();
 
-        adapter = new AdapterResponsavel(responsaveis,this);
+        adapter = new AdapterLocalizacao(localizacoes,this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
@@ -128,35 +126,35 @@ public class ResponsavelActivity extends AppCompatActivity {
 
     }
 
-    /**Metodo Reponsavel por Recupera Responsavel */
-    private void recuperaResponsavel() {
+    /**Metodo Reponsavel por Recupera Localizações */
+    private void recuperaLocalizacoes() {
 
         Bem bem = new Bem();
 
-        ResponsavelDAO responsavelDAO = new ResponsavelDAO(getApplicationContext());
+        LocalizacaoDAO localizacaoDAO = new LocalizacaoDAO(getApplicationContext());
 
-        if (responsaveis.isEmpty()) {
-            responsaveis = responsavelDAO.Lista(bem);
+        if (localizacoes.isEmpty()) {
+            localizacoes = localizacaoDAO.Lista(bem);
         } else {
-            responsaveis.clear();
-            responsaveis = responsavelDAO.Lista(bem);
+            localizacoes.clear();
+            localizacoes = localizacaoDAO.Lista(bem);
             adapter.notifyDataSetChanged();
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Responsavel */
-    public void pesquisaResponsavel(String reponsavel){
+    /**Metodo Reponsavel por Pesquisa Localização */
+    public void pesquisaLocalizacao(String localizacao){
 
         Bem bem = new Bem();
 
-        ResponsavelDAO responsavelDAO = new ResponsavelDAO(getApplicationContext());
+        LocalizacaoDAO localizacaoDAO = new LocalizacaoDAO(getApplicationContext());
 
-        if (responsaveis.isEmpty()){
-            responsaveis = responsavelDAO.Lista(bem);
+        if (localizacoes.isEmpty()){
+            localizacoes = localizacaoDAO.Lista(bem);
         }else  {
-            responsaveis.clear();
-            responsaveis = responsavelDAO.Pesquisa(reponsavel);
-            adapter = new AdapterResponsavel(responsaveis,this);
+            localizacoes.clear();
+            localizacoes = localizacaoDAO.Pesquisa(localizacao);
+            adapter = new AdapterLocalizacao(localizacoes,this);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
         }

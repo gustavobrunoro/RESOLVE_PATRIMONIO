@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,7 +16,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,7 +45,6 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Localizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Responsavel;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.TipoTombo;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -105,7 +103,7 @@ public class CadastroBem extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private int edicaoBem = 0;
-    private String caminhoFotoPrincipal = "/Resolve Patrimonio/" + clienteIDFK + "/Fotos/";
+    private String caminhoFotoPrincipal = "/Resolve Patrimonio/" + String.valueOf( clienteIDFK ) + "/Fotos/";
     int controle;
 
     @Override

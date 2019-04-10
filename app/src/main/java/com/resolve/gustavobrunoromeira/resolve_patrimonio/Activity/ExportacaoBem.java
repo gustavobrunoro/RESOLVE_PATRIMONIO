@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,15 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterBem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterExportacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
@@ -33,18 +30,12 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ExportacaoBem extends AppCompatActivity {
 

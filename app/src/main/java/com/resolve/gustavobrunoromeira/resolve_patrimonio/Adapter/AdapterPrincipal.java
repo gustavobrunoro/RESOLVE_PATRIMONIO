@@ -1,6 +1,7 @@
 package com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,10 @@ import java.util.List;
 public class AdapterPrincipal extends RecyclerView.Adapter<AdapterPrincipal.MyviewHolder> {
 
     private List<Bem> bemsCadastrados;
-    private String bemsExportados;
+    private Integer bemsExportados;
     private BemDAO bemDAO;
 
-    public AdapterPrincipal(Context context, String TotalBens) {
+    public AdapterPrincipal(Context context, Integer TotalBens) {
         bemDAO = new BemDAO(context);
         bemsCadastrados = bemDAO.Lista(0);
         bemsExportados = TotalBens;
@@ -52,7 +53,7 @@ public class AdapterPrincipal extends RecyclerView.Adapter<AdapterPrincipal.Myvi
 
         }else{
 
-            if(bemsExportados == null){
+            if( bemsExportados == 0 ){
                 total = "0";
             }else {
                 total = String.valueOf( bemsExportados );

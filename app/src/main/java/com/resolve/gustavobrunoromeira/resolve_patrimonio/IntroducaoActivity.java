@@ -1,16 +1,18 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.introducao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.MainActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.MainActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.introducao.CadastroUsuarioActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.introducao.LoginActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 
-public class introducaoactivity extends IntroActivity {
+public class IntroducaoActivity extends IntroActivity {
 
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAutenticao();
 
@@ -57,7 +59,7 @@ public class introducaoactivity extends IntroActivity {
     protected void autenticacao() {
 
         if (firebaseAuth.getCurrentUser() != null ){
-            startActivity(new Intent(introducaoactivity.this, MainActivity.class));
+            startActivity(new Intent(IntroducaoActivity.this, MainActivity.class));
         }
     }
 

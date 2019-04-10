@@ -21,64 +21,64 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.introducao.introducaoactivity"
+        <activity android:name=".IntroducaoActivity"
             android:theme="@style/Theme.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activity.introducao.CadastroUsuarioActivity"
+            android:name=".Activity.introducao.CadastroUsuarioActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.introducao.LoginActivity" />
+            android:name=".Activity.introducao.LoginActivity" />
         <activity
-            android:name=".activity.Listagem_Item"
+            android:name=".Activity.Listagem_Item"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.CadastroBem"
+            android:name=".Activity.CadastroBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.SobreActivity"
+            android:name=".Activity.SobreActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Organizacao.SecretariaActivity"
+            android:name=".Activity.Organizacao.SecretariaActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Organizacao.CentroCustoActivity"
+            android:name=".Activity.Organizacao.CentroCustoActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Organizacao.LocalizacaoActivity"
+            android:name=".Activity.Organizacao.LocalizacaoActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Organizacao.ResponsavelActivity"
+            android:name=".Activity.Organizacao.ResponsavelActivity"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Listagem_Item_Exportados"
+            android:name=".Activity.Listagem_Item_Exportados"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.ConsultaBem"
+            android:name=".Activity.ConsultaBem"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.Listagem_Item_Consulta"
+            android:name=".Activity.Listagem_Item_Consulta"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.ExportacaoBem"
+            android:name=".Activity.ExportacaoBem"
             android:theme="@style/ListagemBem"
             android:screenOrientation="portrait"/>
 

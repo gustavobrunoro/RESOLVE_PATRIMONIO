@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

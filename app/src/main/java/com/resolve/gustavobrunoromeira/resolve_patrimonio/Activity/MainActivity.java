@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.activity;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -33,10 +33,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.CentroCustoActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.LocalizacaoActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.ResponsavelActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.activity.Organizacao.SecretariaActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.CentroCustoActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.LocalizacaoActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.ResponsavelActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.SecretariaActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterPrincipal;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MaterialSearchView searchView;
     private android.app.AlertDialog alertDialog;
 
-    private String Total;
+    private int Total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
-                        resolvePatrimonio.totalBem(ClienteIDFK).enqueue(new Callback<String>() {
+                        resolvePatrimonio.totalBem(  preferences.ClienteIDFK() ).enqueue(new Callback<Integer>() {
                             @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
 
                                 if(response.isSuccessful()){
                                     startActivity(new Intent(getApplicationContext(), Listagem_Item_Exportados.class));
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
 
                             @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                            public void onFailure(Call<Integer> call, Throwable t) {
                                 Toast.makeText(MainActivity.this, "Não é Possivel Conectar no Servidor !", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -394,10 +394,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void recuperaDadosPessoais(){
 
         usuario =  preferences.recupraDadosPessoais();
-        //NomeUsuario.setText(usuario.getNome());
-        NomeUsuario.setText("Gustavo Brunoro");
+        NomeUsuario.setText( usuario.getNome() );
+        //NomeUsuario.setText("Gustavo Brunoro");
 
-        caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + "GUSTAVO" + ".png");
+        caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
 
         // Verificar se a Foto 1 Existe
         if (caminhoFoto.exists()) {
@@ -435,20 +435,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         alertDialog = new SpotsDialog.Builder()
                 .setContext(this)
-                .setMessage("Exportando Dados")
+                .setMessage("Carregando Dados")
                 .setCancelable(false)
                 .build();
 
         alertDialog.show();
 
-        resolvePatrimonio.totalBem( ClienteIDFK )
-                    .enqueue(new Callback<String>() {
+        resolvePatrimonio.totalBem( preferences.ClienteIDFK() )
+                    .enqueue(new Callback<Integer>() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
 
                             if (response.isSuccessful()) {
 
-                                preferences.atualizaTotal(response.body());
+                                preferences.atualizaTotal( response.body() );
                                 Total = response.body();
 
                                 //Define Adapter
@@ -460,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                        public void onFailure(Call<Integer> call, Throwable t) {
                         }
 
                     });
@@ -502,8 +502,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Imagem.compress(Bitmap.CompressFormat.PNG, 100, baos1);
 
             bytes = baos1.toByteArray();
-            //caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
-            caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + "GUSTAVO" + ".png");
+            caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
 
             if (caminhoFoto.exists()){
                 caminhoFoto.delete();

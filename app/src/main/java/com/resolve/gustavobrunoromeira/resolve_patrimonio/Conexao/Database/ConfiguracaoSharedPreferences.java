@@ -25,18 +25,18 @@ public class ConfiguracaoSharedPreferences {
     }
 
     /**Metodos Responsavel Atualizar Total no SharedPreferences*/
-    public void atualizaTotal(String total){
+    public void atualizaTotal(int total){
 
-        editor.putString(TOTAL,total);
+        editor.putInt(TOTAL,total);
         editor.commit();
 
     }
 
     /**Metodos Responsavel Recupera Total no SharedPreferences
      @return  Total de Bem*/
-    public String recuperaTotal(){
+    public Integer recuperaTotal(){
 
-        return sharedPreferences.getString(TOTAL,"0");
+        return sharedPreferences.getInt(TOTAL,0);
 
     }
 
@@ -62,6 +62,17 @@ public class ConfiguracaoSharedPreferences {
 
         return usuario ;
 
+    }
+
+    public int ClienteIDFK (){
+
+        Usuario usuario = new Usuario();
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(DADOSPESSOAIS, "");
+        usuario = gson.fromJson(json, Usuario.class);
+
+        return usuario.getClienteIDFK() ;
     }
 
 }
