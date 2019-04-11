@@ -1,12 +1,10 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Introducao;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.MainActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.introducao.CadastroUsuarioActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.introducao.LoginActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
@@ -65,13 +63,11 @@ public class IntroducaoActivity extends IntroActivity {
 
     /**Metodo Reponsavel Cadastrar Usuario */
     public void btCadastra(View view){
-
         startActivity(new Intent(getApplicationContext(), CadastroUsuarioActivity.class));
     }
 
     /**Metodo Reponsavel por Efetuar Login do Usuario */
     public void btLogin(View view){
-
         startActivity(new Intent(this, LoginActivity.class));
     }
 

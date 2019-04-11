@@ -24,7 +24,7 @@ import rx.Observable;
 public interface ResolvePatrimonio {
 
     @GET("Bem")
-    Call<List<Bem>> recuperaBem(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Bem>> recuperaBem(@Query("ClienteIDFK") int ClienteIDFK,
                                 @Query("SecretariaIDFK") String SecretariaIDFK,
                                 @Query("CentroCustoIDFK") String CentroCustoIDFK,
                                 @Query("LocalizacaoIDFK") String LocalizacaoIDFK,
@@ -39,34 +39,34 @@ public interface ResolvePatrimonio {
     Call<Integer> totalBem(@Query("ClienteIDFK") int ClienteIDFK);
 
     @GET("Secretaria")
-    Call<List<Secretaria>> recuperaSecretaria(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Secretaria>> recuperaSecretaria(@Query("ClienteIDFK") int ClienteIDFK,
                                               @Query("SecretariaID") String SecretariaID);
 
     @GET("CentroCusto")
-    Call<List<CentroCusto>> recuperaCentroCusto(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<CentroCusto>> recuperaCentroCusto(@Query("ClienteIDFK") int ClienteIDFK,
                                                 @Query("SecretariaIDFK") String SecretariaIDFK,
                                                 @Query("CentroCustoID") String CentroCustoID);
 
     @GET("CentroCustoLocalResponsavel")
-    Call<List<CentroCustoLocalResponsavel>> recuperaCentroCustoLocalResponsavel(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<CentroCustoLocalResponsavel>> recuperaCentroCustoLocalResponsavel(@Query("ClienteIDFK") int ClienteIDFK,
                                                                                 @Query("CentroCustoIDFK") String CentroCustoIDFK,
                                                                                 @Query("LocalizacaoIDFK") String LocalizacaoIDFK);
 
 
     @GET("Localizacao")
-    Call<List<Localizacao>> recuperaLocalizacao(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Localizacao>> recuperaLocalizacao(@Query("ClienteIDFK") int ClienteIDFK,
                                                 @Query("LocalizacaoID") String LocalizacaoID);
 
     @GET("Responsavel")
-    Call<List<Responsavel>> recuperaResponsavel(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Responsavel>> recuperaResponsavel(@Query("ClienteIDFK") int ClienteIDFK,
                                                 @Query("ResponsavelID") String ResponsavelID);
 
     @GET("Item")
-    Call<List<Item>> recuperaItem(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Item>> recuperaItem(@Query("ClienteIDFK") int ClienteIDFK,
                                   @Query("ItemID") String ItemID);
 
     @GET("Fabricante")
-    Call<List<Fabricante>> recuperaFabricante(@Query("ClienteIDFK") String ClienteIDFK,
+    Call<List<Fabricante>> recuperaFabricante(@Query("ClienteIDFK") int ClienteIDFK,
                                               @Query("FabricanteID") String FabricanteID);
 
     @GET("TipoTombo")
@@ -76,16 +76,10 @@ public interface ResolvePatrimonio {
     Call<List<EstadoConservacao>> recuperaEstadoConservacao();
 
     @GET("Permissao")
-    Call<List<PermissaoExportar>> recuperaPermissao(@Query("ClienteIDFK") String ClienteIDFK);
+    Call<List<PermissaoExportar>> recuperaPermissao(@Query("ClienteIDFK") int ClienteIDFK);
 
     @POST("Bem")
     Call<Bem> enviarBens (@Body Bem bem);
-
-    @POST("Bem")
-    rx.Observable<Bem> enviarBensteste (@Body Bem bem);
-
-    //@GET("Bem/Teste")
-    //Observable<List<Bem>> enviarBensTeste (@Query("ClienteIDFK") String ClienteIDFK);
 
 }
 

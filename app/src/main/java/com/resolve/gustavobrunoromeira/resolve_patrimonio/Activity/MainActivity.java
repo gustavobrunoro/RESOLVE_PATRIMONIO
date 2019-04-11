@@ -70,11 +70,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Manifest.permission.CAMERA
     };
 
-    private String ClienteIDFK= "99";
-    private static final int Camera = 1;
+    // Variaveis de Modelos
+    private Usuario usuario = new Usuario();
+
+    // Variaveis de API e Conexao
+    private Retrofit retrofit;
+    private ResolvePatrimonio resolvePatrimonio;
+
+    // Listas de Controle
+
+    // Variaveis de Adapter
+    private AdapterPrincipal adapter;
+    private ConfiguracaoSharedPreferences preferences ;
+    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAutenticao();
+
+    // Variavel de Sistemas
     private Bitmap Imagem = null;
     private File caminhoFoto;
-    private Usuario usuario = new Usuario();
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -83,27 +95,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View headerView;
     private TextView NomeUsuario;
     private CircleImageView FotoUsuario;
-
-    private ConfiguracaoSharedPreferences preferences ;
-    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAutenticao();
     private RecyclerView recyclerView;
-    private AdapterPrincipal adapter;
-    private Retrofit retrofit;
+
     private MaterialSearchView searchView;
     private android.app.AlertDialog alertDialog;
 
+    // Variavel de Controle
     private int Total;
+    private static final int Camera = 1;
+    private int pasta=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
         retrofit = RetrofitConfig.getRetrofit();
-
-        // Vslida Permissão
-        Permissao.ValidaPermissao(permissoes, this, 1);
+        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
+        usuario = preferences.recupraDadosPessoais();
 
         toolbar           = findViewById(R.id.toolbar);
         fab               = findViewById(R.id.fab);
@@ -128,8 +138,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        atualizaContadores();
-        recuperaDadosPessoais();
+        // Vslida Permissão
+        if (Permissao.ValidaPermissao(permissoes, this, 1) ){
+            atualizaContadores();
+            recuperaDadosPessoais();
+        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -159,9 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }else {
 
-                        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-                        resolvePatrimonio.totalBem(  preferences.ClienteIDFK() ).enqueue(new Callback<Integer>() {
+                        resolvePatrimonio.totalBem(  usuario.getClienteIDFK() ).enqueue(new Callback<Integer>() {
                             @Override
                             public void onResponse(Call<Integer> call, Response<Integer> response) {
 
@@ -177,8 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Toast.makeText(MainActivity.this, "Não é Possivel Conectar no Servidor !", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
 
                     }
                 }
@@ -329,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // Solicita a permissão
                 alertaPermissao();
             }
+                        
         }
     }
 
@@ -377,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void alertaPermissao(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.Alerta5);
+        builder.setTitle(R.string.Alerta1);
         builder.setMessage(R.string.Permissao1);
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -393,21 +403,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**Metodo para Recupera os dados do Usuario (Nome, Foto)*/
     private void recuperaDadosPessoais(){
 
-        usuario =  preferences.recupraDadosPessoais();
         NomeUsuario.setText( usuario.getNome() );
-        //NomeUsuario.setText("Gustavo Brunoro");
-
         caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
 
         // Verificar se a Foto 1 Existe
-        if (caminhoFoto.exists()) {
+        if ( caminhoFoto.exists() ) {
 
             // Seta o Image View da Activity do com a Foto
             ImageView mImageView1 = PowerImageCompress.doArquivo(caminhoFoto)
                     .manterProporcao(true)
-                    .exibirEm(FotoUsuario);
+                    .exibirEm( FotoUsuario );
             // Atualiza a Imagem para se salva
-            Imagem = BitmapFactory.decodeFile(caminhoFoto.toString());
+            Imagem = BitmapFactory.decodeFile( String.valueOf( caminhoFoto ) );
         }
 
     }
@@ -430,8 +437,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /**Metodo para Carrega as Informações dos Bens Cadastrados das Base de dados*/
     public void carregaBemExportados(){
-
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
         alertDialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -465,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     });
 
-                alertDialog.dismiss();
+        alertDialog.dismiss();
     }
 
     /**
@@ -516,7 +521,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
 
         }
-
 
     }
 

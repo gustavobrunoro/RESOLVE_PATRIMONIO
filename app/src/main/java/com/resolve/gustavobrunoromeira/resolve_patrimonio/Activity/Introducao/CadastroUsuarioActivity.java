@@ -1,7 +1,6 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.introducao;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Introducao;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.MainActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoLocalReponsavelDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.EstadoConsevacaoDAO;
@@ -28,6 +20,8 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.Responsave
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.SecretariaDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.TipoTomboDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoFirebase;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.Base64Custom;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCusto;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCustoLocalResponsavel;
@@ -40,6 +34,14 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.TipoTombo;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.List;
 
@@ -48,93 +50,140 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends AppCompatActivity {
+public class CadastroUsuarioActivity extends AppCompatActivity {
 
-    private EditText Email,Senha;
-    private Button Entra;
+    // Variaveis de Modelos
     private Usuario usuario = new Usuario();
-    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticao();
     private static String ClienteID = "99";
 
+    // Variaveis de API e Conexao
     private Retrofit retrofit;
+    private ResolvePatrimonio resolvePatrimonio;
+    private ConfiguracaoSharedPreferences preferences;
+    private FirebaseAuth autenticacao;
+
+    // Listas de Controle
+
+    // Variaveis de Adapter
+
+    // Variavel de Sistemas
+    private EditText Nome,Email,Senha;
+    private Button Cadastra;
+
+    // Variavel de Controle
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro_login);
+        setContentView(R.layout.intro_cadastro_usuario);
 
-        Email = findViewById(R.id.Login_EmailID);
-        Senha = findViewById(R.id.Login_SenhaID);
-        Entra = findViewById(R.id.EntraID);
         retrofit = RetrofitConfig.getRetrofit();
+        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
 
-        Entra.setOnClickListener(new View.OnClickListener() {
+        Nome     = findViewById(R.id.Cadastra_NomeID);
+        Email    = findViewById(R.id.Cadastra_EmailID);
+        Senha    = findViewById(R.id.Cadastra_SenhaID);
+        Cadastra = findViewById(R.id.bt_Cadastrar);
+
+        Cadastra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (!Email.getText().toString().isEmpty()){
+                if(!Nome.getText().toString().isEmpty()){
 
-                    if(!Senha.getText().toString().isEmpty()){
+                    if (!Email.getText().toString().isEmpty()){
 
-                        usuario.setEmail(Email.getText().toString());
-                        usuario.setSenha(Senha.getText().toString());
+                        if (!Senha.getText().toString().isEmpty()){
 
-                        validaUsuario(usuario);
+                            usuario.setNome(Nome.getText().toString());
+                            usuario.setEmail(Email.getText().toString());
+                            usuario.setSenha(Senha.getText().toString());
 
-                    }else{
-                       Email.setError("Informe a Senha");
+                            // Chama Metodo para cadastro usuario
+                            CadastrarUsuario( usuario );
+
+                        }
+                        else{
+                            Senha.setError("Informe a Senha!");
+                        }
                     }
-                }else {
-                   Senha.setError("Informe o Email");
+                    else {
+                        Email.setError("Informe o Email!");
+                    }
+                }
+                else {
+                    Nome.setError("Informe o Nome!");
                 }
             }
         });
-
     }
 
-    /**Metodo Responsavel por Valida Usuarios*/
-    public void validaUsuario(final Usuario usuario){
+    /** Metodo Responsavel por Efetuar o Cadastro do Usuario
+     * @param Usuario
+     */
+    public void CadastrarUsuario(final Usuario usuario){
 
-        autenticacao.signInWithEmailAndPassword(usuario.getEmail(),usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticao();
 
-                if(task.isSuccessful()){
+        final UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder();
+        builder.setDisplayName(usuario.getNome());
 
-                   //getApplicationContext().deleteDatabase("DB_RESOLVE_PATRIMONIO");
+        autenticacao.createUserWithEmailAndPassword(usuario.getEmail(),usuario.getSenha())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
 
-                    //Carrega a Secretaria
-                    carregaSecretaria();
-                    //abrirPrincipal();
+                            String idUsuario = Base64Custom.CodificarBase64( usuario.getEmail() );
 
-                }else{
+                            usuario.setIdUsuario(idUsuario);
 
-                    String excessao;
+                            // Seta o Codigo do Usuario
+                            usuario.setClienteIDFK( 99 );
 
-                    try{
-                        throw task.getException();
-                    }catch (FirebaseAuthInvalidUserException e ){
-                        excessao="Email não Existe!";
-                    }catch (FirebaseAuthInvalidCredentialsException e ){
-                        excessao="Senha Informada Incorreta!";
-                    }catch (Exception e ){
-                        excessao="Erro ao Login usuario" + e.getMessage();
-                        e.printStackTrace();
+                            //Salva Usuario na Web
+                            usuario.SalvarUsuarioWeb( idUsuario );
+
+                            //Salva Usuario Local
+                            usuario.SalvarUsuarioLocal( getApplicationContext() );
+
+                            //Atualia o DisplayNamae
+                            autenticacao.getCurrentUser().updateProfile( builder.build() );
+
+                            // Salva no SharedPreference
+                            preferences.atualizaDadosPessoais( usuario );
+                            carregaSecretaria();
+
+                         // Verificar as Excessões que podem ocorre como email já cadastro, senha fraca, etc....
+                        }else{
+
+                            String excessao;
+
+                            try{
+                                throw task.getException();
+                            }catch (FirebaseAuthWeakPasswordException e ){
+                                excessao="Digite uma senha mais forte!";
+                            }catch (FirebaseAuthInvalidCredentialsException e ){
+                                excessao="Email inválidoe";
+                            }catch (FirebaseAuthUserCollisionException e ){
+                                excessao="Email já se Encontra Cadastrado";
+                            }catch (Exception e ){
+                                excessao="Erro ao Cadastra usuario" + e.getMessage();
+                                e.printStackTrace();
+                            }
+
+                            Toast.makeText(CadastroUsuarioActivity.this, excessao,Toast.LENGTH_SHORT).show();
+                        }
                     }
-
-                    //Mostra a Mensagem de erro caso não seja nenhuma ja pré-configurada
-                    Toast.makeText(LoginActivity.this, excessao,Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
+                });
     }
 
     /**Metodo para Carrega as Informações das Secretarias das Base de dados
      * */
     public boolean carregaSecretaria(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Secretarias....");
@@ -145,55 +194,53 @@ public class LoginActivity extends AppCompatActivity {
         final Secretaria secretaria = new Secretaria();
         final SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaSecretaria(ClienteID,"")
+        resolvePatrimonio.recuperaSecretaria( usuario.getClienteIDFK() ,"")
                 .enqueue(new Callback<List<Secretaria>>() {
                     @Override
                     public void onResponse(Call<List<Secretaria>> call, Response<List<Secretaria>> response) {
 
-                            if (response.isSuccessful()) {
+                        if (response.isSuccessful()) {
 
-                                try {
+                            try {
 
-                                    final List<Secretaria> listaSec = response.body();
+                                final List<Secretaria> listaSec = response.body();
 
-                                    if (listaSec != null) {
+                                if (listaSec != null) {
 
-                                        for (Secretaria sec : listaSec) {
+                                    for (Secretaria sec : listaSec) {
 
-                                            progressDialog.dismiss();
+                                        progressDialog.dismiss();
 
-                                            secretaria.setSecretariaID(sec.getSecretariaID());
-                                            secretaria.setClienteIDFK(sec.getClienteIDFK());
-                                            secretaria.setDescricao(sec.getDescricao());
-                                            secretaria.setSecretarioIDFK(sec.getSecretarioIDFK());
-                                            secretaria.setNomeSecretario(sec.getNomeSecretario());
-                                            secretaria.setEndereco(sec.getEndereco());
-                                            secretaria.setNumero(sec.getNumero());
-                                            secretaria.setBairro(sec.getBairro());
-                                            secretaria.setTelefone(sec.getTelefone());
-                                            secretaria.setCodigoAnterior(sec.getCodigoAnterior());
+                                        secretaria.setSecretariaID(sec.getSecretariaID());
+                                        secretaria.setClienteIDFK(sec.getClienteIDFK());
+                                        secretaria.setDescricao(sec.getDescricao());
+                                        secretaria.setSecretarioIDFK(sec.getSecretarioIDFK());
+                                        secretaria.setNomeSecretario(sec.getNomeSecretario());
+                                        secretaria.setEndereco(sec.getEndereco());
+                                        secretaria.setNumero(sec.getNumero());
+                                        secretaria.setBairro(sec.getBairro());
+                                        secretaria.setTelefone(sec.getTelefone());
+                                        secretaria.setCodigoAnterior(sec.getCodigoAnterior());
 
-                                            if (secretariaDAO.Salvar(secretaria)) {
+                                        if (secretariaDAO.Salvar(secretaria)) {
 
-                                           } else {
-                                                secretariaDAO.Atualizar(secretaria);
-                                            }
+                                        } else {
+                                            secretariaDAO.Atualizar(secretaria);
                                         }
                                     }
-
-                                    carregaCentroCusto();
-
-                                }catch (Exception e ){
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            else{
+
+                                carregaCentroCusto();
+
+                            }catch (Exception e ){
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: ", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
+                        }
+                        else{
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Não é possível carregar Secretaria: ", Toast.LENGTH_LONG).show();
+                        }
 
                     }
 
@@ -211,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCusto(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo....");
@@ -221,9 +268,7 @@ public class LoginActivity extends AppCompatActivity {
         final CentroCusto centroCusto = new CentroCusto();
         final CentroCustoDAO centroCustoDAO = new CentroCustoDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaCentroCusto(ClienteID,"","")
+        resolvePatrimonio.recuperaCentroCusto(usuario.getClienteIDFK(),"","")
                 .enqueue(new Callback<List<CentroCusto>>() {
                     @Override
                     public void onResponse(Call<List<CentroCusto>> call, Response<List<CentroCusto>> response) {
@@ -231,7 +276,7 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             final List<CentroCusto> listaCentroCusto = response.body();
 
-                             if (listaCentroCusto != null) {
+                            if (listaCentroCusto != null) {
 
                                 for (CentroCusto cc : listaCentroCusto) {
 
@@ -249,8 +294,8 @@ public class LoginActivity extends AppCompatActivity {
                                         centroCustoDAO.Atualizar(centroCusto);
                                     }
                                 }
-                                    carregaCentroCustoLocalResponsavel();
-                             }
+                                carregaCentroCustoLocalResponsavel();
+                            }
                         }catch (Exception e ){
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Não e possivel carrega Ceentro Custo: " + e.getMessage(),Toast.LENGTH_LONG).show();
@@ -272,7 +317,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCustoLocalResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo Local Responsavel....");
@@ -282,9 +327,7 @@ public class LoginActivity extends AppCompatActivity {
         final CentroCustoLocalResponsavel centroCustoLocalResponsavel = new CentroCustoLocalResponsavel();
         final CentroCustoLocalReponsavelDAO centroCustoLocalReponsavelDAO = new CentroCustoLocalReponsavelDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaCentroCustoLocalResponsavel(ClienteID,"","")
+        resolvePatrimonio.recuperaCentroCustoLocalResponsavel(usuario.getClienteIDFK(),"","")
                 .enqueue(new Callback<List<CentroCustoLocalResponsavel>>() {
                     @Override
                     public void onResponse(Call<List<CentroCustoLocalResponsavel>> call, Response<List<CentroCustoLocalResponsavel>> response) {
@@ -332,7 +375,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaLocalizacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Localizações....");
@@ -342,9 +385,7 @@ public class LoginActivity extends AppCompatActivity {
         final Localizacao localizacao = new Localizacao();
         final LocalizacaoDAO localizacaoDAO = new LocalizacaoDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaLocalizacao(ClienteID,"")
+        resolvePatrimonio.recuperaLocalizacao(usuario.getClienteIDFK(),"")
                 .enqueue(new Callback<List<Localizacao>>() {
                     @Override
                     public void onResponse(Call<List<Localizacao>> call, Response<List<Localizacao>> response) {
@@ -394,7 +435,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Responsaveis....");
@@ -404,9 +445,7 @@ public class LoginActivity extends AppCompatActivity {
         final Responsavel responsavel = new Responsavel();
         final ResponsavelDAO responsavelDAO = new ResponsavelDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaResponsavel(ClienteID,"")
+        resolvePatrimonio.recuperaResponsavel(usuario.getClienteIDFK(),"")
                 .enqueue(new Callback<List<Responsavel>>() {
                     @Override
                     public void onResponse(Call<List<Responsavel>> call, Response<List<Responsavel>> response) {
@@ -455,7 +494,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaItem(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Itens....");
@@ -465,9 +504,7 @@ public class LoginActivity extends AppCompatActivity {
         final Item item = new Item();
         final ItemDAO itemDAO = new ItemDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaItem(ClienteID,"")
+        resolvePatrimonio.recuperaItem(usuario.getClienteIDFK(),"")
                 .enqueue(new Callback<List<Item>>() {
                     @Override
                     public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
@@ -514,7 +551,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaFabricante(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Fabricante....");
@@ -524,9 +561,7 @@ public class LoginActivity extends AppCompatActivity {
         final Fabricante fabricante = new Fabricante();
         final FabricanteDAO fabricanteDAO = new FabricanteDAO(getApplicationContext());
 
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        resolvePatrimonio.recuperaFabricante(ClienteID,"")
+        resolvePatrimonio.recuperaFabricante(usuario.getClienteIDFK(),"")
                 .enqueue(new Callback<List<Fabricante>>() {
                     @Override
                     public void onResponse(Call<List<Fabricante>> call, Response<List<Fabricante>> response) {
@@ -574,7 +609,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaTipoTombo(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Tipo Tombo....");
@@ -583,8 +618,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final TipoTombo tipoTombo = new TipoTombo();
         final TipoTomboDAO tipoTomboDAO = new TipoTomboDAO(getApplicationContext());
-
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
         resolvePatrimonio.recuperaTipoTombo()
                 .enqueue(new Callback<List<TipoTombo>>() {
@@ -633,7 +666,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaEstadoConservacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Estado Conservacao....");
@@ -642,8 +675,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final EstadoConservacao estadoConservacao = new EstadoConservacao();
         final EstadoConsevacaoDAO estadoConsevacaoDAO = new EstadoConsevacaoDAO(getApplicationContext());
-
-        ResolvePatrimonio resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
         resolvePatrimonio.recuperaEstadoConservacao()
                 .enqueue(new Callback<List<EstadoConservacao>>() {
@@ -669,7 +700,7 @@ public class LoginActivity extends AppCompatActivity {
                                         estadoConsevacaoDAO.Atualizar(estadoConservacao);
                                     }
                                 }
-                                abrirPrincipal();
+                                finish();
                             }
                         }catch (Exception e){
                             progressDialog.dismiss();
@@ -681,18 +712,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(Call<List<EstadoConservacao>> call, Throwable t) {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Não e possivel carrega Estado COnservação: " + t.getMessage(),Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 });
 
         return true;
 
-    }
-
-    /**Metodo Responsavel por Abrir a Tela Principal */
-    public void abrirPrincipal(){
-
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        finish();
     }
 
 }

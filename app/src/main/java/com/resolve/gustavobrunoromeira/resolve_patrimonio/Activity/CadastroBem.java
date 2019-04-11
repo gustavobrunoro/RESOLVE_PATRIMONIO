@@ -45,6 +45,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Localizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Responsavel;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.TipoTombo;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -65,11 +66,14 @@ public class CadastroBem extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
 
-    private ConfiguracaoSharedPreferences preferences ;
-
-    private int clienteIDFK = 99;
+    // Variaveis de Modelos
+    private Usuario usuario;
     private Bem bem;
+
+    // Variaveis de API e Conexao
     private BemDAO bemDAO;
+
+    // Listas de Controle
     private List<Bem> Bens = new ArrayList<>();
     private List<Secretaria> Secretarias = new ArrayList<>();
     private List<CentroCusto> CentroCustos = new ArrayList<>();
@@ -80,6 +84,10 @@ public class CadastroBem extends AppCompatActivity {
     private List<TipoTombo> TipoTombos = new ArrayList<>();
     private List<EstadoConservacao> EstadoConversacoes = new ArrayList<>();
 
+    // Variaveis de Adapter
+
+
+    // Variavel de Sistemas
     private Spinner secretariaID;
     private Spinner centrocustoID;
     private Spinner localizacaooID;
@@ -91,8 +99,8 @@ public class CadastroBem extends AppCompatActivity {
 
     private TextInputEditText Plaqueta;
     private TextInputEditText Especificacao;
-    private CurrencyEditText Valor;
     private TextInputEditText Observacao;
+    private CurrencyEditText  Valor;
 
     private ImageView Foto1ID;
     private ImageView Foto2ID;
@@ -100,44 +108,49 @@ public class CadastroBem extends AppCompatActivity {
     private Bitmap Imagem2 = null;
     private static final int Camera1 = 10;
     private static final int Camera2 = 20;
-
     private FloatingActionButton fab;
+
+    // Variavel de Controle
     private int edicaoBem = 0;
-    private String caminhoFotoPrincipal = "/Resolve Patrimonio/" + String.valueOf( clienteIDFK ) + "/Fotos/";
-    int controle;
+    private int controle;
+    private String caminhoFotoPrincipal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cadastro_bem);
 
-        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
-
         // Vslida Permissão
         Permissao.ValidaPermissao(permissoes, this, 1);
+
+        usuario = new ConfiguracaoSharedPreferences ( getApplicationContext() ).recupraDadosPessoais();
+        caminhoFotoPrincipal = "/Resolve Patrimonio/" + String.valueOf( usuario.getClienteIDFK() ) + "/Fotos/";
+
+        // Recebe o bem passado pela listagem caso esteja sendo iniciada pela Listagem
+        bem = (Bem) getIntent().getSerializableExtra("Bem");
 
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(R.string.Titulo3);
 
         Locale locale = new Locale("pt","BR");
 
-        Plaqueta = findViewById(R.id.PlaquetaID);
-        secretariaID = findViewById(R.id.sp_SecretariaID);
-        centrocustoID = findViewById(R.id.sp_CentroCustoID);
-        localizacaooID = findViewById(R.id.sp_LocalizacaoID);
-        responsavelID = findViewById(R.id.sp_ResponsavelID);
-        itemID = findViewById(R.id.sp_ItemID);
-        Especificacao = findViewById(R.id.EspecificacaoID);
-        fabricanteID = findViewById(R.id.sp_FabricanteID);
-        Valor = findViewById(R.id.ValorID);
-        Valor.setLocale(locale);
-
-        Observacao = findViewById(R.id.ObservacaoID);
-        tipoTomboID = findViewById(R.id.sp_TomboID);
+        Plaqueta            = findViewById(R.id.PlaquetaID);
+        secretariaID        = findViewById(R.id.sp_SecretariaID);
+        centrocustoID       = findViewById(R.id.sp_CentroCustoID);
+        localizacaooID      = findViewById(R.id.sp_LocalizacaoID);
+        responsavelID       = findViewById(R.id.sp_ResponsavelID);
+        itemID              = findViewById(R.id.sp_ItemID);
+        Especificacao       = findViewById(R.id.EspecificacaoID);
+        fabricanteID        = findViewById(R.id.sp_FabricanteID);
+        Valor               = findViewById(R.id.ValorID);
+        Observacao          = findViewById(R.id.ObservacaoID);
+        tipoTomboID         = findViewById(R.id.sp_TomboID);
         estadoConservacaoID = findViewById(R.id.sp_ConservacaoID);
-        Foto1ID = findViewById(R.id.iv_Foto1ID);
-        Foto2ID = findViewById(R.id.iv_Foto2ID);
-        fab = findViewById(R.id.fabSalvar);
+        Foto1ID             = findViewById(R.id.iv_Foto1ID);
+        Foto2ID             = findViewById(R.id.iv_Foto2ID);
+        fab                 = findViewById(R.id.fabSalvar);
+
+        Valor.setLocale(locale);
 
         secretariaID.setFocusable(true);
         secretariaID.setFocusableInTouchMode(true);
@@ -171,9 +184,6 @@ public class CadastroBem extends AppCompatActivity {
         estadoConservacaoID.setFocusableInTouchMode(true);
         estadoConservacaoID.requestFocus();
 
-        // Recebe o bem passado pela listagem caso esteja sendo iniciada pela Listagem
-        bem = (Bem) getIntent().getSerializableExtra("Bem");
-
         // Verifica se o Bem e Nulo, caso não seja e por esta vindo da Listagem e ta solicitando a Edição do Bem
         if (bem != null) {
 
@@ -192,7 +202,7 @@ public class CadastroBem extends AppCompatActivity {
         } else {
 
             bem = new Bem();
-            bem.setClienteIDFK( clienteIDFK );
+            bem.setClienteIDFK( usuario.getClienteIDFK() );
             listaSecretaria();
             listaCentroCusto();
             listaLocalizacao();
@@ -1226,7 +1236,7 @@ public class CadastroBem extends AppCompatActivity {
             controle = 1;
         }
 
-        if (Imagem1 == null) {
+        if (Foto1ID == null) {
             controle = 1;
         }
 

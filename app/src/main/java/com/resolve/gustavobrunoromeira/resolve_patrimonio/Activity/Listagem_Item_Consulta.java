@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterBemConsulta;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.IFNULL;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RecyclerItemClickListener;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 
 import java.util.ArrayList;
@@ -29,24 +31,39 @@ import retrofit2.Retrofit;
 
 public class Listagem_Item_Consulta extends AppCompatActivity {
 
-    private String ClienteIDFK = "99";
+    // Variaveis de Modelos
+    private Usuario usuario;
+    private Bem bem = new Bem();
 
+    // Variaveis de API e Conexao
+    private Retrofit retrofit;
+    ResolvePatrimonio resolvePatrimonio;
+
+    // Listas de Controle
     private List<Bem> bens = new ArrayList<>();
     private List<Bem> bensLocal = new ArrayList<>();
     private List<Bem> bensWEB = new ArrayList<>();
-    private Bem bem = new Bem();
 
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    // Variaveis de Adapter
     private AdapterBemConsulta adapter;
 
-    private Retrofit retrofit;
-    ResolvePatrimonio resolvePatrimonio;
+    // Variavel de Sistemas
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+
+    // Variavel de Controle
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listagem_item_consulta);
+
+        retrofit = RetrofitConfig.getRetrofit();
+        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+
+        usuario = new ConfiguracaoSharedPreferences( getApplicationContext() ).recupraDadosPessoais();
+
+        bem = (Bem) getIntent().getSerializableExtra("Bem");
 
         recyclerView = findViewById(R.id.recycle_Listagem_Item_ConsultaID);
         toolbar      = findViewById(R.id.toolbar);
@@ -55,9 +72,6 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
         toolbar.setTitle(R.string.Nav2);
         setSupportActionBar( toolbar );
 
-        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
-
-        bem = (Bem) getIntent().getSerializableExtra("Bem");
         iniciaViews();
 
         recyclerView.addOnItemTouchListener( new RecyclerItemClickListener( getApplicationContext(),  recyclerView,  new RecyclerItemClickListener.OnItemClickListener() {
@@ -118,7 +132,7 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
 
         progressDialog.show();
 
-        resolvePatrimonio.recuperaBem( ClienteIDFK
+        resolvePatrimonio.recuperaBem( usuario.getClienteIDFK()
                 , IFNULL.verifica( String.valueOf( bem.getSecretariaIDFK()),"" )
                 , IFNULL.verifica( String.valueOf( bem.getCentroCustoIDFK()),"" )
                 , IFNULL.verifica( String.valueOf( bem.getLocalizacaoIDFK()),"" )

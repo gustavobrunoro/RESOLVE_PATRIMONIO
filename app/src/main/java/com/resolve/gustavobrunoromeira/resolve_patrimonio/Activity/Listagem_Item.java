@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterBem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RecyclerItemClickListener;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -33,23 +35,38 @@ import java.util.List;
 
 public class Listagem_Item extends AppCompatActivity {
 
-    private List<Bem> bens = new ArrayList<>();
-    private Bem bem = new Bem();
-    private String clienteIDFK = "99";
 
+    // Variaveis de Modelos
+    private Bem bem = new Bem();
+    private Usuario usuario;
+
+    // Variaveis de API e Conexao
+
+    // Listas de Controle
+    private List<Bem> bens = new ArrayList<>();
+
+    // Variaveis de Adapter
+    private AdapterBem adapter;
+
+
+    // Variavel de Sistemas
     private Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
-    private AdapterBem adapter;
     private ImageView imgCamera;
     private ImageView imgClearSearch;
-
     private File caminhoFoto;
+
+    // Variavel de Controle
+    private String caminhoFotoPrincipal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listagem_item);
+
+        usuario = new ConfiguracaoSharedPreferences( getApplicationContext() ).recupraDadosPessoais();
+        caminhoFotoPrincipal = "/Resolve Patrimonio/" + usuario.getClienteIDFK() + "/Fotos/";
 
         recyclerView   = findViewById(R.id.recycle_Listagem_ItemID);
         toolbar        = findViewById(R.id.toolbar);
@@ -264,12 +281,12 @@ public class Listagem_Item extends AppCompatActivity {
                 //Notifica o Adapter com o bem excluido
                 adapter.notifyItemRemoved( position );
 
-                caminhoFoto = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/" + clienteIDFK + "/Fotos/" + bem.getPlaqueta() + "_1" +".png");
+                caminhoFoto = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), caminhoFotoPrincipal + bem.getPlaqueta() + "_1" +".png");
                 if (caminhoFoto.exists()){
                     caminhoFoto.delete();
                 }
 
-                caminhoFoto = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/" + clienteIDFK + "/Fotos/" + bem.getPlaqueta() + "_2" +".png");
+                caminhoFoto = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), caminhoFotoPrincipal + bem.getPlaqueta() + "_2" +".png");
                 if (caminhoFoto.exists()){
                     caminhoFoto.delete();
                 }

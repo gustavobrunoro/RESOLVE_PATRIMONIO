@@ -179,7 +179,8 @@ public class ConfiguracaoSQLite extends SQLiteOpenHelper {
                 + "  , ClienteIDFK INTEGER "
                 + "  , CentroCustoIDFK INTEGER "
                 + "  , LocalizacaoIDFK INTEGER "
-                + "  , Matricula INTEGER )";
+                + "  , Matricula INTEGER "
+                + "  , UNIQUE(ClienteIDFK, CentroCustoIDFK, LocalizacaoIDFK ))";
 
         try {
             db.execSQL( Comando );
@@ -223,8 +224,8 @@ public class ConfiguracaoSQLite extends SQLiteOpenHelper {
                 + "  , CentroCustoIDFK INTEGER NOT NULL"
                 + "  , LocalizacaoIDFK INTEGER NOT NULL"
                 + "  , Nome TEXT NOT NULL"
-                + "  , Matricula INTEGER NOT NULL"
-                + "  , UNIQUE(ClienteIDFK, Matricula))";
+                + "  , Matricula INTEGER "
+                + "  , UNIQUE(ClienteIDFK, CentroCustoIDFK, LocalizacaoIDFK ))";
 
         try {
             db.execSQL( Comando );

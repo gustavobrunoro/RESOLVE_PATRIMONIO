@@ -21,24 +21,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".IntroducaoActivity"
+        <activity android:name=".Activity.Introducao.IntroducaoActivity"
             android:theme="@style/Theme.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".Activity.introducao.CadastroUsuarioActivity"
+            android:name=".Activity.Introducao.CadastroUsuarioActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.introducao.LoginActivity" />
+            android:name=".Activity.Introducao.LoginActivity" />
         <activity
             android:name=".Activity.Listagem_Item"
             android:theme="@style/ListagemBem"

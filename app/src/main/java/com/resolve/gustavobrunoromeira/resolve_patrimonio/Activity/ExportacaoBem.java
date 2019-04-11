@@ -19,9 +19,11 @@ import android.view.View;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterExportacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.PermissaoExportar;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -39,20 +41,26 @@ import retrofit2.Retrofit;
 
 public class ExportacaoBem extends AppCompatActivity {
 
-    private String ClienteIDFK = "99";
+    // Variaveis de Modelos
+    private Usuario usuario;
 
+    // Variaveis de API e Conexao
+    private Retrofit retrofit;
+    private ResolvePatrimonio resolvePatrimonio;
+
+    // Listas de Controle
     private List<Bem> bens = new ArrayList<>();
     private List<Bem> bensSelecionados = new ArrayList<>();
     private List<Bem> bensExportados = new ArrayList<>();
-    private Bem bem = new Bem();
-    private AlertDialog alertDialog;
 
+    // Variaveis de Adapter
+    private AdapterExportacao adapter;
+
+    // Variavel de Sistemas
     private Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
-    private AdapterExportacao adapter;
-
-    private String caminhoFotoPrincipal = "/Resolve Patrimonio/" + ClienteIDFK + "/Fotos/";
+    private AlertDialog alertDialog;
     private File caminhoFoto1;
     private File caminhoFoto2;
     private Bitmap Imagem1;
@@ -61,14 +69,21 @@ public class ExportacaoBem extends AppCompatActivity {
     private ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
     private byte[] byteArray1;
     private byte[] byteArray2;
-    private Retrofit retrofit;
-    private ResolvePatrimonio resolvePatrimonio;
-    private int i = 1;
+
+    // Variavel de Controle
+    private int i = 1; // Variavel para Controle na Exportação das Plaquetas
+    private String caminhoFotoPrincipal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exportacao_bem);
+
+        retrofit = RetrofitConfig.getRetrofit();
+        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+
+        usuario = new ConfiguracaoSharedPreferences( getApplicationContext() ).recupraDadosPessoais();
+        caminhoFotoPrincipal = "/Resolve Patrimonio/" + usuario.getClienteIDFK() + "/Fotos/";
 
         recyclerView = findViewById(R.id.recycleExportacaoId);
         toolbar      = findViewById(R.id.toolbar);
@@ -79,7 +94,6 @@ public class ExportacaoBem extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         consultaLocal();
-        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
         //Configurando o Recycle View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -89,15 +103,6 @@ public class ExportacaoBem extends AppCompatActivity {
         //Configurando o Adapter
         adapter = new AdapterExportacao(bens,this);
         recyclerView.setAdapter(adapter);
-
-        // if(savedInstanceState != null ){
-        //
-        //       bensSelecionados.clear();
-        //       bensSelecionados = (List<Bem>) savedInstanceState.getSerializable("BensSelecionados");
-        //       Log.i("ControleLogte", "Recuperou: "  + bensSelecionados.size() );
-        //
-        //}
-
 
     }
 
@@ -184,7 +189,7 @@ public class ExportacaoBem extends AppCompatActivity {
             bensSelecionados.addAll(adapter.ListaSelecionados());
         }
 
-        resolvePatrimonio.recuperaPermissao( ClienteIDFK ).enqueue(new Callback<List<PermissaoExportar>>() {
+        resolvePatrimonio.recuperaPermissao( usuario.getClienteIDFK() ).enqueue(new Callback<List<PermissaoExportar>>() {
             @Override
             public void onResponse(Call<List<PermissaoExportar>> call, Response<List<PermissaoExportar>> response) {
 

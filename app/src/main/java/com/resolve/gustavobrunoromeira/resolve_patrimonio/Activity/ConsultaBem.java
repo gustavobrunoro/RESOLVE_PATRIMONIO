@@ -38,8 +38,27 @@ import java.util.List;
 
 public class ConsultaBem extends AppCompatActivity {
 
-    private Button button ;
+    // Variaveis de Modelos
+    private Bem bem = new Bem();
 
+    // Variaveis de API e Conexao
+
+
+    // Listas de Controle
+    private List<Secretaria> Secretarias = new ArrayList<>();
+    private List<CentroCusto> CentroCustos = new ArrayList<>();
+    private List<Localizacao> Localizacoes = new ArrayList<>();
+    private List<Responsavel> Responsaveis = new ArrayList<>();
+    private List<Item> Itens = new ArrayList<>();
+    private List<Fabricante> Fabricantes = new ArrayList<>();
+    private List<TipoTombo> TipoTombos = new ArrayList<>();
+    private List<EstadoConservacao> EstadoConversacoes = new ArrayList<>();
+
+    // Variaveis de Adapter
+
+
+    // Variavel de Sistemas
+    private Button button ;
     private Toolbar toolbar;
 
     private Spinner secretariaID;
@@ -51,38 +70,27 @@ public class ConsultaBem extends AppCompatActivity {
     private Spinner tipoTomboID;
     private Spinner estadoConservacaoID;
 
-    private Bem bem = new Bem();
-    private List<Bem> Bens = new ArrayList<>();
-    private List<Secretaria> Secretarias = new ArrayList<>();
-    private List<CentroCusto> CentroCustos = new ArrayList<>();
-    private List<Localizacao> Localizacoes = new ArrayList<>();
-    private List<Responsavel> Responsaveis = new ArrayList<>();
-    private List<Item> Itens = new ArrayList<>();
-    private List<Fabricante> Fabricantes = new ArrayList<>();
-    private List<TipoTombo> TipoTombos = new ArrayList<>();
-    private List<EstadoConservacao> EstadoConversacoes = new ArrayList<>();
+    // Variavel de Controle
 
-    private ConfiguracaoSharedPreferences preferences ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consulta_bem);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar             = findViewById(R.id.toolbar);
+        secretariaID        = findViewById(R.id.sp_SecretariaID);
+        centrocustoID       = findViewById(R.id.sp_CentroCustoID);
+        localizacaooID      = findViewById(R.id.sp_LocalizacaoID);
+        responsavelID       = findViewById(R.id.sp_ResponsavelID);
+        itemID              = findViewById(R.id.sp_ItemID);
+        fabricanteID        = findViewById(R.id.sp_FabricanteID);
+        tipoTomboID         = findViewById(R.id.sp_TomboID);
+        estadoConservacaoID = findViewById(R.id.sp_ConservacaoID);
+        button              = findViewById(R.id.btConsultaID);
 
         toolbar.setTitle(R.string.Nav2);
         setSupportActionBar(toolbar);
-
-        secretariaID = findViewById(R.id.sp_SecretariaID);
-        centrocustoID = findViewById(R.id.sp_CentroCustoID);
-        localizacaooID = findViewById(R.id.sp_LocalizacaoID);
-        responsavelID = findViewById(R.id.sp_ResponsavelID);
-        itemID = findViewById(R.id.sp_ItemID);
-        fabricanteID = findViewById(R.id.sp_FabricanteID);
-        tipoTomboID = findViewById(R.id.sp_TomboID);
-        estadoConservacaoID = findViewById(R.id.sp_ConservacaoID);
-        button = findViewById(R.id.btConsultaID);
 
         listaSecretaria();
         listaCentroCusto();

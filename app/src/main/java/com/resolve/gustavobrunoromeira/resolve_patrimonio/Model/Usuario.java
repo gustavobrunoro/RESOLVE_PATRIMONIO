@@ -13,8 +13,7 @@ public class Usuario {
     private String IdUsuario, Nome, Email, Senha ;
     private int ClienteIDFK;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
     public String getIdUsuario() {
         return IdUsuario;
@@ -49,7 +48,6 @@ public class Usuario {
         Senha = senha;
     }
 
-    @Exclude
     public int getClienteIDFK() {
         return ClienteIDFK;
     }
