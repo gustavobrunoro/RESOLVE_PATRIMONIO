@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.ItemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Item;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -23,16 +24,21 @@ import java.util.List;
 
 public class AdapterBem extends RecyclerView.Adapter<AdapterBem.MyviewHolder>{
 
-    Context context;
-    String clienteIDFK= "99";
-    String caminhoFotoPrincipal = "/Resolve Patrimonio/" + clienteIDFK + "/Fotos/";
+    private Usuario usuario;
+    private Context context;
+    private String caminhoFotoPrincipal;
 
     private List<Bem> bens;
     private Bem bem = new Bem();
 
-    public AdapterBem(List<Bem> listaItem, Context context) {
+    public AdapterBem( Usuario usuario, List<Bem> listaItem, Context context) {
+
+      this.usuario = usuario;
       this.bens = listaItem;
       this.context = context;
+
+      caminhoFotoPrincipal = "/Resolve Patrimonio/" + usuario.getClienteIDFK() + "/Fotos/";
+
     }
 
     @Override

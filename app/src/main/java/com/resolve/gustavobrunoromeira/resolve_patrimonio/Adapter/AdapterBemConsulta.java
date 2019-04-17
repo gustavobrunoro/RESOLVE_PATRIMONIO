@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.ItemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Item;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 
 import java.io.File;
@@ -23,13 +24,13 @@ import br.com.powerapps.powerimagecompress.PowerImageCompress;
 
 public class AdapterBemConsulta extends RecyclerView.Adapter<AdapterBemConsulta.MyviewHolder> {
 
-    Context context;
-    File caminhoFoto;
+    private Context context;
+    private File caminhoFoto;
 
     private List<Bem> bens;
     private Bem bem = new Bem();
 
-    public AdapterBemConsulta(List<Bem> listaItem, Context context) {
+    public AdapterBemConsulta ( List<Bem> listaItem, Context context) {
         this.bens = listaItem;
         this.context = context;
     }
@@ -54,8 +55,8 @@ public class AdapterBemConsulta extends RecyclerView.Adapter<AdapterBemConsulta.
         if (caminhoFoto.exists()) {
 
             // Seta o Image View da Activity do com a Foto
-            ImageView mImageView1 = PowerImageCompress.doArquivo(caminhoFoto)
-                    .exibirEm(holder.Foto);
+            ImageView mImageView1 = PowerImageCompress.doArquivo( caminhoFoto )
+                                                      .exibirEm( holder.Foto );
         }
 
         holder.Plaqueta.setText("Plaqueta: " + bem.getPlaqueta());
@@ -76,15 +77,12 @@ public class AdapterBemConsulta extends RecyclerView.Adapter<AdapterBemConsulta.
 
         private ImageView Foto,Exportado;
         private TextView Descricao,Plaqueta;
-        private CardView cardView;
-
 
         public MyviewHolder(final View itemView) {
             super(itemView);
 
             Descricao = itemView.findViewById(R.id.tv_DescricaoItemID);
             Plaqueta  = itemView.findViewById(R.id.tv_PlaquetaItemID);
-            cardView  = itemView.findViewById(R.id.CardViewBemID);
             Foto      = itemView.findViewById(R.id.iv_FotoID);
             Exportado = itemView.findViewById(R.id.expotadoID);
 
