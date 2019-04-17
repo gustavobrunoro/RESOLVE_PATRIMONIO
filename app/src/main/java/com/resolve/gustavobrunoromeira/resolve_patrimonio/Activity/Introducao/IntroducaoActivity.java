@@ -9,6 +9,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.Confi
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
 
 public class IntroducaoActivity extends IntroActivity {
 
@@ -56,6 +57,8 @@ public class IntroducaoActivity extends IntroActivity {
     /**Metodo Reponsavel poer verificar se o Usuario ja se Encontra Autenticado */
     protected void autenticacao() {
 
+        //firebaseAuth.signOut();
+
         if (firebaseAuth.getCurrentUser() != null ){
             startActivity(new Intent(IntroducaoActivity.this, MainActivity.class));
         }
@@ -63,6 +66,9 @@ public class IntroducaoActivity extends IntroActivity {
 
     /**Metodo Reponsavel Cadastrar Usuario */
     public void btCadastra(View view){
+
+        ConfiguracaoSQLite configuracaoSQLite = new ConfiguracaoSQLite( getApplicationContext() );
+        configuracaoSQLite.deleteDataBase( getApplicationContext() );
         startActivity(new Intent(getApplicationContext(), CadastroUsuarioActivity.class));
     }
 

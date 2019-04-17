@@ -81,7 +81,7 @@ public class Listagem_Item extends AppCompatActivity {
         swipe();
 
         //Configuração do Adpter
-        adapter = new AdapterBem(bens,this);
+        adapter = new AdapterBem(usuario , bens ,this);
 
         //Configurando o Recycle View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -164,7 +164,7 @@ public class Listagem_Item extends AppCompatActivity {
 
         consultaLocal();
 
-        adapter = new AdapterBem(bens,this);
+        adapter = new AdapterBem(usuario , bens ,this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
@@ -245,7 +245,7 @@ public class Listagem_Item extends AppCompatActivity {
         }else  {
             bens.clear();
             bens = bemDAO.Pesquisa( plaqueta , 0);
-            adapter = new AdapterBem(bens,this);
+            adapter = new AdapterBem(usuario , bens ,this);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
         }

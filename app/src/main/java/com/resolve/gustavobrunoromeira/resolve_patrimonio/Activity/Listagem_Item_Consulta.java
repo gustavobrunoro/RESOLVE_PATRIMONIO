@@ -159,7 +159,7 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
                             }
                             progressDialog.dismiss();
 
-                            adapter = new AdapterBemConsulta(bens,getApplicationContext());
+                            adapter = new AdapterBemConsulta( bens,getApplicationContext());
                             recyclerView.setAdapter(adapter);
                         }
                     }
@@ -187,7 +187,7 @@ public class Listagem_Item_Consulta extends AppCompatActivity {
 
         bens.addAll(bensLocal);
 
-        adapter = new AdapterBemConsulta(bens,getApplicationContext());
+        adapter = new AdapterBemConsulta( bens,getApplicationContext());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
