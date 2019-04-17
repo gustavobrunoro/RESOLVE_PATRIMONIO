@@ -69,7 +69,7 @@ public class IntroducaoActivity extends IntroActivity {
 
         ConfiguracaoSQLite configuracaoSQLite = new ConfiguracaoSQLite( getApplicationContext() );
         configuracaoSQLite.deleteDataBase( getApplicationContext() );
-        startActivity(new Intent(getApplicationContext(), CadastroUsuarioActivity.class));
+        startActivity(new Intent(getApplicationContext(), CadastroUsuarioActivityTeste.class));
     }
 
     /**Metodo Reponsavel por Efetuar Login do Usuario */

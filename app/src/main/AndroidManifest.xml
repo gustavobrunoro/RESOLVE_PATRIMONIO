@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-            android:name=".Activity.Introducao.CadastroUsuarioActivity"
+            android:name=".Activity.Introducao.CadastroUsuarioActivityTeste"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.MainActivity"

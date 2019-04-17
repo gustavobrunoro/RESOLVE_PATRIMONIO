@@ -50,7 +50,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CadastroUsuarioActivity extends AppCompatActivity {
+public class CadastroUsuarioActivityTeste extends AppCompatActivity {
 
     // Variaveis de Modelos
     private Usuario usuario = new Usuario();
@@ -120,7 +120,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     }
 
     /** Metodo Responsavel por Efetuar o Cadastro do Usuario
-     * @param Usuario
      */
     public void CadastrarUsuario(final Usuario usuario){
 
@@ -173,7 +172,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            Toast.makeText(CadastroUsuarioActivity.this, excessao,Toast.LENGTH_SHORT).show();
+                            Toast.makeText( CadastroUsuarioActivityTeste.this, excessao,Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -183,7 +182,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaSecretaria(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Secretarias....");
@@ -258,7 +257,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCusto(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo....");
@@ -317,7 +316,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCustoLocalResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo Local Responsavel....");
@@ -375,7 +374,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaLocalizacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Localizações....");
@@ -435,7 +434,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Responsaveis....");
@@ -494,7 +493,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaItem(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Itens....");
@@ -551,7 +550,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaFabricante(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Fabricante....");
@@ -609,7 +608,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaTipoTombo(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Tipo Tombo....");
@@ -666,7 +665,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
      * */
     public boolean carregaEstadoConservacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        final ProgressDialog progressDialog = new ProgressDialog( CadastroUsuarioActivityTeste.this);
         progressDialog.setMax(100);
         progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Estado Conservacao....");
