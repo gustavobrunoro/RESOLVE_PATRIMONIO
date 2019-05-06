@@ -85,5 +85,6 @@
 
     <string name="Erro_Dialog_Exporta1">Nenhum Item Selecionado !</string>
     <string name="Erro_Dialog_Exporta2">Necessario Permissão para Exportar!</string>
+    <string name="title_activity_mapa_localizacao">Map</string>
 
 </resources>

@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.CentroCustoActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.LocalizacaoActivity;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.MapaLocalizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.ResponsavelActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.SecretariaActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterPrincipal;
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     // Variaveis de Modelos
@@ -292,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         } else if (id == R.id.nav_Sincronizar) {
-            Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Sicronizações", Snackbar.LENGTH_SHORT).show();
+            //Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Sicronizações", Snackbar.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MapaLocalizacao.class));
         } else if (id == R.id.nav_Organizacao) {
             boolean b =! menu.findItem(R.id.nav_Secretaria).isVisible();
 
