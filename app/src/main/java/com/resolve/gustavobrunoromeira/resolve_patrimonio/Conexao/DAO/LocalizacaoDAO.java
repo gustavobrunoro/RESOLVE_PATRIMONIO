@@ -33,6 +33,11 @@ public class LocalizacaoDAO implements ILocalizacao {
         Valor.put("ClienteIDFK",localizacao.getClienteIDFK());
         Valor.put("LocalizacaoID",localizacao.getLocalizacaoID());
         Valor.put("Descricao",localizacao.getDescricao());
+        Valor.put("Endereco",localizacao.getEndereco());
+        Valor.put("Numero",localizacao.getNumero());
+        Valor.put("Bairro",localizacao.getBairro());
+        Valor.put("Cidade",localizacao.getCidade());
+        Valor.put("CEP",localizacao.getCEP());
         Valor.put("Complemento",localizacao.getComplemento());
         Valor.put("Telefone",localizacao.getTelefone());
         Valor.put("LogUsuario",localizacao.getLogUsuario());
@@ -54,6 +59,11 @@ public class LocalizacaoDAO implements ILocalizacao {
         ContentValues Valor = new ContentValues();
         Valor.put("ClienteIDFJ",localizacao.getClienteIDFK());
         Valor.put("Descricao",localizacao.getDescricao());
+        Valor.put("Endereco",localizacao.getEndereco());
+        Valor.put("Numero",localizacao.getNumero());
+        Valor.put("Bairro",localizacao.getBairro());
+        Valor.put("Cidade",localizacao.getCidade());
+        Valor.put("CEP",localizacao.getCEP());
         Valor.put("Complemento",localizacao.getComplemento());
         Valor.put("Telefone",localizacao.getTelefone());
         Valor.put("LogUsuario",localizacao.getLogUsuario());
@@ -90,7 +100,7 @@ public class LocalizacaoDAO implements ILocalizacao {
     @Override
     public List<Localizacao> Lista(Bem bem) {
 
-        String Descricao, Complemento, Telefone, LogUsuario;
+        String Descricao, Endereco, Numero, Bairro, Cidade, CEP, Complemento, Telefone, LogUsuario;
         int ClienteIDFK, LocalizacaoID;
         List<Localizacao> localizacaos = new ArrayList<>();
 
@@ -106,6 +116,11 @@ public class LocalizacaoDAO implements ILocalizacao {
             ClienteIDFK = cursor.getInt(cursor.getColumnIndex("ClienteIDFK"));
             LocalizacaoID = cursor.getInt(cursor.getColumnIndex("LocalizacaoID"));
             Descricao = cursor.getString(cursor.getColumnIndex("Descricao"));
+            Endereco = cursor.getString( cursor.getColumnIndex( "Endereco" ) );
+            Numero = cursor.getString( cursor.getColumnIndex( "Numero" ) );
+            Bairro = cursor.getString( cursor.getColumnIndex( "Bairro" ) );
+            Cidade = cursor.getString( cursor.getColumnIndex( "Cidade" ) );
+            CEP = cursor.getString( cursor.getColumnIndex( "CEP" ) );
             Complemento = cursor.getString(cursor.getColumnIndex("Complemento"));
             Telefone = cursor.getString(cursor.getColumnIndex("Telefone"));
             LogUsuario = cursor.getString(cursor.getColumnIndex("LogUsuario"));
@@ -113,6 +128,11 @@ public class LocalizacaoDAO implements ILocalizacao {
             localizacao.setClienteIDFK(ClienteIDFK);
             localizacao.setLocalizacaoID(LocalizacaoID);
             localizacao.setDescricao(Descricao);
+            localizacao.setEndereco(Endereco);
+            localizacao.setNumero(Numero);
+            localizacao.setBairro(Bairro);
+            localizacao.setCidade(Cidade);
+            localizacao.setCEP(CEP);
             localizacao.setComplemento(Complemento);
             localizacao.setTelefone(Telefone);
             localizacao.setLogUsuario(LogUsuario);
@@ -125,7 +145,7 @@ public class LocalizacaoDAO implements ILocalizacao {
 
     public List<Localizacao> Pesquisa(String localizacao) {
 
-        String Descricao, Complemento, Telefone, LogUsuario;
+        String Descricao, Endereco, Numero, Bairro, Cidade, CEP, Complemento, Telefone, LogUsuario;
         int ClienteIDFK, LocalizacaoID;
         List<Localizacao> localizacoes = new ArrayList<>();
 
@@ -163,6 +183,11 @@ public class LocalizacaoDAO implements ILocalizacao {
             ClienteIDFK = cursor.getInt(cursor.getColumnIndex("ClienteIDFK"));
             LocalizacaoID = cursor.getInt(cursor.getColumnIndex("LocalizacaoID"));
             Descricao = cursor.getString(cursor.getColumnIndex("Descricao"));
+            Endereco = cursor.getString( cursor.getColumnIndex( "Endereco" ) );
+            Numero = cursor.getString( cursor.getColumnIndex( "Numero" ) );
+            Bairro = cursor.getString( cursor.getColumnIndex( "Bairro" ) );
+            Cidade = cursor.getString( cursor.getColumnIndex( "Cidade" ) );
+            CEP = cursor.getString( cursor.getColumnIndex( "CEP" ) );
             Complemento = cursor.getString(cursor.getColumnIndex("Complemento"));
             Telefone = cursor.getString(cursor.getColumnIndex("Telefone"));
             LogUsuario = cursor.getString(cursor.getColumnIndex("LogUsuario"));
@@ -170,6 +195,11 @@ public class LocalizacaoDAO implements ILocalizacao {
             localizacao1.setClienteIDFK(ClienteIDFK);
             localizacao1.setLocalizacaoID(LocalizacaoID);
             localizacao1.setDescricao(Descricao);
+            localizacao1.setEndereco(Endereco);
+            localizacao1.setNumero(Numero);
+            localizacao1.setBairro(Bairro);
+            localizacao1.setCidade(Cidade);
+            localizacao1.setCEP(CEP);
             localizacao1.setComplemento(Complemento);
             localizacao1.setTelefone(Telefone);
             localizacao1.setLogUsuario(LogUsuario);

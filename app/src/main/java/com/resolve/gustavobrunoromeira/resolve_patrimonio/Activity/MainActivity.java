@@ -294,8 +294,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         } else if (id == R.id.nav_Sincronizar) {
-            //Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Sicronizações", Snackbar.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MapaLocalizacao.class));
+            Snackbar.make(findViewById(R.id.CoordinatorLayoutID), "Sicronizações", Snackbar.LENGTH_SHORT).show();
+            //startActivity(new Intent(getApplicationContext(), MapaLocalizacao.class));
         } else if (id == R.id.nav_Organizacao) {
             boolean b =! menu.findItem(R.id.nav_Secretaria).isVisible();
 

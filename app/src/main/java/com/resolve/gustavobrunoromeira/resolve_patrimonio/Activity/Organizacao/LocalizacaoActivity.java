@@ -58,6 +58,7 @@ public class LocalizacaoActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
             }
 
             @Override

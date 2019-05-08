@@ -24,7 +24,7 @@ public class ConfiguracaoSQLite extends SQLiteOpenHelper {
 
     public ConfiguracaoSQLite(Context context) {
        super(context, Nome_DB, null, Version);
-      // deleteDataBase(context);
+       //deleteDataBase(context);
     }
 
     @Override
@@ -200,6 +200,11 @@ public class ConfiguracaoSQLite extends SQLiteOpenHelper {
                 + "  , ClienteIDFK INTEGER NOT NULL"
                 + "  , LocalizacaoID INTEGER NOT NULL"
                 + "  , Descricao TEXT NOT NULL"
+                + "  , Endereco TEXT "
+                + "  , Numero TEXT"
+                + "  , Bairro TEXT "
+                + "  , Cidade TEXT"
+                + "  , CEP TEXT"
                 + "  , Complemento TEXT"
                 + "  , Telefone TEXT"
                 + "  , LogUsuario TEXT"

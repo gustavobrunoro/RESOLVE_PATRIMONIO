@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     // Variavel de Sistemas
     private EditText Email,Senha;
     private Button Entra;
+    private ProgressDialog progressDialog;
 
     // Variavel de Controle
 
@@ -83,6 +84,11 @@ public class LoginActivity extends AppCompatActivity {
         Email = findViewById(R.id.Login_EmailID);
         Senha = findViewById(R.id.Login_SenhaID);
         Entra = findViewById(R.id.EntraID);
+
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMax(100);
+        progressDialog.setTitle("Carregando Informações do Cliente");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         Entra.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     usuario.setClienteIDFK( 99 );
 
                     //Carrega a Secretaria
+                    progressDialog.show();
                     carregaSecretaria();
 
                 }else{
@@ -152,13 +159,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaSecretaria(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Secretarias....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-        progressDialog.show();
 
         final Secretaria secretaria = new Secretaria();
         final SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
@@ -177,8 +178,6 @@ public class LoginActivity extends AppCompatActivity {
                                     if (listaSec != null) {
 
                                         for (Secretaria sec : listaSec) {
-
-                                            progressDialog.dismiss();
 
                                             secretaria.setSecretariaID(sec.getSecretariaID());
                                             secretaria.setClienteIDFK(sec.getClienteIDFK());
@@ -227,12 +226,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCusto(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final CentroCusto centroCusto = new CentroCusto();
         final CentroCustoDAO centroCustoDAO = new CentroCustoDAO(getApplicationContext());
@@ -248,8 +242,6 @@ public class LoginActivity extends AppCompatActivity {
                              if (listaCentroCusto != null) {
 
                                 for (CentroCusto cc : listaCentroCusto) {
-
-                                    progressDialog.dismiss();
 
                                     centroCusto.setCentroCustoID(cc.getCentroCustoID());
                                     centroCusto.setClienteIDFK(cc.getClienteIDFK());
@@ -286,12 +278,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaCentroCustoLocalResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Centro Custo Local Responsavel....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final CentroCustoLocalResponsavel centroCustoLocalResponsavel = new CentroCustoLocalResponsavel();
         final CentroCustoLocalReponsavelDAO centroCustoLocalReponsavelDAO = new CentroCustoLocalReponsavelDAO(getApplicationContext());
@@ -307,8 +294,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaCentroCustoLocalResponsavel != null) {
 
                                 for (CentroCustoLocalResponsavel cclt : listaCentroCustoLocalResponsavel) {
-
-                                    progressDialog.dismiss();
 
                                     centroCustoLocalResponsavel.setClienteIDFK(cclt.getClienteIDFK());
                                     centroCustoLocalResponsavel.setCentroCustoIDFK(cclt.getCentroCustoIDFK());
@@ -344,12 +329,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaLocalizacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Localizações....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final Localizacao localizacao = new Localizacao();
         final LocalizacaoDAO localizacaoDAO = new LocalizacaoDAO(getApplicationContext());
@@ -366,11 +346,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                 for (Localizacao lt : listaLocalizacao) {
 
-                                    progressDialog.dismiss();
-
                                     localizacao.setClienteIDFK(lt.getClienteIDFK());
                                     localizacao.setLocalizacaoID(lt.getLocalizacaoID());
                                     localizacao.setDescricao(lt.getDescricao());
+                                    localizacao.setEndereco(lt.getEndereco());
+                                    localizacao.setNumero(lt.getNumero());
+                                    localizacao.setBairro(lt.getBairro());
+                                    localizacao.setCidade(lt.getCidade());
+                                    localizacao.setCEP(lt.getCEP());
                                     localizacao.setComplemento(lt.getComplemento());
                                     localizacao.setTelefone(lt.getTelefone());
                                     localizacao.setLogUsuario(lt.getLogUsuario());
@@ -404,12 +387,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaResponsavel(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Responsaveis....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final Responsavel responsavel = new Responsavel();
         final ResponsavelDAO responsavelDAO = new ResponsavelDAO(getApplicationContext());
@@ -425,8 +403,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaResponsavel != null) {
 
                                 for (Responsavel r : listaResponsavel) {
-
-                                    progressDialog.dismiss();
 
                                     responsavel.setClienteIDFK(r.getClienteIDFK());
                                     responsavel.setCentroCustoIDFK(r.getCentroCustoIDFK());
@@ -463,12 +439,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaItem(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Itens....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final Item item = new Item();
         final ItemDAO itemDAO = new ItemDAO(getApplicationContext());
@@ -484,8 +455,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaItem != null) {
 
                                 for (Item i : listaItem) {
-
-                                    progressDialog.dismiss();
 
                                     item.setClienteIDFK(i.getClienteIDFK());
                                     item.setItemID(i.getItemID());
@@ -520,12 +489,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaFabricante(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Fabricante....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final Fabricante fabricante = new Fabricante();
         final FabricanteDAO fabricanteDAO = new FabricanteDAO(getApplicationContext());
@@ -541,8 +505,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaFabricante != null) {
 
                                 for (Fabricante f : listaFabricante) {
-
-                                    progressDialog.dismiss();
 
                                     fabricante.setClienteIDFK(f.getClienteIDFK());
                                     fabricante.setFabricanteID(f.getFabricanteID());
@@ -578,12 +540,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaTipoTombo(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Tipo Tombo....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final TipoTombo tipoTombo = new TipoTombo();
         final TipoTomboDAO tipoTomboDAO = new TipoTomboDAO(getApplicationContext());
@@ -599,8 +556,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaTipoTombo != null) {
 
                                 for (TipoTombo tt : listaTipoTombo) {
-
-                                    progressDialog.dismiss();
 
                                     tipoTombo.setTipoTomboID(tt.getTipoTomboID());
                                     tipoTombo.setDescricao(tt.getDescricao());
@@ -635,12 +590,7 @@ public class LoginActivity extends AppCompatActivity {
      * */
     public boolean carregaEstadoConservacao(){
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMax(100);
-        progressDialog.setTitle("Carregando Informações do Cliente");
         progressDialog.setMessage("Carregando Estado Conservacao....");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
         final EstadoConservacao estadoConservacao = new EstadoConservacao();
         final EstadoConsevacaoDAO estadoConsevacaoDAO = new EstadoConsevacaoDAO(getApplicationContext());
@@ -656,8 +606,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (listaEstadoConservacao != null) {
 
                                 for (EstadoConservacao ec : listaEstadoConservacao) {
-
-                                    progressDialog.dismiss();
 
                                     estadoConservacao.setEstadoConservacaoID(ec.getEstadoConservacaoID());
                                     estadoConservacao.setDescricao(ec.getDescricao());
