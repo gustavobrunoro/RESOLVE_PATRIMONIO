@@ -17,6 +17,7 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public CentroCustoLocalReponsavelDAO(Context context) {
 
@@ -26,6 +27,9 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar Responsavel do Centro Custo no Banco de Dados
+     @param centroCustoLocalResponsavel
+     @return Boolean */
     @Override
     public boolean Salvar(CentroCustoLocalResponsavel centroCustoLocalResponsavel) {
 
@@ -37,7 +41,10 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
@@ -45,6 +52,9 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar Responsavel do Centro Custo no Banco de Dados
+     @param centroCustoLocalResponsavel
+     @return Boolean */
     @Override
     public boolean Atualizar(CentroCustoLocalResponsavel centroCustoLocalResponsavel) {
 
@@ -58,31 +68,39 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(centroCustoLocalResponsavel.getCentroCustoIDFK()), String.valueOf(centroCustoLocalResponsavel.getLocalizacaoIDFK()), String.valueOf(centroCustoLocalResponsavel.getMatricula())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL, Valor ,"ClienteIDFK = ? AND CentroCustoIDFK = ? AND LocalizacaoIDFK = ? AND Matricula = ?" , args);
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL, Valor ,"ClienteIDFK = ? AND CentroCustoIDFK = ? AND LocalizacaoIDFK = ? AND Matricula = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar Responsavel do Centro Custo no Banco de Dados
+     @param centroCustoLocalResponsavel
+     @return Boolean */
     @Override
     public boolean Deletar(CentroCustoLocalResponsavel centroCustoLocalResponsavel) {
 
         try{
-            String[] args = { String.valueOf( clienteIDFK ), String.valueOf(centroCustoLocalResponsavel.getCentroCustoIDFK()), String.valueOf(centroCustoLocalResponsavel.getLocalizacaoIDFK()), String.valueOf(centroCustoLocalResponsavel.getMatricula())};
-             Escreve.delete(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL,"ClienteIDFK = ? AND CentroCustoIDFK = ? AND LocalizacaoIDFK = ? AND Matricula = ?" , args);
+             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(centroCustoLocalResponsavel.getCentroCustoIDFK()), String.valueOf(centroCustoLocalResponsavel.getLocalizacaoIDFK()), String.valueOf(centroCustoLocalResponsavel.getMatricula())};
+             retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL,"ClienteIDFK = ? AND CentroCustoIDFK = ? AND LocalizacaoIDFK = ? AND Matricula = ?" , args);
 
+             if ( retorno == 1 )
+                 return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista Responsavel do Centro Custo no Banco de Dados
+     @param bem
+     @return Boolean */
     @Override
     public List<CentroCustoLocalResponsavel> Lista(Bem bem) {
 
@@ -93,7 +111,7 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
 
         String[] args = { String.valueOf( clienteIDFK ), String.valueOf( bem.getSecretariaIDFK() ), String.valueOf( bem.getLocalizacaoIDFK() )};
 
-        String sql = "SELECT * FROM " + ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL  + " WHERE ClienteIDFK = ? AND SecretariaIDFK = ? AND LocalizacaoIDFK = ? ";
+        String sql = "SELECT * FROM " + ConfiguracaoSQLite.TABELA_CENTROCUSTOLOCALRESPONSAVEL + " WHERE ClienteIDFK = ? AND SecretariaIDFK = ? AND LocalizacaoIDFK = ? ";
         cursor = Ler.rawQuery(sql,args);
 
         while (cursor.moveToNext()){
@@ -110,7 +128,6 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
             centroCustoLocalResponsavel.setLocalizacaoIDFK(LocalizacaoIDFK);
             centroCustoLocalResponsavel.setMatricula(Matricula);
         }
-
         return centroCustoLocalResponsavels;
     }
 

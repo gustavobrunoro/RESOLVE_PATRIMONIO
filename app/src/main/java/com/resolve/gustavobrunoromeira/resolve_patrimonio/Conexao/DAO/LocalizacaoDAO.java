@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.print.PrinterId;
+import android.util.Log;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces.ILocalizacao;
@@ -17,6 +19,7 @@ public class LocalizacaoDAO implements ILocalizacao {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public LocalizacaoDAO(Context context) {
 
@@ -26,6 +29,9 @@ public class LocalizacaoDAO implements ILocalizacao {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar Localização no Banco de Dados
+     @param localizacao
+     @return Boolean */
     @Override
     public boolean Salvar(Localizacao localizacao) {
 
@@ -44,20 +50,25 @@ public class LocalizacaoDAO implements ILocalizacao {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_LOCALIZACAO,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_LOCALIZACAO,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar Localização no Banco de Dados
+     @param localizacao
+     @return Boolean */
     @Override
     public boolean Atualizar(Localizacao localizacao) {
 
         ContentValues Valor = new ContentValues();
-        Valor.put("ClienteIDFJ",localizacao.getClienteIDFK());
+        Valor.put("ClienteIDFK",localizacao.getClienteIDFK());
         Valor.put("Descricao",localizacao.getDescricao());
         Valor.put("Endereco",localizacao.getEndereco());
         Valor.put("Numero",localizacao.getNumero());
@@ -72,28 +83,34 @@ public class LocalizacaoDAO implements ILocalizacao {
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(localizacao.getLocalizacaoID())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_LOCALIZACAO, Valor ,"ClienteIDFK = ? AND LocalizacaoID = ?" , args);
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_LOCALIZACAO, Valor ,"ClienteIDFK = ? AND LocalizacaoID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar Localização no Banco de Dados
+     @param localizacao
+     @return Boolean */
     @Override
     public boolean Deletar(Localizacao localizacao) {
 
         try{
+
             String[] args = { String.valueOf(clienteIDFK), String.valueOf( localizacao.getLocalizacaoID() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_LOCALIZACAO,"ClienteIDFK = ? AND LocalizacaoID = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_LOCALIZACAO,"ClienteIDFK = ? AND LocalizacaoID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 

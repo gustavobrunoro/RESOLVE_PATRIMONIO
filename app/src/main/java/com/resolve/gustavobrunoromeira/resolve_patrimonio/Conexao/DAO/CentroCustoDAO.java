@@ -17,6 +17,7 @@ public class CentroCustoDAO implements ICentroCusto {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public CentroCustoDAO(Context context) {
 
@@ -26,6 +27,9 @@ public class CentroCustoDAO implements ICentroCusto {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar Centro Custo no Banco de Dados
+     @param centroCusto
+     @return Boolean */
     @Override
     public boolean Salvar(CentroCusto centroCusto) {
 
@@ -38,7 +42,10 @@ public class CentroCustoDAO implements ICentroCusto {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTO,null, Valor);
+           retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTO,null, Valor);
+
+           if ( retorno == -1 )
+               return false;
 
         }catch (Exception e ){
             return false;
@@ -46,6 +53,9 @@ public class CentroCustoDAO implements ICentroCusto {
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar Centro Custo no Banco de Dados
+     @param centroCusto
+     @return Boolean */
     @Override
     public boolean Atualizar(CentroCusto centroCusto) {
 
@@ -59,30 +69,41 @@ public class CentroCustoDAO implements ICentroCusto {
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(centroCusto.getCentroCustoID())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTO, Valor ,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
+           retorno = Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTO, Valor ,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
+
+           if ( retorno == -1 )
+               return false;
 
         }catch (Exception e ){
-
             return false;
         }
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar Centro Custo no Banco de Dados
+     @param centroCusto
+     @return Boolean */
     @Override
     public boolean Deletar(CentroCusto centroCusto) {
 
         try{
+
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( centroCusto.getCentroCustoID() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_CENTROCUSTO,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
+
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_CENTROCUSTO,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodo Responsavel Por Lista Centro Custo no Banco de Dados
+     @param bem
+     @return Boolean */
     @Override
     public List<CentroCusto> Lista(Bem bem) {
 
@@ -128,6 +149,7 @@ public class CentroCustoDAO implements ICentroCusto {
     }
 
     /**Metodos Responsavel Pesquisa Centro Custo
+     @param CentroCusto
      @return Centro Custos*/
     public List<CentroCusto> Pesquisa (String CentroCusto) {
 
@@ -183,6 +205,7 @@ public class CentroCustoDAO implements ICentroCusto {
     }
 
     /**Metodos Responsavel Pesquisa Centro Custo
+     @param ResponsavelIDFK
      @return Centro Custo*/
     public String PesquisaReponsavel (String ResponsavelIDFK) {
 
@@ -201,9 +224,7 @@ public class CentroCustoDAO implements ICentroCusto {
         cursor = Ler.rawQuery(sql,args);
 
         while (cursor.moveToNext()) {
-
             Reposnavel = cursor.getString(cursor.getColumnIndex("Nome"));
-
         }
         return Reposnavel;
     }

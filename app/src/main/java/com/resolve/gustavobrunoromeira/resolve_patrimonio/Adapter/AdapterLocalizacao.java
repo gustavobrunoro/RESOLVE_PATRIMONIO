@@ -58,8 +58,6 @@ public class AdapterLocalizacao extends RecyclerView.Adapter<AdapterLocalizacao.
             @Override
             public void onClick(View view) {
 
-                //Toast.makeText( context , localizacoes.get( position ).getEndereco() , Toast.LENGTH_SHORT ).show();
-
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + localizacoes.get( position ).getEndereco() +","+ localizacoes.get( position ).getNumero()+ "," + localizacoes.get( position ).getBairro() + "," + localizacoes.get( position ).getCidade());
                 Intent mapIntent = new Intent( Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

@@ -26,6 +26,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Por Salvar Plaqueta
+     * @param bem
      @return Boolean*/
     @Override
     public boolean Salvar(Bem bem) {
@@ -61,6 +62,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Por Atualizar Plaqueta
+     * @param bem
      @return Boolean*/
     @Override
     public boolean Atualizar(Bem bem) {
@@ -109,6 +111,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Por Deletar Plaqueta
+     * @param bem
      @return Boolean*/
     @Override
     public boolean Deletar(Bem bem) {
@@ -127,6 +130,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Por Lista Plaqueta
+     * @param exportado
      @return Lista Bem*/
     @Override
     public List<Bem> Lista(int exportado) {
@@ -189,6 +193,8 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Pesquisa Plaquetas
+     * @param exportado
+     * @param plaqueta
      @return Plaquetas*/
     public List<Bem> Pesquisa (String plaqueta, int exportado) {
 
@@ -280,6 +286,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Lista Plaqueta Pesquisada
+     * @param b
      @return Plaquetas*/
     public List<Bem> Lista (Bem b) {
 

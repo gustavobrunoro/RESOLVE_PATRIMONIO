@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -259,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                              }
                         }catch (Exception e ){
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Não e possivel carrega Ceentro Custo: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Não e possivel carrega Centro Custo: " + e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -271,14 +272,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
         return true;
-
     }
 
     /**Metodo para Carrega as Informações do Centro Custo Local Responsavel das Base de dados
      * */
     public boolean carregaCentroCustoLocalResponsavel(){
 
-        progressDialog.setMessage("Carregando Centro Custo Local Responsavel....");
+        progressDialog.setMessage("Carregando Responsavel do Local Centro Custo ....");
 
         final CentroCustoLocalResponsavel centroCustoLocalResponsavel = new CentroCustoLocalResponsavel();
         final CentroCustoLocalReponsavelDAO centroCustoLocalReponsavelDAO = new CentroCustoLocalReponsavelDAO(getApplicationContext());
@@ -310,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }catch (Exception e){
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Não e possivel carrega Ceentro Custo Local Reponsavel: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Não e possivel carrega Responsavel do Local Centro Custo: " + e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -322,7 +322,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
         return true;
-
     }
 
     /**Metodo para Carrega as Informações das Localizações das Base de dados
@@ -358,7 +357,7 @@ public class LoginActivity extends AppCompatActivity {
                                     localizacao.setTelefone(lt.getTelefone());
                                     localizacao.setLogUsuario(lt.getLogUsuario());
 
-                                    if (localizacaoDAO.Salvar(localizacao)) {
+                                    if (localizacaoDAO.Salvar(localizacao)){
 
                                     } else {
                                         localizacaoDAO.Atualizar(localizacao);
@@ -380,7 +379,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
         return true;
-
     }
 
     /**Metodo para Carrega as Informações dos Responsaveis das Base de dados
