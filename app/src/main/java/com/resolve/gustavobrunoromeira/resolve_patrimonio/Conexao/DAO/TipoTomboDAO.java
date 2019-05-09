@@ -15,6 +15,7 @@ import java.util.List;
 public class TipoTomboDAO implements ITipoTombo {
 
     private SQLiteDatabase Escreve,Ler;
+    private long retorno;
 
     public TipoTomboDAO(Context context) {
 
@@ -24,6 +25,9 @@ public class TipoTomboDAO implements ITipoTombo {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Tipo do Tombo no Banco de Dados
+     @param tipoTombo
+     @return Boolean */
     @Override
     public boolean Salvar(TipoTombo tipoTombo) {
 
@@ -33,7 +37,10 @@ public class TipoTomboDAO implements ITipoTombo {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_TIPOTOMBO,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_TIPOTOMBO,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
@@ -41,6 +48,9 @@ public class TipoTomboDAO implements ITipoTombo {
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Tipo do Tombo no Banco de Dados
+     @param tipoTombo
+     @return Boolean */
     @Override
     public boolean Atualizar(TipoTombo tipoTombo) {
 
@@ -50,8 +60,10 @@ public class TipoTomboDAO implements ITipoTombo {
         try{
 
             String[] args = {String.valueOf(tipoTombo.getTipoTomboID())};
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_TIPOTOMBO, Valor ,"TipoTomboID=?" , args);
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_TIPOTOMBO, Valor ,"TipoTomboID=?" , args);
+            if ( retorno == - 1 )
+                return false;
 
         }catch (Exception e){
             return false;
@@ -59,21 +71,27 @@ public class TipoTomboDAO implements ITipoTombo {
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Tipo do Tombo no Banco de Dados
+     @param tipoTombo
+     @return Boolean */
     @Override
     public boolean Deletar(TipoTombo tipoTombo) {
 
         try{
             String[] args = { String.valueOf( tipoTombo.getTipoTomboID() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_TIPOTOMBO,"TipoTomboID=?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_TIPOTOMBO,"TipoTomboID=?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista o Tipo do Tombo no Banco de Dados
+      @return Lista de Tipos de Tombos */
     @Override
     public List<TipoTombo> Lista() {
 
@@ -95,10 +113,8 @@ public class TipoTomboDAO implements ITipoTombo {
             tipoTombo.setTipoTomboID(TipoTomboID);
             tipoTombo.setDescricao(Descricao);
 
-
             tipoTombos.add(tipoTombo);
         }
-
         return tipoTombos;
     }
 

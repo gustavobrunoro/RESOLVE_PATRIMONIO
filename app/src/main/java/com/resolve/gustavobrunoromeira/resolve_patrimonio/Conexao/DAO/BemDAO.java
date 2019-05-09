@@ -16,6 +16,7 @@ public class BemDAO implements IBem {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public BemDAO(Context context) {
 
@@ -26,7 +27,7 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Por Salvar Plaqueta
-     * @param bem
+     @param bem
      @return Boolean*/
     @Override
     public boolean Salvar(Bem bem) {
@@ -52,17 +53,19 @@ public class BemDAO implements IBem {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_BEM,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_BEM,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
     /**Metodos Responsavel Por Atualizar Plaqueta
-     * @param bem
+     @param bem
      @return Boolean*/
     @Override
     public boolean Atualizar(Bem bem) {
@@ -96,22 +99,23 @@ public class BemDAO implements IBem {
 
                     String[] args = { String.valueOf( clienteIDFK ), String.valueOf( bem.getPlaqueta() )};
 
-                    Escreve.update(ConfiguracaoSQLite.TABELA_BEM, Valor ," ClienteIDFK = ? AND  Plaqueta = ?" , args);
+                    retorno = Escreve.update(ConfiguracaoSQLite.TABELA_BEM, Valor ," ClienteIDFK = ? AND  Plaqueta = ?" , args);
 
-                    return true;
+                    if ( retorno == -1 )
+                        return false;
+                    else
+                        return true;
 
                 }catch (Exception e ){
-
                     return false;
                 }
             }
         }
-
         return false;
     }
 
     /**Metodos Responsavel Por Deletar Plaqueta
-     * @param bem
+     @param bem
      @return Boolean*/
     @Override
     public boolean Deletar(Bem bem) {
@@ -119,19 +123,20 @@ public class BemDAO implements IBem {
         try{
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( bem.getPlaqueta() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_BEM,"ClienteIDFK = ? AND Plaqueta = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_BEM,"ClienteIDFK = ? AND Plaqueta = ?" , args);
+
+            if ( retorno == - 1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
     /**Metodos Responsavel Por Lista Plaqueta
-     * @param exportado
-     @return Lista Bem*/
+     @param exportado
+     @return Lista Bem Cadastrados no Banco de Dados*/
     @Override
     public List<Bem> Lista(int exportado) {
 
@@ -193,8 +198,8 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Pesquisa Plaquetas
-     * @param exportado
-     * @param plaqueta
+     @param exportado Indica se a pequisa e feita com bens ja exportados ou não
+     @param plaqueta Plaqueta a se pesquisada
      @return Plaquetas*/
     public List<Bem> Pesquisa (String plaqueta, int exportado) {
 
@@ -286,8 +291,8 @@ public class BemDAO implements IBem {
     }
 
     /**Metodos Responsavel Lista Plaqueta Pesquisada
-     * @param b
-     @return Plaquetas*/
+     @param b Bem a ser pesquiadao
+     @return Lista de plaqueta do bem pesquidado*/
     public List<Bem> Lista (Bem b) {
 
         Integer BemID, ClienteIDFK, SecretariaIDFK, CentroCustoIDFK, LocalizacaoIDFK, ResponsavelIDFK,  ItemIDFK, FabricanteIDFK, EstadoConservacaoIDFK, TipoTomboIDFK, Exportado ;

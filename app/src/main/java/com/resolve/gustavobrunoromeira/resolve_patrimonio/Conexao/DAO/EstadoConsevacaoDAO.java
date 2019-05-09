@@ -15,6 +15,7 @@ import java.util.List;
 public class EstadoConsevacaoDAO implements IEstadoConservacao {
 
     private SQLiteDatabase Escreve,Ler;
+    private long retorno;
 
     public EstadoConsevacaoDAO(Context context) {
 
@@ -24,6 +25,9 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Estado de Conservação no Banco de Dados
+     @param estadoConservacao
+     @return Boolean */
     @Override
     public boolean Salvar(EstadoConservacao estadoConservacao) {
 
@@ -34,7 +38,10 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
@@ -42,6 +49,9 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Estado de Conservação no Banco de Dados
+     @param estadoConservacao
+     @return Boolean */
     @Override
     public boolean Atualizar(EstadoConservacao estadoConservacao) {
 
@@ -52,7 +62,10 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
 
             String[] args = { String.valueOf(estadoConservacao.getEstadoConservacaoID())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO, Valor ,"EstadoConservacaoID = ?" , args);
+            retorno =  Escreve.update(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO, Valor ,"EstadoConservacaoID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e){
             return false;
@@ -60,22 +73,28 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Estado de Conservação no Banco de Dados
+     @param estadoConservacao
+     @return Boolean */
     @Override
     public boolean Deletar(EstadoConservacao estadoConservacao) {
 
         try{
+
             String[] args = { String.valueOf( estadoConservacao.getEstadoConservacaoID() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO,"EstadoConservacaoID = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_ESTADOCONSERVACAO,"EstadoConservacaoID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
-
     }
 
+    /**Metodos Responsavel Por LIsta o Estado de Conservação no Banco de Dados
+     @return Lista do Estado de Conservação */
     @Override
     public List<EstadoConservacao> Lista() {
 
@@ -99,7 +118,6 @@ public class EstadoConsevacaoDAO implements IEstadoConservacao {
 
             estadoConservacaos.add(estadoConservacao);
         }
-
         return estadoConservacaos;
     }
 

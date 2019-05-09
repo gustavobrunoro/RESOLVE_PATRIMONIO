@@ -28,7 +28,7 @@ public class SecretariaDAO implements ISecretaria {
     }
 
     /**Metodos Responsavel Por Salvar Secretaria no Banco de Dados
-     * @param secretaria
+     @param secretaria
      @return Boolean */
     @Override
     public boolean Salvar(Secretaria secretaria) {
@@ -59,7 +59,7 @@ public class SecretariaDAO implements ISecretaria {
     }
 
     /**Metodos Responsavel Por Atualizar Secretaria no Banco de Dados
-     * @param secretaria
+     @param secretaria
      @return Boolean */
     @Override
     public boolean Atualizar(Secretaria secretaria) {
@@ -76,7 +76,6 @@ public class SecretariaDAO implements ISecretaria {
         try{
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(secretaria.getSecretariaID())};
-
             retorno = Escreve.update(ConfiguracaoSQLite.TABELA_SECRETARIA, Valor ,"ClienteIDFK = ? AND SecretariaID = ?" , args);
 
             if ( retorno == -1 )
@@ -89,7 +88,7 @@ public class SecretariaDAO implements ISecretaria {
     }
 
     /**Metodos Responsavel Por Deletar Secretaria no Banco de Dados
-     * @param secretaria
+     @param secretaria
      @return Boolean */
     @Override
     public boolean Deletar(Secretaria secretaria) {
@@ -153,13 +152,12 @@ public class SecretariaDAO implements ISecretaria {
 
             secretarias.add(secretaria);
         }
-
         return secretarias;
     }
 
     /**Metodos Responsavel Pesquisa Secretarias
-     * @param secretaria Secretaria a ser pesquisada
-     @return Secretarias*/
+     @param secretaria
+     @return Lista de secretarias pesquisada*/
     public List<Secretaria> Pesquisa (String secretaria) {
 
         int ID, SecretariaID, ClienteIDFK, CodigoAnterior, SecretarioIDFK;

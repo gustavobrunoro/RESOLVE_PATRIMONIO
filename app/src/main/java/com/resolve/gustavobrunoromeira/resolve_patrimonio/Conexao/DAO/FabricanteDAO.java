@@ -17,6 +17,7 @@ public class FabricanteDAO implements IFabricante {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public FabricanteDAO(Context context) {
 
@@ -26,6 +27,9 @@ public class FabricanteDAO implements IFabricante {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Fabricante no Banco de Dados
+     @param fabricante
+     @return Boolean */
     @Override
     public boolean Salvar(Fabricante fabricante) {
 
@@ -37,20 +41,25 @@ public class FabricanteDAO implements IFabricante {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_FABRICANTE,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_FABRICANTE,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Fabricante no Banco de Dados
+     @param fabricante
+     @return Boolean */
     @Override
     public boolean Atualizar(Fabricante fabricante) {
 
         ContentValues Valor = new ContentValues();
-        Valor.put("ClienteIDFJ",fabricante.getClienteIDFK());
+        Valor.put("ClienteIDFK",fabricante.getClienteIDFK());
         Valor.put("Nome",fabricante.getNome());
         Valor.put("Descricao",fabricante.getDescricao());
 
@@ -58,31 +67,39 @@ public class FabricanteDAO implements IFabricante {
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(fabricante.getFabricanteID())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_FABRICANTE, Valor ,"ClienteIDFK = ? AND FabricanteID = ?" , args);
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_FABRICANTE, Valor ,"ClienteIDFK = ? AND FabricanteID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Fabricante no Banco de Dados
+     @param fabricante
+     @return Boolean */
     @Override
     public boolean Deletar(Fabricante fabricante) {
 
         try{
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( fabricante.getFabricanteID())};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_FABRICANTE,"ClienteIDFK = ? AND FabricanteID = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_FABRICANTE,"ClienteIDFK = ? AND FabricanteID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista o Fabricante no Banco de Dados
+     @param bem
+     @return Lista de Fabricantes pesquisados */
     @Override
     public List<Fabricante> Lista(Bem bem) {
 
@@ -111,7 +128,6 @@ public class FabricanteDAO implements IFabricante {
 
             fabricantes.add(fabricante);
         }
-
         return fabricantes;
     }
 

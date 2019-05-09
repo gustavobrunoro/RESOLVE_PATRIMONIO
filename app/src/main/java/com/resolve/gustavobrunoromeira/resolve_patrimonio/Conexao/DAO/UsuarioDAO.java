@@ -16,6 +16,7 @@ public class UsuarioDAO implements IUsuario {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public UsuarioDAO(Context context) {
 
@@ -25,6 +26,9 @@ public class UsuarioDAO implements IUsuario {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Usuario no Banco de Dados
+     @param usuario
+     @return Boolean */
     @Override
     public boolean Salvar(Usuario usuario) {
 
@@ -36,15 +40,20 @@ public class UsuarioDAO implements IUsuario {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_USUARIO ,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_USUARIO ,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Usuario no Banco de Dados
+     @param usuario
+     @return Boolean */
     @Override
     public boolean Atualizar(Usuario usuario) {
 
@@ -57,32 +66,38 @@ public class UsuarioDAO implements IUsuario {
         try{
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( usuario.getEmail() )};
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_USUARIO, Valor ,"ClienteIDFK = ? AND Email=?" , args);
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_USUARIO, Valor ,"ClienteIDFK = ? AND Email=?" , args);
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Usuario no Banco de Dados
+     @param usuario
+     @return Boolean */
     @Override
     public boolean Deletar(Usuario usuario) {
 
         try{
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( usuario.getEmail() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_USUARIO ,"ClienteIDFK = ? AND Email=?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_USUARIO ,"ClienteIDFK = ? AND Email=?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista o Usuario no Banco de Dados
+     @return Lista de usuarios */
     @Override
     public List<Usuario> Lista() {
 
@@ -107,9 +122,7 @@ public class UsuarioDAO implements IUsuario {
             usuarios.add(usuario);
 
         }
-
         return usuarios;
-
     }
 
 }

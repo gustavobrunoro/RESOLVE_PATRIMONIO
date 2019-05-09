@@ -114,6 +114,9 @@ public class LocalizacaoDAO implements ILocalizacao {
         return true;
     }
 
+    /**Metodos Responsavel Por Lista Localização no Banco de Dados
+     @param bem
+     @return Lista de Localizações */
     @Override
     public List<Localizacao> Lista(Bem bem) {
 
@@ -156,10 +159,12 @@ public class LocalizacaoDAO implements ILocalizacao {
 
             localizacaos.add(localizacao);
        }
-
         return localizacaos;
     }
 
+    /**Metodos Responsavel Por Pesquisa Localização no Banco de Dados
+     @param localizacao
+     @return Lista de Localizações pesquisada*/
     public List<Localizacao> Pesquisa(String localizacao) {
 
         String Descricao, Endereco, Numero, Bairro, Cidade, CEP, Complemento, Telefone, LogUsuario;
@@ -223,7 +228,6 @@ public class LocalizacaoDAO implements ILocalizacao {
 
             localizacoes.add(localizacao1);
         }
-
         return localizacoes;
     }
 

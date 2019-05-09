@@ -17,6 +17,7 @@ public class ResponsavelDAO implements IResponsavel {
 
     private SQLiteDatabase Escreve,Ler;
     private int clienteIDFK = 99;
+    private long retorno;
 
     public ResponsavelDAO(Context context) {
 
@@ -26,6 +27,9 @@ public class ResponsavelDAO implements IResponsavel {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Responsavel no Banco de Dados
+     @param responsavel
+     @return Boolean */
     @Override
     public boolean Salvar(Responsavel responsavel) {
 
@@ -38,15 +42,20 @@ public class ResponsavelDAO implements IResponsavel {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_RESPONSAVEL,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_RESPONSAVEL,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Responsavel no Banco de Dados
+     @param responsavel
+     @return Boolean */
     @Override
     public boolean Atualizar(Responsavel responsavel) {
 
@@ -59,32 +68,39 @@ public class ResponsavelDAO implements IResponsavel {
         try{
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(responsavel.getMatricula())};
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_RESPONSAVEL, Valor ,"ClienteIDFK = ? AND Matricula = ?" , args);
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_RESPONSAVEL, Valor ,"ClienteIDFK = ? AND Matricula = ?" , args);
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Responsavel no Banco de Dados
+     @param responsavel
+     @return Boolean */
     @Override
     public boolean Deletar(Responsavel responsavel) {
 
         try{
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( responsavel.getMatricula() )};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_RESPONSAVEL,"ClienteIDFK = ? AND Matricula = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_RESPONSAVEL,"ClienteIDFK = ? AND Matricula = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista o Responsavel no Banco de Dados
+     @param bem
+     @return Lista de Responsaveis pesquisados */
     @Override
     public List<Responsavel> Lista(Bem bem) {
 
@@ -136,10 +152,12 @@ public class ResponsavelDAO implements IResponsavel {
             responsaveis.add(responsavel);
 
           }
-
         return responsaveis;
     }
 
+    /**Metodos Responsavel Por Pesquisa o Responsavel no Banco de Dados
+     @param responsavel
+     @return Lista de responsaveis pesquisados */
     public List<Responsavel> Pesquisa(String responsavel) {
 
         String Nome;
@@ -190,7 +208,6 @@ public class ResponsavelDAO implements IResponsavel {
             responsaveis.add(responsavel1);
 
         }
-
         return responsaveis;
     }
 

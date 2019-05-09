@@ -42,7 +42,7 @@ public class CentroCustoDAO implements ICentroCusto {
 
         try{
 
-           retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTO,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_CENTROCUSTO,null, Valor);
 
            if ( retorno == -1 )
                return false;
@@ -69,7 +69,7 @@ public class CentroCustoDAO implements ICentroCusto {
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(centroCusto.getCentroCustoID())};
 
-           retorno = Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTO, Valor ,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_CENTROCUSTO, Valor ,"ClienteIDFK = ? AND CentroCustoID = ?" , args);
 
            if ( retorno == -1 )
                return false;
@@ -150,7 +150,7 @@ public class CentroCustoDAO implements ICentroCusto {
 
     /**Metodos Responsavel Pesquisa Centro Custo
      @param CentroCusto
-     @return Centro Custos*/
+     @return Lista de Centro Custos pesquisados*/
     public List<CentroCusto> Pesquisa (String CentroCusto) {
 
         String Descricao;
@@ -206,7 +206,7 @@ public class CentroCustoDAO implements ICentroCusto {
 
     /**Metodos Responsavel Pesquisa Centro Custo
      @param ResponsavelIDFK
-     @return Centro Custo*/
+     @return Lista de Centro Custo pesquisados*/
     public String PesquisaReponsavel (String ResponsavelIDFK) {
 
         String Reposnavel = "";

@@ -16,7 +16,8 @@ import java.util.List;
 public class ItemDAO implements IItem {
 
     private SQLiteDatabase Escreve,Ler;
-    private  int clienteIDFK = 99;
+    private int clienteIDFK = 99;
+    private long retorno;
 
     public ItemDAO(Context context) {
 
@@ -26,6 +27,9 @@ public class ItemDAO implements IItem {
         Ler     = configuracaoSQLite.getReadableDatabase();
     }
 
+    /**Metodos Responsavel Por Salvar o Item no Banco de Dados
+     @param item
+     @return Boolean */
     @Override
     public boolean Salvar(Item item) {
 
@@ -36,15 +40,20 @@ public class ItemDAO implements IItem {
 
         try{
 
-            Escreve.insert(ConfiguracaoSQLite.TABELA_ITEM,null, Valor);
+            retorno = Escreve.insert(ConfiguracaoSQLite.TABELA_ITEM,null, Valor);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Atualizar o Item no Banco de Dados
+     @param item
+     @return Boolean */
     @Override
     public boolean Atualizar(Item item) {
 
@@ -56,31 +65,39 @@ public class ItemDAO implements IItem {
 
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf(item.getItemID())};
 
-            Escreve.update(ConfiguracaoSQLite.TABELA_ITEM, Valor ,"ClienteIDFK = ? AND ItemID=?" , args);
+            retorno = Escreve.update(ConfiguracaoSQLite.TABELA_ITEM, Valor ,"ClienteIDFK = ? AND ItemID=?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Deletar o Item no Banco de Dados
+     @param item
+     @return Boolean */
     @Override
     public boolean Deletar(Item item) {
 
         try{
             String[] args = { String.valueOf( clienteIDFK ), String.valueOf( item.getItemID())};
-            Escreve.delete(ConfiguracaoSQLite.TABELA_ITEM,"ClienteIDFK = ? AND ItemID = ?" , args);
+            retorno = Escreve.delete(ConfiguracaoSQLite.TABELA_ITEM,"ClienteIDFK = ? AND ItemID = ?" , args);
+
+            if ( retorno == -1 )
+                return false;
 
         }catch (Exception e ){
-
             return false;
         }
-
         return true;
     }
 
+    /**Metodos Responsavel Por Lista o Item no Banco de Dados
+     @param item
+     @return Lista de Itens pesquisados */
     @Override
     public List<Item> Lista(Bem bem) {
 
@@ -107,7 +124,6 @@ public class ItemDAO implements IItem {
 
             itens.add(item);
         }
-
         return itens;
     }
 

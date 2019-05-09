@@ -100,7 +100,7 @@ public class CentroCustoLocalReponsavelDAO implements ICentroCustoLocalResponsav
 
     /**Metodos Responsavel Por Lista Responsavel do Centro Custo no Banco de Dados
      @param bem
-     @return Boolean */
+     @return Lista de Responsavel pelo centro de custo */
     @Override
     public List<CentroCustoLocalResponsavel> Lista(Bem bem) {
 
