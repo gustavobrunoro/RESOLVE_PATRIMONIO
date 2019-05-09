@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                     usuario.setClienteIDFK( 99 );
 
                     //Carrega a Secretaria
-                    progressDialog.show();
+
                     carregaSecretaria();
 
                 }else{
@@ -161,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean carregaSecretaria(){
 
         progressDialog.setMessage("Carregando Secretarias....");
+        progressDialog.show();
 
         final Secretaria secretaria = new Secretaria();
         final SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());
@@ -637,6 +638,7 @@ public class LoginActivity extends AppCompatActivity {
     /**Metodo Responsavel por Abrir a Tela Principal */
     public void abrirPrincipal(){
 
+        progressDialog.dismiss();
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
         finish();
     }

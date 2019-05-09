@@ -126,6 +126,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     }
 
     /** Metodo Responsavel por Efetuar o Cadastro do Usuario
+     @param usuario
      */
     public void CadastrarUsuario(final Usuario usuario){
 
