@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -1253,7 +1254,6 @@ public class CadastroBem extends AppCompatActivity {
 
     /**
      * Metodo que Valida a Plaqueta
-     *
      * @param plaqueta Plaqueta a ser Validada
      */
     public boolean validaPlaqueta(String plaqueta) {

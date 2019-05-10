@@ -143,7 +143,8 @@ public class LocalizacaoActivity extends AppCompatActivity {
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Localização */
+    /**Metodo Reponsavel por Pesquisa Localização
+     @param localizacao Localização a ser pesquisada */
     public void pesquisaLocalizacao(String localizacao){
 
         Bem bem = new Bem();

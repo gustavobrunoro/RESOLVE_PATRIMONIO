@@ -144,7 +144,8 @@ public class ResponsavelActivity extends AppCompatActivity {
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Responsavel */
+    /**Metodo Reponsavel por Pesquisa Responsavel
+     @param reponsavel Reponsavel a ser pesquisado */
     public void pesquisaResponsavel(String reponsavel){
 
         Bem bem = new Bem();

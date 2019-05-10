@@ -141,7 +141,8 @@ public class SecretariaActivity extends AppCompatActivity {
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Secretaria */
+    /**Metodo Reponsavel por Pesquisa Secretaria
+     @param Secretaria Secretaria a se pesquisada */
     public void pesquisaSecretaria(String Secretaria){
 
         SecretariaDAO secretariaDAO = new SecretariaDAO(getApplicationContext());

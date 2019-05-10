@@ -144,7 +144,8 @@ public class CentroCustoActivity extends AppCompatActivity {
         }
     }
 
-    /**Metodo Reponsavel por Pesquisa Centro de Custo */
+    /**Metodo Reponsavel por Pesquisa Centro de Custo
+     @param cc Centro de custo a ser pesquisado*/
     public void pesquisaCentroCusto(String cc){
 
         Bem bem = new Bem();

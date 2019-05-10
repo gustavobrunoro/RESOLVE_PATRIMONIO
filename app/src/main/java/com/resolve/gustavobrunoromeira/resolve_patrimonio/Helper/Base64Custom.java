@@ -5,6 +5,7 @@ import android.util.Base64;
 public class Base64Custom {
 
     /**Metodos Responsavel por Codificar String em Base64
+     @param base Base a ser Codificada
      @return  String Codificada */
     public static String CodificarBase64(String base){
 
@@ -13,7 +14,8 @@ public class Base64Custom {
     }
 
     /**Metodos Responsavel por Decodificar Base64
-     @return  Base decodificada*/
+     @param base Base a Descodificar
+     @return Retorna a Base decodificada*/
     public static String DecodificarBase64(String base){
 
         return new String (Base64.decode(base,Base64.DEFAULT));
