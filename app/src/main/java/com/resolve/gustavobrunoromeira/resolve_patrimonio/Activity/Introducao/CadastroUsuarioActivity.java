@@ -54,7 +54,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
     // Variaveis de Modelos
     private Usuario usuario = new Usuario();
-    private static String ClienteID = "99";
 
     // Variaveis de API e Conexao
     private Retrofit retrofit;
@@ -67,7 +66,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     // Variaveis de Adapter
 
     // Variavel de Sistemas
-    private EditText Nome,Email,Senha;
+    private EditText Prefeitura, Nome, Email, Senha;
     private Button Cadastra;
     private ProgressDialog progressDialog;
 
@@ -82,10 +81,11 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
         preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
 
-        Nome     = findViewById(R.id.Cadastra_NomeID);
-        Email    = findViewById(R.id.Cadastra_EmailID);
-        Senha    = findViewById(R.id.Cadastra_SenhaID);
-        Cadastra = findViewById(R.id.bt_Cadastrar);
+        Prefeitura = findViewById( R.id.Cadastra_PrefeituraID );
+        Nome       = findViewById(R.id.Cadastra_NomeID);
+        Email      = findViewById(R.id.Cadastra_EmailID);
+        Senha      = findViewById(R.id.Cadastra_SenhaID);
+        Cadastra   = findViewById(R.id.bt_Cadastrar);
 
         progressDialog = new ProgressDialog(CadastroUsuarioActivity.this);
         progressDialog.setMax(100);
@@ -96,30 +96,32 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(!Nome.getText().toString().isEmpty()){
+                if ( !Prefeitura.getText().toString().isEmpty() ) {
 
-                    if (!Email.getText().toString().isEmpty()){
+                    if ( !Nome.getText().toString().isEmpty() ) {
 
-                        if (!Senha.getText().toString().isEmpty()){
+                        if ( !Email.getText().toString().isEmpty() ) {
 
-                            usuario.setNome(Nome.getText().toString());
-                            usuario.setEmail(Email.getText().toString());
-                            usuario.setSenha(Senha.getText().toString());
+                            if ( !Senha.getText().toString().isEmpty() ) {
 
-                            // Chama Metodo para cadastro usuario
-                            CadastrarUsuario( usuario );
+                                usuario.setNome( Nome.getText().toString() );
+                                usuario.setEmail( Email.getText().toString() );
+                                usuario.setSenha( Senha.getText().toString() );
 
+                                // Chama Metodo para cadastro usuario
+                                CadastrarUsuario( usuario );
+
+                            } else {
+                                Senha.setError( "Informe a Senha!" );
+                            }
+                        } else {
+                            Email.setError( "Informe o Email!" );
                         }
-                        else{
-                            Senha.setError("Informe a Senha!");
-                        }
+                    } else {
+                        Nome.setError( "Informe o Nome!" );
                     }
-                    else {
-                        Email.setError("Informe o Email!");
-                    }
-                }
-                else {
-                    Nome.setError("Informe o Nome!");
+                } else {
+                    Nome.setError( "Informe o Codigo da Prefeitura!!" );
                 }
             }
         });
@@ -146,7 +148,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                             usuario.setIdUsuario(idUsuario);
 
                             // Seta o Codigo do Usuario
-                            usuario.setClienteIDFK( 99 );
+                            usuario.setClienteIDFK( Integer.getInteger( Prefeitura.getText().toString() ) );
 
                             //Salva Usuario na Web
                             usuario.SalvarUsuarioWeb( idUsuario );

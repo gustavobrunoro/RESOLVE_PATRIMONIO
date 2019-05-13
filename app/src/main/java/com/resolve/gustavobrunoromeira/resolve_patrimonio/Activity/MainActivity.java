@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         alertDialog.show();
 
-        resolvePatrimonio.totalBem( preferences.ClienteIDFK() )
+        resolvePatrimonio.totalBem( preferences.getClienteIDFK() )
                     .enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {

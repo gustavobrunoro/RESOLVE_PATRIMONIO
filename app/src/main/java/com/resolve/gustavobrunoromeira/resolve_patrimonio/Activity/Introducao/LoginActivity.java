@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Variaveis de Modelos
     private Usuario usuario = new Usuario();
-    private static String ClienteID = "99";
 
     // Variaveis de API e Conexao
     private Retrofit retrofit;
@@ -67,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     // Variaveis de Adapter
 
     // Variavel de Sistemas
-    private EditText Email,Senha;
+    private EditText Prefeitura, Email, Senha;
     private Button Entra;
     private ProgressDialog progressDialog;
 
@@ -82,9 +81,10 @@ public class LoginActivity extends AppCompatActivity {
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
         preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
 
-        Email = findViewById(R.id.Login_EmailID);
-        Senha = findViewById(R.id.Login_SenhaID);
-        Entra = findViewById(R.id.EntraID);
+        Prefeitura = findViewById( R.id.Login_PrefeituraID );
+        Email      = findViewById(R.id.Login_EmailID);
+        Senha      = findViewById(R.id.Login_SenhaID);
+        Entra      = findViewById(R.id.EntraID);
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMax(100);
@@ -99,10 +99,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(!Senha.getText().toString().isEmpty()){
 
-                        usuario.setEmail(Email.getText().toString());
-                        usuario.setSenha(Senha.getText().toString());
+                        usuario.setEmail( Email.getText().toString() );
+                        usuario.setSenha( Senha.getText().toString() );
 
-                        validaUsuario(usuario);
+                        validaUsuario( usuario );
 
                     }else{
                        Email.setError("Informe a Senha");
@@ -124,13 +124,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
 
-                   //getApplicationContext().deleteDatabase("DB_RESOLVE_PATRIMONIO");
-
-                    //usuario.setClienteIDFK( preferences.recupraDadosPessoais().getClienteIDFK());
-                    usuario.setClienteIDFK( 99 );
+                    //getApplicationContext().deleteDatabase("DB_RESOLVE_PATRIMONIO");
+                     usuario.setClienteIDFK( Integer.valueOf( Prefeitura.getText().toString() ) );
 
                     //Carrega a Secretaria
-
                     carregaSecretaria();
 
                 }else{
@@ -144,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     }catch (FirebaseAuthInvalidCredentialsException e ){
                         excessao="Senha Informada Incorreta!";
                     }catch (Exception e ){
-                        excessao="Erro ao Login usuario" + e.getMessage();
+                        excessao="Erro ao Efetuar Login: " + e.getMessage();
                         e.printStackTrace();
                     }
 

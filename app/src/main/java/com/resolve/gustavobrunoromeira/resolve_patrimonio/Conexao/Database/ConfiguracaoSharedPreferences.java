@@ -64,7 +64,7 @@ public class ConfiguracaoSharedPreferences {
 
     }
 
-    public int ClienteIDFK (){
+    public int getClienteIDFK (){
 
         Usuario usuario = new Usuario();
 
