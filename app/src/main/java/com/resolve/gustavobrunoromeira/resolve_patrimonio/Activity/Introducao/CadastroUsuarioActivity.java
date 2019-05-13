@@ -148,7 +148,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                             usuario.setIdUsuario(idUsuario);
 
                             // Seta o Codigo do Usuario
-                            usuario.setClienteIDFK( Integer.getInteger( Prefeitura.getText().toString() ) );
+                            usuario.setClienteIDFK( Integer.valueOf( Prefeitura.getText().toString() ) );
 
                             //Salva Usuario na Web
                             usuario.SalvarUsuarioWeb( idUsuario );
