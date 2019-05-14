@@ -323,18 +323,19 @@ public class ExportacaoBem extends AppCompatActivity {
 
         i = 1;
         bensExportados.clear();
-        exportaBem();
+        exportaBem( );
 
     }
 
-    /**Metodo Reponsavel por Efetuar Exportação os Bens para a WEB atraves da API*/
+    /**Metodo reponsavel por efetuar exportação da lista de bens para a WEB atraves da API
+    */
     public void exportaBem(){
 
         // verificar se o contador esta maior que o tamanho do Array, Caso esteja sinal q não tem mais obejtos a serem enviados
        if( i > bensSelecionados.size() ){
 
             alertDialog.dismiss();
-            exportados();
+            fimExportacao();
             return ;
 
         }else {
@@ -350,13 +351,13 @@ public class ExportacaoBem extends AppCompatActivity {
                        bensExportados.add( bensSelecionados.get( i - 1 ) );
 
                        // Atualiza o Contador do Alert Dialog
-                       alertDialog.setMessage("Enviando Itens: " + ( bensExportados.size()) + " de " +  bensSelecionados.size() );
+                       alertDialog.setMessage("Enviando Itens: " + ( bensSelecionados.size()) + " de " +  bensSelecionados.size() );
 
-                       // Chama o Metodo responsavel por efetuar a Exclusão da Plaqueta e das Fotos
+                       // Metodo responsavel por efetuar a Exclusão da Plaqueta e das Fotos
                        excluiPlaqueta( bensSelecionados.get( i - 1 ) );
 
                        i++;
-                       exportaBem();
+                       exportaBem( );
                    }
                }
 
@@ -372,7 +373,8 @@ public class ExportacaoBem extends AppCompatActivity {
        }
     }
 
-    /**Metodo que Excluir a Plaqueta exportada da base de Dados*/
+    /**Metodo que excluir a plaqueta exportada da base de dados
+     @param bem Bem a ser exportador*/
     public void excluiPlaqueta(Bem bem){
 
         final BemDAO bemDAO = new BemDAO(getApplicationContext());
@@ -398,8 +400,8 @@ public class ExportacaoBem extends AppCompatActivity {
 
     }
 
-    /**Metodo para Informa a quantidade de Bens Exportados para o Usuario*/
-    public void exportados() {
+    /**Metodo para informa a quantidade de bens exportados para o usuario*/
+    public void fimExportacao() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setIcon(R.drawable.ic_nav_exportacao_24dp);

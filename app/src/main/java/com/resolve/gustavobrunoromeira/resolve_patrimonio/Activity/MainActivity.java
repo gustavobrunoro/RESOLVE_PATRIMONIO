@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         retrofit = RetrofitConfig.getRetrofit();
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+
         preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
         usuario = preferences.recupraDadosPessoais();
 
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
 
             case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(),Configuracao.class));
                 return true;
             case R.id.menu_search:
                 searchView.setMenuItem(item);

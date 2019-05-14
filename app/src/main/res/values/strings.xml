@@ -36,6 +36,7 @@
     <string name="Nav7">Comunicação</string>
     <string name="Nav8">Sobre</string>
     <string name="Nav9">Sair</string>
+    <string name="Nav10">Configurações</string>
 
     <string name="Titulo1">Itens a Serem Tombados</string>
     <string name="Titulo2">Itens Tombados</string>
@@ -86,5 +87,6 @@
     <string name="Erro_Dialog_Exporta1">Nenhum Item Selecionado !</string>
     <string name="Erro_Dialog_Exporta2">Necessario Permissão para Exportar!</string>
     <string name="title_activity_mapa_localizacao">Map</string>
+    <string name="title_activity_configuracao">Configuracao</string>
 
 </resources>

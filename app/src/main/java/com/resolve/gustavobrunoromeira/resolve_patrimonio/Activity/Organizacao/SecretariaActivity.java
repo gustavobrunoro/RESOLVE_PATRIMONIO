@@ -26,7 +26,7 @@ public class SecretariaActivity extends AppCompatActivity {
     private List<Secretaria> secretarias = new ArrayList<>();
     private Secretaria secretaria = new Secretaria();
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private AdapterSecretaria adapter;
