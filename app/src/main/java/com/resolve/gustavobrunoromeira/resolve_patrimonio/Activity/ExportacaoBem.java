@@ -47,6 +47,7 @@ public class ExportacaoBem extends AppCompatActivity {
     // Variaveis de API e Conexao
     private Retrofit retrofit;
     private ResolvePatrimonio resolvePatrimonio;
+    private ConfiguracaoSharedPreferences preferences;
 
     // Listas de Controle
     private List<Bem> bens = new ArrayList<>();
@@ -82,7 +83,8 @@ public class ExportacaoBem extends AppCompatActivity {
         retrofit = RetrofitConfig.getRetrofit();
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
-        usuario = new ConfiguracaoSharedPreferences( getApplicationContext() ).recupraDadosPessoais();
+        preferences = new ConfiguracaoSharedPreferences( getApplicationContext() );
+        usuario = preferences.recupraDadosPessoais();
         caminhoFotoPrincipal = "/Resolve Patrimonio/" + usuario.getClienteIDFK() + "/Fotos/";
 
         recyclerView = findViewById(R.id.recycleExportacaoId);

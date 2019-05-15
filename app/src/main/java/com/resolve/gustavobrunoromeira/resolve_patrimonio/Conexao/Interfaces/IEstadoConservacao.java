@@ -1,4 +1,4 @@
-package com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces;
+package com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Interfaces;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.EstadoConservacao;
 

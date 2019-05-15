@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces.ITipoTombo;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Interfaces.ITipoTombo;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.TipoTombo;
 
 import java.util.ArrayList;

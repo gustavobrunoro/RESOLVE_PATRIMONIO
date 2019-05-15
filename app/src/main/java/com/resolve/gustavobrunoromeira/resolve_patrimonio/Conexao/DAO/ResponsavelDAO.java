@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces.IResponsavel;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Interfaces.IResponsavel;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Responsavel;
 

@@ -73,6 +73,7 @@ public class CadastroBem extends AppCompatActivity {
 
     // Variaveis de API e Conexao
     private BemDAO bemDAO;
+    private ConfiguracaoSharedPreferences preferences;
 
     // Listas de Controle
     private List<Bem> Bens = new ArrayList<>();
@@ -124,7 +125,8 @@ public class CadastroBem extends AppCompatActivity {
         // Vslida Permissão
         Permissao.ValidaPermissao(permissoes, this, 1);
 
-        usuario = new ConfiguracaoSharedPreferences ( getApplicationContext() ).recupraDadosPessoais();
+        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
+        usuario = preferences.recupraDadosPessoais();
         caminhoFotoPrincipal = "/Resolve Patrimonio/" + String.valueOf( usuario.getClienteIDFK() ) + "/Fotos/";
 
         // Recebe o bem passado pela listagem caso esteja sendo iniciada pela Listagem

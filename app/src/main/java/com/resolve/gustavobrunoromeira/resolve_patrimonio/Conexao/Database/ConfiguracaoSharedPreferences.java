@@ -4,27 +4,31 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Configuracoes;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 
 public class ConfiguracaoSharedPreferences {
 
     public Context context;
     public static final String DADOSPESSOAIS = "DADOSPESSOAIS";
-    public static final String BENS = "BENS";
+    public static final String CONFIGURACOES = "CONFIGURACOES";
     public static final String TOTAL = "TOTAL";
+    public static final String RESOLVEPATRIMONIO = "RESOLVEPATRIMONIO";
+
+
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor ;
 
-    /**Metodos Responsavel Retorna Configurar SharedPreferences*/
+    /**Metodos responsavel retorna configuração SharedPreferences*/
     public ConfiguracaoSharedPreferences(Context context) {
 
         this.context = context;
-        sharedPreferences = context.getSharedPreferences(BENS,Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(RESOLVEPATRIMONIO,Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
     }
 
-    /**Metodos Responsavel Atualizar Total no SharedPreferences*/
+    /**Metodos responsavel atualizar total de bens no SharedPreferences*/
     public void atualizaTotal(int total){
 
         editor.putInt(TOTAL,total);
@@ -32,7 +36,7 @@ public class ConfiguracaoSharedPreferences {
 
     }
 
-    /**Metodos Responsavel Recupera Total no SharedPreferences
+    /**Metodos responsavel recupera total de bens no SharedPreferences
      @return  Total de Bem*/
     public Integer recuperaTotal(){
 
@@ -40,7 +44,7 @@ public class ConfiguracaoSharedPreferences {
 
     }
 
-    /**Metodos Responsavel Atualizar Dados Pessoais no SharedPreferences*/
+    /**Metodos responsavel atualizar dados pessoais no SharedPreferences*/
     public void atualizaDadosPessoais(Usuario usuario){
 
         Gson gson = new Gson();
@@ -50,7 +54,7 @@ public class ConfiguracaoSharedPreferences {
 
     }
 
-    /**Metodos Responsavel Recupera Dados Pessoais no SharedPreferences
+    /**Metodos responsavel por recupera os dados pessoais no SharedPreferences
      @return  Dados do Usuario*/
     public Usuario recupraDadosPessoais(){
 
@@ -64,6 +68,32 @@ public class ConfiguracaoSharedPreferences {
 
     }
 
+    /**Metodos responsavel atualizar dados pessoais no SharedPreferences*/
+    public void atualizaConfiguracoes(Configuracoes configuracoes){
+
+        Gson gson = new Gson();
+        String json = gson.toJson(configuracoes);
+        editor.putString(CONFIGURACOES, json);
+        editor.commit();
+
+    }
+
+    /**Metodos responsavel por recupera as configurações no SharedPreferences
+     @return  Dados do Usuario*/
+    public Configuracoes recupraConfiguracoes(){
+
+        Configuracoes configuracoes = new Configuracoes();
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(CONFIGURACOES, "");
+        configuracoes = gson.fromJson(json, Configuracoes.class);
+
+        return configuracoes ;
+
+    }
+
+    /**Metodos responsavel recupera codigo do cliente no SharedPreferences
+     @return  Codigo do Cliente*/
     public int getClienteIDFK (){
 
         Usuario usuario = new Usuario();

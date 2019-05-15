@@ -41,6 +41,7 @@ public class Listagem_Item extends AppCompatActivity {
     private Usuario usuario;
 
     // Variaveis de API e Conexao
+    private ConfiguracaoSharedPreferences preferences;
 
     // Listas de Controle
     private List<Bem> bens = new ArrayList<>();
@@ -65,7 +66,8 @@ public class Listagem_Item extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listagem_item);
 
-        usuario = new ConfiguracaoSharedPreferences( getApplicationContext() ).recupraDadosPessoais();
+        preferences = new ConfiguracaoSharedPreferences( getApplicationContext() );
+        usuario = preferences.recupraDadosPessoais();
         caminhoFotoPrincipal = "/Resolve Patrimonio/" + usuario.getClienteIDFK() + "/Fotos/";
 
         recyclerView   = findViewById(R.id.recycle_Listagem_ItemID);

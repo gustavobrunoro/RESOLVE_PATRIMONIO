@@ -4,11 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.print.PrinterId;
-import android.util.Log;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces.ILocalizacao;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Interfaces.ILocalizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Localizacao;
 

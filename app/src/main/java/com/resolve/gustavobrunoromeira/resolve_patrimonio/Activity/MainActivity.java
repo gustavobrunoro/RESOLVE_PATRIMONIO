@@ -35,7 +35,6 @@ import android.widget.Toast;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.CentroCustoActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.LocalizacaoActivity;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.MapaLocalizacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.ResponsavelActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.SecretariaActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterPrincipal;
@@ -78,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Variaveis de API e Conexao
     private Retrofit retrofit;
     private ResolvePatrimonio resolvePatrimonio;
+    private ConfiguracaoSharedPreferences preferences ;
+    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAutenticao();
 
     // Listas de Controle
 
     // Variaveis de Adapter
     private AdapterPrincipal adapter;
-    private ConfiguracaoSharedPreferences preferences ;
-    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAutenticao();
 
     // Variavel de Sistemas
     private Bitmap Imagem = null;
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         retrofit = RetrofitConfig.getRetrofit();
         resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
 
-        preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
+        preferences = new ConfiguracaoSharedPreferences( getApplicationContext() );
         usuario = preferences.recupraDadosPessoais();
 
         toolbar           = findViewById(R.id.toolbar);
@@ -451,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         alertDialog.show();
 
-        resolvePatrimonio.totalBem( preferences.getClienteIDFK() )
+        resolvePatrimonio.totalBem( usuario.getClienteIDFK() )
                     .enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {

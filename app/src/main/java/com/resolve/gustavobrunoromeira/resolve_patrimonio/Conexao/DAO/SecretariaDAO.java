@@ -4,10 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSQLite;
-import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.interfaces.ISecretaria;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Interfaces.ISecretaria;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Secretaria;
 
 import java.util.ArrayList;
