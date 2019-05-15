@@ -39,6 +39,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.Confi
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.Permissao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCusto;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Configuracoes;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.EstadoConservacao;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Fabricante;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Item;
@@ -59,6 +60,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CadastroBem extends AppCompatActivity {
 
     private String[] permissoes = new String[]{
@@ -69,6 +74,7 @@ public class CadastroBem extends AppCompatActivity {
 
     // Variaveis de Modelos
     private Usuario usuario;
+    private Configuracoes configuracoes;
     private Bem bem;
 
     // Variaveis de API e Conexao
@@ -127,6 +133,7 @@ public class CadastroBem extends AppCompatActivity {
 
         preferences = new ConfiguracaoSharedPreferences ( getApplicationContext() );
         usuario = preferences.recupraDadosPessoais();
+        configuracoes = preferences.recupraConfiguracoes();
         caminhoFotoPrincipal = "/Resolve Patrimonio/" + String.valueOf( usuario.getClienteIDFK() ) + "/Fotos/";
 
         // Recebe o bem passado pela listagem caso esteja sendo iniciada pela Listagem
@@ -1361,5 +1368,6 @@ public class CadastroBem extends AppCompatActivity {
         fab.hide();
 
     }
+
 
 }

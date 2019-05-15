@@ -1,9 +1,12 @@
 package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +24,9 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Configuracoes;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Usuario;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 
 import br.com.powerapps.powerimagecompress.PowerImageCompress;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,6 +54,7 @@ public class Configuracao extends AppCompatActivity {
     private Bitmap Imagem = null;
 
     // Variavel de Controle
+    private static final int Camera = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +99,82 @@ public class Configuracao extends AppCompatActivity {
 
             }
         } );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            try {
+
+                switch (requestCode) {
+
+                    //Verificar se o Dado esta vindo da Foto 1
+                    case Camera:
+                        Imagem = null;
+                        Imagem = (Bitmap) data.getExtras().get("data");
+                        FotoUsuario.setImageBitmap(Imagem);
+                        salvaFoto();
+                        break;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Metodo Responsavel por a Tira a Foto 1
+     */
+    public void fotoUsuario(View view) {
+
+        Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, Camera);
+        }
+    }
+
+    /**
+     * Metodo Responsavel por Salva as Fotos
+     */
+    public void salvaFoto() {
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/Resolve Patrimonio/Fotos/");
+
+            if (!dir.exists())
+                dir.mkdirs();
+        }
+
+        try {
+
+            byte[] bytes;
+            FileOutputStream fos;
+
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            Imagem.compress(Bitmap.CompressFormat.PNG, 100, baos1);
+
+            bytes = baos1.toByteArray();
+            caminhoFoto  = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Resolve Patrimonio/Fotos/" + usuario.getNome() + ".png");
+
+            if (caminhoFoto.exists()){
+                caminhoFoto.delete();
+            }
+
+            fos = new FileOutputStream(caminhoFoto);
+            fos.write(bytes);
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
     }
 
     /**Metodo para recupera os dados do usuario (Nome, Foto)*/
