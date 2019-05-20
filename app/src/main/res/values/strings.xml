@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
 
     <string name="Intro1">Cadastramento e Recadastramento</string>
     <string name="Intro1Descricao">Cadastramento e Recadastramento mais eficiente e eficaz</string>

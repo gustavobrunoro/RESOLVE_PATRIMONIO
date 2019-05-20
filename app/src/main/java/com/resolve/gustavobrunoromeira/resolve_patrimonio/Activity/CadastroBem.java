@@ -1,11 +1,13 @@
 package com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,8 +28,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.google.android.gms.dynamic.DeferredLifecycleHelper;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.CentroCustoDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.EstadoConsevacaoDAO;
@@ -37,6 +45,7 @@ import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.Secretaria
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.TipoTomboDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.Permissao;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Bem;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.CentroCusto;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Model.Configuracoes;
@@ -60,9 +69,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class CadastroBem extends AppCompatActivity {
 
@@ -79,6 +90,8 @@ public class CadastroBem extends AppCompatActivity {
 
     // Variaveis de API e Conexao
     private BemDAO bemDAO;
+    private Retrofit retrofit;
+    private ResolvePatrimonio resolvePatrimonio;
     private ConfiguracaoSharedPreferences preferences;
 
     // Listas de Controle
@@ -110,10 +123,19 @@ public class CadastroBem extends AppCompatActivity {
     private TextInputEditText Observacao;
     private CurrencyEditText  Valor;
 
+    private android.app.AlertDialog alertDialog;
+    private AlertDialog alertDialog2;
     private ImageView Foto1ID;
     private ImageView Foto2ID;
     private Bitmap Imagem1 = null;
     private Bitmap Imagem2 = null;
+    private File caminhoFoto1;
+    private File caminhoFoto2;
+    private ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+    private ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+    private byte[] byteArray1;
+    private byte[] byteArray2;
+
     private static final int Camera1 = 10;
     private static final int Camera2 = 20;
     private FloatingActionButton fab;
@@ -127,6 +149,10 @@ public class CadastroBem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cadastro_bem);
+
+        retrofit = RetrofitConfig.getRetrofit();
+        resolvePatrimonio = retrofit.create(ResolvePatrimonio.class);
+        bemDAO = new BemDAO(getApplicationContext());
 
         // Vslida Permissão
         Permissao.ValidaPermissao(permissoes, this, 1);
@@ -1069,91 +1095,27 @@ public class CadastroBem extends AppCompatActivity {
         // Antes da Prossegui e verificado todos os Campos, Caso estaja tudo ok e dados a Continuidade no cadastramento
         if (validaCampos()) {
 
-            BemDAO bemDAO = new BemDAO(getApplicationContext());
-            BigDecimal payment = new BigDecimal( Valor.getRawValue() ).movePointLeft(2);
-            bem.setPlaqueta(Plaqueta.getText().toString());
-            bem.setValor( payment.toString().toString() );
-            bem.setEspecificacao(Especificacao.getText().toString());
-            bem.setObservacao(Observacao.getText().toString());
-            bem.setExportado(0);
+            salvaFoto( Imagem1, bem.getPlaqueta() + "_1.png" );
+            salvaFoto( Imagem2, bem.getPlaqueta() + "_2.png" );
 
-            // E tentado primeiramente efetuar uma atualização caso o bem ja exista, se não e feito o cadastramento
-            if (bemDAO.Atualizar(bem)) {
-
-                // Finaliza a aatividade e volta pra a tela Inicial
-                salvaFoto();
-                finish();
-
+            // Verificar se as configuração de exporta logo apos cadastra esta habilitada
+            if ( configuracoes.getExporta() ){
+                exportaBem();
             } else {
 
-                // Efetuar o Cadsatramento e Volta pra a tela inicial
-                bemDAO.Salvar(bem);
-                salvaFoto();
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                alertDialog.setTitle(R.string.Titulo3);
-                alertDialog.setMessage( getString( R.string.Mensagem3 ) );
-                alertDialog.setCancelable(false);
-                alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Plaqueta.setText("");
-
-                        bem.setSecretariaIDFK(null);
-                        listaSecretaria();
-
-                        bem.setCentroCustoIDFK(null);
-                        listaCentroCusto();
-
-                        bem.setLocalizacaoIDFK(null);
-                        listaLocalizacao();
-
-                        bem.setResponsavelIDFK(null);
-                        listaResponsavel();
-
-                        bem.setItemIDFK(null);
-                        listaItem();
-
-                        Especificacao.setText("");
-
-                        bem.setFabricanteIDFK(null);
-                        listaFabricante();
-
-                        Valor.setText("");
-
-                        bem.setTipoTomboIDFK(null);
-                        listaTipoTombo();
-
-                        bem.setEstadoConservacaoIDFK(null);
-                        listaEstadoConservacao();
-
-                        Observacao.setText("");
-
-                        Imagem1 = null;
-                        Imagem2 = null;
-
-                        Foto1ID.setImageResource(R.drawable.ic_camera_24dp);
-                        Foto2ID.setImageResource(R.drawable.ic_camera_24dp);
-
-                    }
-                });
-
-                alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-
-                AlertDialog alert = alertDialog.create();
-                alert.show();
+                // Tenta atualiza plaqueta,caso ja exista se não e feita a inserção
+                if ( bemDAO.Atualizar( bem ) ) {
+                    finish();
+                } else {
+                    //Efetua a inserção no banco de dados
+                    bemDAO.Salvar( bem );
+                    continuaCadastrando();
+                }
             }
 
         } else {
 
             // Caso possua algum campo sem preenche e mostrado a seguinte notificação ao usuario
-
             if(Imagem1 == null || Imagem2 == null) {
                 if (Imagem1 == null && Imagem2 == null) {
                     Snackbar.make(findViewById(R.id.fabSalvar), getString( R.string.Erro_Cadastro6 ), Snackbar.LENGTH_LONG).show();
@@ -1176,9 +1138,18 @@ public class CadastroBem extends AppCompatActivity {
 
         controle = 0;
 
-        if ((validaPlaqueta(Plaqueta.getText().toString())) || (Plaqueta.getText().toString().isEmpty())) {
+        BigDecimal payment = new BigDecimal( Valor.getRawValue() ).movePointLeft(2);
 
-            if (validaPlaqueta(Plaqueta.getText().toString())) {
+        bem.setPlaqueta(Plaqueta.getText().toString());
+        bem.setValor( payment.toString() );
+        bem.setEspecificacao(Especificacao.getText().toString());
+        bem.setObservacao(Observacao.getText().toString());
+        bem.setExportado(0);
+
+
+        if ( (validaPlaqueta( bem.getPlaqueta() ) ) || ( bem.getPlaqueta().isEmpty() ) ) {
+
+            if (validaPlaqueta( bem.getPlaqueta() )) {
                 Plaqueta.setError( getString( R.string.Erro_Cadastro1 ) );
             } else {
                 Plaqueta.setError( getString( R.string.Erro_Cadastro2 ) );
@@ -1216,7 +1187,7 @@ public class CadastroBem extends AppCompatActivity {
             controle = 1;
         }
 
-        if (Especificacao.getText().toString().isEmpty()) {
+        if (bem.getEspecificacao().isEmpty()) {
             Especificacao.setError( getString( R.string.Erro_Cadastro3 ) );
             controle = 1;
         }
@@ -1226,7 +1197,7 @@ public class CadastroBem extends AppCompatActivity {
             controle = 1;
         }
 
-        if (Valor.getText().toString().isEmpty() || String.valueOf(Valor.getRawValue()).equals("0") ) {
+        if (bem.getValor().isEmpty() || String.valueOf(bem.getValor()).equals("0") ) {
             Valor.setError( getString( R.string.Erro_Cadastro4 ) );
             controle = 1;
         }
@@ -1241,7 +1212,7 @@ public class CadastroBem extends AppCompatActivity {
             controle = 1;
         }
 
-        if (Observacao.getText().toString().isEmpty()) {
+        if (bem.getObservacao().isEmpty()) {
             Observacao.setError( getString( R.string.Erro_Cadastro5 ) );
             controle = 1;
         }
@@ -1267,19 +1238,19 @@ public class CadastroBem extends AppCompatActivity {
      */
     public boolean validaPlaqueta(String plaqueta) {
 
-        Bens.clear();
+            Bens.clear();
 
-        // Carrega todas as Plaqueta que ainda não foram exportadas para verifaca se a plaqueta ja existe
-        bemDAO = new BemDAO(getApplicationContext());
-        Bens   = bemDAO.Lista(0);
+            // Carrega todas as Plaqueta que ainda não foram exportadas para verifaca se a plaqueta ja existe
+            Bens   = bemDAO.Lista(0);
 
-        for (Bem b : Bens) {
+            for (Bem b : Bens) {
 
-            if ( plaqueta.equals(b.getPlaqueta()) && edicaoBem == 0 ) {
-                Plaqueta.setError( "Plaqueta já Existe!" );
-                return true;
+                if ( plaqueta.equals(b.getPlaqueta()) && edicaoBem == 0 ) {
+                    Plaqueta.setError( "Plaqueta já Existe!" );
+                    return true;
+                }
             }
-        }
+
         return false;
     }
 
@@ -1288,10 +1259,14 @@ public class CadastroBem extends AppCompatActivity {
      */
     public void Foto1(View view) {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if ( Plaqueta.getText().toString().matches( "" ) ){
+            Toast.makeText( this , "Preencha Primeiro a Plaqueta" , Toast.LENGTH_SHORT ).show();
+        }else {
+            Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, Camera1);
+            if ( intent.resolveActivity( getPackageManager() ) != null ) {
+                startActivityForResult( intent , Camera1 );
+            }
         }
     }
 
@@ -1300,22 +1275,26 @@ public class CadastroBem extends AppCompatActivity {
      */
     public void Foto2(View view) {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if ( Plaqueta.getText().toString().matches( "" ) ){
+            Toast.makeText( this , "Preencha Primeiro a Plaqueta" , Toast.LENGTH_SHORT ).show();
+        }else {
+            Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, Camera2);
+            if ( intent.resolveActivity( getPackageManager() ) != null ) {
+                startActivityForResult( intent , Camera2 );
+            }
         }
     }
 
-    /**
-     * Metodo Responsavel por Salva as Fotos
+    /**Metodo Responsavel por Salva as Fotos
+     @param imagem Imagem em bitmap a ser salva
+     @param descricao Descricão da plaqueta a ser salva
      */
-    public void salvaFoto() {
+    public void salvaFoto(Bitmap imagem, String descricao) {
 
-        File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), caminhoFotoPrincipal + Plaqueta.getText().toString() + "/"  );
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), caminhoFotoPrincipal + bem.getPlaqueta() + "/"  );
 
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
             if (!dir.exists())
                 dir.mkdirs();
         }
@@ -1326,25 +1305,16 @@ public class CadastroBem extends AppCompatActivity {
                 FileOutputStream fos;
 
                 ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-                Imagem1.compress(Bitmap.CompressFormat.PNG, 70, baos1);
+                imagem.compress(Bitmap.CompressFormat.PNG, 70, baos1);
 
                 bytes = baos1.toByteArray();
-                fos = new FileOutputStream(dir + "/" + Plaqueta.getText().toString() + "_1.png" );
-                fos.write(bytes);
-                fos.close();
-
-                ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-                Imagem2.compress(Bitmap.CompressFormat.PNG, 70, baos2);
-
-                bytes = baos2.toByteArray();
-                fos = new FileOutputStream( dir + "/" + Plaqueta.getText().toString() + "_2.png" );
+                fos = new FileOutputStream(dir + "/" + descricao );
                 fos.write(bytes);
                 fos.close();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
     }
 
     /** Metodo Responsavel por Desabilitar todos os Campos
@@ -1369,5 +1339,200 @@ public class CadastroBem extends AppCompatActivity {
 
     }
 
+    /** Metodo Responsavel por pergunta ao usuario se gostaria de continua cadastrando
+     */
+    public void continuaCadastrando(){
+
+        // Verificar se o usuario gostaria de contina cadastrando
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder( this );
+        alertDialog.setTitle( getString( R.string.Titulo3 ) );
+        alertDialog.setMessage( getString( R.string.Mensagem3 ) );
+        alertDialog.setCancelable( false );
+        alertDialog.setPositiveButton( "Sim" , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog , int which) {
+                limpaCampos();
+            }
+        } );
+
+        alertDialog.setNegativeButton( "Não" , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog , int which) {
+
+                finish();
+            }
+        } );
+
+        AlertDialog alert = alertDialog.create();
+        alert.show();
+
+    }
+
+    /** Metodo Responsavel por limpas todos os Campos
+     */
+    public void limpaCampos(){
+
+        Plaqueta.setText("");
+
+        bem.setSecretariaIDFK(null);
+        listaSecretaria();
+
+        bem.setCentroCustoIDFK(null);
+        listaCentroCusto();
+
+        bem.setLocalizacaoIDFK(null);
+        listaLocalizacao();
+
+        bem.setResponsavelIDFK(null);
+        listaResponsavel();
+
+        bem.setItemIDFK(null);
+        listaItem();
+
+        Especificacao.setText("");
+
+        bem.setFabricanteIDFK(null);
+        listaFabricante();
+
+        Valor.setText("");
+
+        bem.setTipoTomboIDFK(null);
+        listaTipoTombo();
+
+        bem.setEstadoConservacaoIDFK(null);
+        listaEstadoConservacao();
+
+        Observacao.setText("");
+
+        Imagem1 = null;
+        Imagem2 = null;
+
+        Foto1ID.setImageResource(R.drawable.ic_camera_24dp);
+        Foto2ID.setImageResource(R.drawable.ic_camera_24dp);
+
+    }
+
+    /** Metodo Responsavel por exporta o bem para WEB
+     */
+    public void exportaBem(){
+
+        alertDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage( getString( R.string.Mensagem11 ) )
+                .setCancelable(false)
+                .setMessage( "Exportando para WEB" )
+                .build();
+
+        alertDialog.show();
+
+        final AlertDialog.Builder alertDialog2 = new AlertDialog.Builder( this );
+        alertDialog2.setTitle( "Exportação WEB" );
+        alertDialog2.setMessage( "Não foi possivel enviar a plaqueta " + bem.getPlaqueta().toString() + " para WEB, salva para ser enviada posteriomente." );
+        alertDialog2.setCancelable( false );
+
+        // Seleciona o Caminho da Foto 1 e 2
+        caminhoFoto1 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_1.png");
+        caminhoFoto2 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_2.png");
+
+        // Verificar se a Foto 1 Existe
+        if (caminhoFoto1.exists()) {
+
+            Imagem1 = BitmapFactory.decodeFile(caminhoFoto1.toString());
+            Imagem1.compress(Bitmap.CompressFormat.PNG, 100, baos1);
+            byteArray1 = baos1.toByteArray();
+            Imagem1.recycle();
+
+            bem.setFoto1( Base64.encodeToString( byteArray1, Base64.DEFAULT ) );
+        }
+
+        // Verificar se a Foto 2 Existe
+        if (caminhoFoto2.exists()) {
+
+            Imagem2 = BitmapFactory.decodeFile(caminhoFoto2.toString());
+            Imagem2.compress(Bitmap.CompressFormat.PNG, 100, baos2);
+            byteArray2 = baos2.toByteArray();
+            Imagem2.recycle();
+
+            bem.setFoto2( Base64.encodeToString( byteArray2, Base64.DEFAULT ) );
+        }
+
+        // Efetua o envio envio do objeto atraves da API
+        resolvePatrimonio.enviarBens( bem ).enqueue(new Callback<Bem>() {
+                @Override
+                public void onResponse(Call<Bem> call, Response<Bem> response) {
+
+                    alertDialog.dismiss();
+
+                    if (response.isSuccessful()) {
+                         // Deleta o bem no banco de dados, caso possua
+                         bemDAO.Deletar( bem );
+                         apagaFotos();
+                         continuaCadastrando();
+                    }else{
+                        alertDialog2.show();
+                        alertDialog2.setPositiveButton( "OK" , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog , int which) {
+                                    finish();
+                            }
+                        } );
+
+                        AlertDialog alert = alertDialog2.create();
+                        alert.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Bem> call, Throwable t) {
+
+                    alertDialog.dismiss();
+
+                    //Feita tentativa de atualizar o bem , caso já exista
+                    if ( bemDAO.Atualizar( bem ) ) {
+
+                        alertDialog2.setPositiveButton( "OK" , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog , int which) {
+                                finish();
+                            }
+                        } );
+                    } else {
+                        //Efetua a inserção no banco de dados
+                        bemDAO.Salvar( bem );
+
+                        alertDialog2.setPositiveButton( "OK" , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog , int which) {
+                                continuaCadastrando();
+                            }
+                        } );
+                    }
+
+                    AlertDialog alert = alertDialog2.create();
+                    alert.show();
+                }
+            });
+    }
+
+    /** Metodo Responsavel por apagar as fotos
+     */
+    public void apagaFotos(){
+
+        // Deleta as Fotos e a Pasta
+        caminhoFoto1 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_1.png");
+        caminhoFoto2 = new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta() + "/" + bem.getPlaqueta() + "_2.png");
+
+        // Verificar se a Foto 1 Existe
+        if (caminhoFoto1.exists()) {
+            caminhoFoto1.delete();
+        }
+
+        // Verificar se a Foto 2 Existe
+        if (caminhoFoto2.exists()) {
+            caminhoFoto2.delete();
+        }
+
+        new File( Environment.getExternalStorageDirectory().getAbsolutePath(),caminhoFotoPrincipal + bem.getPlaqueta()).delete();
+    }
 
 }

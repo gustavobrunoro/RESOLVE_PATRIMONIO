@@ -93,9 +93,15 @@ dependencies {
     //Implmenentação da Mascara de Moeda
     implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 
+    //Implementação
     implementation 'io.reactivex:rxjava:1.1.6'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
+    //Implementação das Notificações
+    implementation 'com.google.firebase:firebase-messaging:17.4.0'
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'

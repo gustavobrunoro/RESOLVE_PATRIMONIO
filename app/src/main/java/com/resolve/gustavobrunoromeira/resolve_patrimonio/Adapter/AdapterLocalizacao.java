@@ -66,9 +66,6 @@ public class AdapterLocalizacao extends RecyclerView.Adapter<AdapterLocalizacao.
             }
         } );
 
-
-
-
         }
 
     @Override

@@ -13,9 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Adapter.AdapterBemExportados;
+import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.DAO.BemDAO;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Conexao.Database.ConfiguracaoSharedPreferences;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RecyclerItemClickListener;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Helper.RetrofitConfig;
@@ -52,6 +57,8 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
     private Toolbar toolbar;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
+    private ImageView imgCamera;
+    private ImageView imgClearSearch;
 
     // Variavel de Controle
 
@@ -69,6 +76,8 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle_Listagem_Item_ExportadosID);
         toolbar      = findViewById(R.id.toolbar);
         searchView   = findViewById(R.id.search_view);
+        imgCamera    = findViewById(R.id.imgCamera);
+        imgClearSearch = findViewById(R.id.imgClearSearch);
 
         toolbar.setTitle(R.string.Titulo2);
         setSupportActionBar(toolbar);
@@ -112,11 +121,30 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
+
+                imgCamera.setVisibility(View.VISIBLE);
+                imgClearSearch.setVisibility(View.VISIBLE);
+                searchView.setCloseIcon(getResources().getDrawable(R.drawable.ic_action_navigation_close_inverted));
             }
 
             @Override
             public void onSearchViewClosed() {
                 onRestart();
+                imgCamera.setVisibility(View.INVISIBLE);
+                imgClearSearch.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        imgCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanneaPlaqueta();
+            }
+        });
+        imgClearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.closeSearch();
             }
         });
 
@@ -155,6 +183,19 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
 
         return true;
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() != null) {
+                pesquisaPlaqueta( String.valueOf( Integer.valueOf( result.getContents() )) );
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     /**Metodo que recupera as plaquetas para serem carregadas no Recycle View*/
@@ -246,4 +287,15 @@ public class Listagem_Item_Exportados extends AppCompatActivity {
 
     }
 
+    /**Metodo Responsacel por Efetuar o Scaneamento da Plaqueta pela Câmera
+     */
+    public void scanneaPlaqueta(){
+
+        IntentIntegrator leitor = new IntentIntegrator(this);
+        leitor.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        leitor.setPrompt( getString( R.string.Mensagem12 ) );
+        leitor.setCameraId(0);
+        leitor.initiateScan();
+
+    }
 }
