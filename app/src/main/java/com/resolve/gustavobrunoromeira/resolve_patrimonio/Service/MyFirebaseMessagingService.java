@@ -53,7 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void enviaNotificacao (RemoteMessage notificacao){
 
         Intent intent = new Intent(this, Sicronizacao_Organizacao.class);
-        intent.setAction( "Atualizar" );
+        //intent.setAction( "Atualizar" );
         PendingIntent pendingIntent = PendingIntent.getActivity( this, 0, intent, 0);
 
         NotificationCompat.Action notificationCompatAtualiza = new NotificationCompat.Action(R.drawable.ic_confirma_24dp,"Atualizar", pendingIntent);
@@ -62,15 +62,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Cria Notificação
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this, getString( R.string.default_notification_channel_id ) )
-                                                                              .setContentTitle( notificacao.getNotification().getTitle())
-                                                                              .setContentText( notificacao.getNotification().getBody())
-                                                                              .setSmallIcon( R.drawable.ic_notificacao_24dp )
-                                                                              .setSound( uriSom )
-                                                                              .addAction( notificationCompatAtualiza )
-                                                                              .setAutoCancel( true )
-
-                                                                              //.setContentIntent( PendingIntent.getActivity( this,0, intent ,0 ) )
-                                                                                ;
+                                                              .setContentTitle( notificacao.getNotification().getTitle())
+                                                              .setContentText( notificacao.getNotification().getBody())
+                                                              .setSmallIcon( R.drawable.ic_notificacao_24dp )
+                                                              .setSound( uriSom )
+                                                              .addAction( notificationCompatAtualiza )
+                                                              .setAutoCancel( true );
 
         //Recupera NOtificação
         NotificationManager notificationManager  = (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );

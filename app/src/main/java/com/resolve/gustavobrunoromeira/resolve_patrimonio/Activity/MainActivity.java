@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.API.ResolvePatrimonio;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.CentroCustoActivity;
 import com.resolve.gustavobrunoromeira.resolve_patrimonio.Activity.Organizacao.LocalizacaoActivity;
@@ -229,6 +230,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+
+        FirebaseMessaging.getInstance().subscribeToTopic(  String.valueOf( usuario.getClienteIDFK() ) );
 
     }
 
@@ -541,5 +544,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }).show();
     }
+
+
 
 }
